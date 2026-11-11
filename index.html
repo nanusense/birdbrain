@@ -876,13 +876,18 @@ function buildLabel() {
   KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).forEach(k => parts.push(k.t));
   for (const i of Fb.habitats) parts.push(HAB_LABEL[D.habitats[i]] || D.habitats[i]);
   for (const i of Fb.sizes) parts.push(SIZES[i][0] + ' birds');
+  for (const i of Fb.diets) parts.push(DIET_LABEL[D.diets[i]] || D.diets[i]);
+  for (const i of Fb.iucn) parts.push(STATUS[i]);
+  for (const i of Fb.migs) parts.push(MIG_LABEL[D.migrations[i]] || D.migrations[i]);
+  const inKind = new Set(KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).flatMap(k => k.idx));
+  [...Fb.fams].filter(i => !inKind.has(i)).forEach(i => parts.push(D.fams[i].e)); // families picked with the search box
   return parts;
 }
 function openBuilder() { if (!$('#bsteps').children.length) buildBuilder(); view('build'); updateBuilder(); }
 $('#bclear').onclick = () => { GROUPS.forEach(g => Fb[g.key].clear()); updateBuilder(); };
 $('#bplay').onclick = () => {
   const parts = buildLabel(), pool = bfacets.pool;
-  const deck = { id: '', t: 'Your custom deck', d: parts.length ? parts.slice(0, 5).join(' · ') + (parts.length > 5 ? ' …' : '') : 'Every bird in the world', c: C.saffron, heroB: pool[Math.random() * pool.length | 0] };
+  const deck = { id: '', t: 'Your custom deck', d: parts.length ? parts.slice(0, 5).join(' · ') + (parts.length > 5 ? ' …' : '') : 'Every bird in the world', full: parts.length ? parts.join(' · ') : 'Every bird in the world', c: C.saffron, heroB: pool[Math.random() * pool.length | 0] };
   openSheet(deck, pool);
 };
 
@@ -941,7 +946,7 @@ function startGame(pool, deck, level) {
   G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [] };
   G.index = buildIndex(G.pool);
   G.t0 = Date.now(); G.qlog = []; G.hintsTotal = 0; G.sent = false;
-  G.meta = { gid: rid(), pid: PID, src: SRC, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : deck.d, level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
+  G.meta = { gid: rid(), pid: PID, src: SRC, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : (deck.full || deck.d), level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
   track('start', G.meta);
   view('game');
   $('#game').style.setProperty('--dc', deck.c);

@@ -114,6 +114,10 @@ td .mini{display:inline-block;vertical-align:middle;height:8px;border-radius:99p
 .bird .bn small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
 .bird .pc{font-family:var(--display);font-weight:800;font-size:22px}
 .bird .pc.lo{color:var(--bad)}.bird .pc.hi{color:var(--good)}
+.pill{display:inline-block;border-radius:99px;padding:2px 9px;font-size:12px;font-weight:700;background:var(--soft)}
+.pill.ok{background:#dff4e8;color:#0b7a46}.pill.no{background:#fde5e1;color:#b13324}.pill.mid{background:#fdf0d2;color:#8a5a00}
+td .ago{color:var(--muted);font-size:12.5px;margin-left:6px}
+td .lbl{display:inline-block;max-width:300px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
 .note{color:var(--muted);font-size:12.5px;margin-top:26px;text-align:center}
 @media (max-width:860px){.hero{grid-template-columns:1fr 1fr}.kpi.big{grid-column:1/-1}}
 @media (max-width:560px){.grid{grid-template-columns:1fr}.periods{grid-template-columns:1fr}.insights ul{grid-template-columns:1fr}.kpi.big .v{font-size:52px}}
@@ -203,6 +207,8 @@ const barList = (rows, { cls = '', fmt = r => `<b>${nf(r.n)}</b>` } = {}) => {
 const istDate = off => new Date(Date.now() + 19800e3 - off * 864e5).toISOString().slice(0, 10);
 const hourLabel = h => (h % 12 || 12) + (h < 12 ? 'a' : 'p');
 const dayLabel = k => k.slice(8) + '/' + k.slice(5, 7);
+const timeIST = ts => new Date(ts).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+const ago = ts => { const m = Math.max(0, Math.round((Date.now() - ts) / 60000)); return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.floor(m / 60) + ' h ago' : Math.floor(m / 1440) + ' d ago'; };
 
 /* ---------- render ---------- */
 async function render(d) {
@@ -262,6 +268,13 @@ async function render(d) {
   const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devC[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><s style="background:${devC[r.device] || '#999'}"></s><b>${pc(r.n / devTot)}</b> ${esc(r.device)}</span>`).join('')}</div>`;
   const sharesNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score' };
 
+  // ---- latest games ----
+  const recentRows = (d.recent || []).map(r => {
+    const result = r.finished ? '<span class="pill ok">finished</span>' : r.answered ? '<span class="pill mid">left early</span>' : '<span class="pill no">left before answering</span>';
+    const deckCell = r.custom ? `<span class="lbl" title="${esc(r.custom_label || '')}"><b>Custom:</b> ${esc(r.custom_label || 'every bird')}</span>` : esc(r.deck_title);
+    return `<tr><td>${timeIST(r.ts_start)}<span class="ago">${ago(r.ts_start)}</span></td><td>${deckCell}</td><td>${LV[r.level] || ''}${r.shadow ? ' · shadow' : ''}</td><td class="num">${nf(r.score)}</td><td class="num">${r.answered ? r.correct + '/' + r.answered : '–'}</td><td>${result}</td><td>${esc(srcName(r.src).replace(/ \(typed.*\)/, ''))}</td><td>${esc(CN(r.country))}</td><td>${esc(r.device)}</td></tr>`;
+  }).join('');
+
   $('#body').innerHTML = `
     <section class="hero">
       <div class="kpi big"><div class="l">Games played, all time</div><div class="v">${nf(totalGames)}</div><div class="s">${earlierG ? `Includes about ${nf(earlierG)} games from before tracking began (estimate)` : 'Counted permanently'}${a.first_day ? ` · tracked since ${a.first_day}` : ''}</div></div>
@@ -275,6 +288,9 @@ async function render(d) {
       <div class="kpi"><div class="l">Last 30 days</div><div class="v">${nf(p.d30)}</div><div class="s">games</div></div>
     </section>
     <section class="insights"><h2>What stands out</h2><ul>${ins.map(i => `<li>${i}</li>`).join('')}</ul></section>
+
+    <h2 class="sec-t">Latest games</h2><p class="sec-s">The last 15 games played, newest first (IST)</p>
+    <section class="card"><div class="tw"><table style="min-width:760px"><thead><tr><th>When</th><th>Deck</th><th>Level</th><th class="num">Score</th><th class="num">Correct</th><th>Result</th><th>Came from</th><th>Country</th><th>Device</th></tr></thead><tbody>${recentRows || '<tr><td colspan="9" class="empty">No games yet.</td></tr>'}</tbody></table></div></section>
 
     <h2 class="sec-t">Is it growing?</h2><p class="sec-s">Games and new players, last 30 days</p>
     <section class="grid">
@@ -296,6 +312,8 @@ async function render(d) {
       <div class="card"><h3>Difficulty</h3><div class="sub">Share of games, how many finish, and accuracy</div>
         <div class="tw"><table style="min-width:0"><thead><tr><th>Level</th><th class="num">Games</th><th class="num">Finished</th><th class="num">Accuracy</th></tr></thead><tbody>${levels.map(l => `<tr><td>${LV[l.level]}</td><td class="num">${pc(l.n / tracked)}</td><td class="num">${pc(l.f / l.n)}</td><td class="num">${pc(l.acc)}</td></tr>`).join('')}</tbody></table></div></div>
       <div class="card"><h3>Features used</h3><div class="sub">Share of all games</div><div class="rows">${feat.map(([l, n]) => `<div class="row"><span>${l}</span><b>${pc(n / Math.max(tracked, 1))}</b></div>`).join('')}</div></div>
+      <div class="card"><h3>What people build</h3><div class="sub">The most common custom decks (${pc((t.custom || 0) / Math.max(tracked, 1))} of games use one)</div>
+        ${barList((d.customDecks || []).map(r => ({ label: r.label, n: r.n })), { cls: 'b' })}</div>
     </section>
 
     <h2 class="sec-t">Which birds need attention?</h2><p class="sec-s">From every answer players have given (a bird needs 5 answers to appear)</p>
