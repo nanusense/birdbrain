@@ -134,6 +134,22 @@ svg{display:block}
 .foot .made{font-size:15px;font-weight:600;color:var(--ink)}
 .foot .made a,.foot .feedback a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
 .foot .feedback{font-size:14.5px;color:var(--ink)}
+.foot .sharebtn{margin-bottom:14px}
+.sharebox{position:relative;background:var(--surface);border-radius:28px;width:min(440px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:22px;box-shadow:0 40px 80px -20px rgba(0,0,0,.5);animation:pop .22s cubic-bezier(.2,.9,.3,1.1)}
+.sharebox h2{font-size:26px;font-weight:800;padding-right:44px}
+.sharebox .s-x{right:14px;top:14px}
+.sp{background:var(--soft);border-radius:18px;overflow:hidden;margin:14px 0 16px}
+.sp img{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover;background:var(--line)}
+.sp div{padding:10px 14px 12px}
+.sp b{display:block;font-family:var(--display);font-size:16px;line-height:1.2}
+.sp span{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:3px}
+.sp small{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px}
+.sopt{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;font-weight:600;text-decoration:none;color:var(--ink);padding:4px 0}
+.sopt i{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;font-size:20px;transition:transform .12s}
+.sopt:hover i{transform:translateY(-2px) scale(1.04)}
+.sopt svg{width:24px;height:24px}
+.native{margin-top:14px;width:100%}
 
 /* ---------- sheet ---------- */
 .sheet-wrap{position:fixed;inset:0;z-index:60;background:rgba(10,12,16,.55);display:grid;place-items:center;padding:20px;animation:fade .18s}
@@ -294,6 +310,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   .collage{height:300px;order:-1}
   .sheet-wrap{align-items:end;padding:0}
   .sheet{grid-template-columns:1fr;border-radius:30px 30px 0 0;max-height:92vh;width:100%}
+  .sharebox{width:100%;border-radius:28px 28px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
   .s-art{min-height:0;height:170px}
   .s-art img{top:6%;height:88%}
   .s-body{padding:22px 20px 24px}
@@ -436,6 +453,16 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
       </div>
       <button class="btn lg" id="sPlay">Play</button>
     </div>
+  </div>
+</div>
+<!-- SHARE PANEL -->
+<div class="sheet-wrap hidden" id="shareWrap">
+  <div class="sharebox" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <button class="s-x" id="shClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 id="shTitle">Share Birdbrain</h2>
+    <div class="sp"><img id="shImg" alt=""><div><b id="shT"></b><span id="shD"></span><small id="shU"></small></div></div>
+    <div class="sgrid" id="shGrid"></div>
+    <button class="btn ghost native hidden" id="shNative">More ways to share…</button>
   </div>
 </div>
 <canvas class="confetti hidden" id="confetti"></canvas>
@@ -584,7 +611,7 @@ function renderHome() {
   $('#worldDecks').innerHTML = DECKS.filter(d => d.sec === 'world').map(card).join('');
   const heroes = [['Indian Peafowl', C.saffron, 'a'], ['Himalayan Monal', C.sky, 'b'], ['Indian Roller', C.leaf, 'c']];
   $('#collage').innerHTML = heroes.map(([n, c, k]) => byEn[n] ? `<div class="cc ${k}" style="background:${c}">${img(byEn[n], '', false)}</div>` : '').join('');
-  $('#credit').innerHTML = `<span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">Support</a> such games</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
+  $('#credit').innerHTML = `<button class="btn sm sharebtn" id="shareSite"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.600 13.500l6.800 4M15.400 6.500l-6.800 4"/></svg> Share Birdbrain</button><br><span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">Support</a> such games</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
 }
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-deck]'); if (d) openSheet(deckById[d.dataset.deck]);
@@ -926,6 +953,52 @@ function confetti() {
     if (++t < 170) requestAnimationFrame(f); else c.classList.add('hidden');
   })();
 }
+
+/* ---------- share the site (reads the page's own social-sharing tags, so it always matches the link preview) ---------- */
+const meta = n => { const m = document.querySelector(`meta[property="${n}"],meta[name="${n}"]`); return m ? m.content : ''; };
+function shareData() {
+  return { title: meta('og:title') || document.title, text: meta('og:description') || meta('description'), url: meta('og:url') || (location.origin + '/'), image: meta('og:image') };
+}
+const SH_ICON = {
+  whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.2-.7-2.700-1.100-4.400-3.800-4.500-4-.1-.2-1.100-1.400-1.100-2.700 0-1.300.7-1.900.9-2.200.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.900c.1.2.1.4 0 .5l-.4.600-.4.400c-.1.2-.3.3-.1.6.2.3.7 1.200 1.500 1.900 1 .9 1.900 1.200 2.200 1.300.3.100.4.100.6-.1l.8-1c.2-.3.4-.2.6-.1l1.800.9c.3.1.5.2.5.3.1.2.1.8-.1 1.400z"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 4l14 16M19 4L5 20"/></svg>',
+  telegram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.500 3.500 2.800 10.800c-.8.300-.8 1.400 0 1.700l4.700 1.500 1.800 5.600c.2.600.9.800 1.400.4l2.600-2.200 4.700 3.500c.6.400 1.400.1 1.600-.6L22.900 4.800c.2-.8-.6-1.600-1.400-1.300zM9.700 14l8.100-5.800-6.300 6.900-.3 3.200L9.700 14z"/></svg>',
+  email: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7.500l8 6 8-6"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></svg>',
+};
+function openShare() {
+  const d = shareData(), enc = encodeURIComponent, both = `${d.title}\n${d.text}\n${d.url}`;
+  $('#shImg').src = d.image; $('#shT').textContent = d.title; $('#shD').textContent = d.text; $('#shU').textContent = d.url.replace(/^https?:\/\//, '');
+  const opts = [
+    ['WhatsApp', '#25d366', SH_ICON.whatsapp, 'https://wa.me/?text=' + enc(both)],
+    ['Facebook', '#1877f2', 'f', 'https://www.facebook.com/sharer/sharer.php?u=' + enc(d.url)],
+    ['X', '#14161a', SH_ICON.x, `https://twitter.com/intent/tweet?text=${enc(d.title + ' - ' + d.text)}&url=${enc(d.url)}`],
+    ['LinkedIn', '#0a66c2', 'in', 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(d.url)],
+    ['Telegram', '#2aabee', SH_ICON.telegram, `https://t.me/share/url?url=${enc(d.url)}&text=${enc(d.title + ' - ' + d.text)}`],
+    ['Email', '#6a707b', SH_ICON.email, `mailto:?subject=${enc(d.title)}&body=${enc(d.text + '\n\n' + d.url)}`],
+  ];
+  $('#shGrid').innerHTML = opts.map(([n, c, ic, href]) => `<a class="sopt" href="${href}" target="_blank" rel="noopener"><i style="background:${c}">${ic}</i>${n}</a>`).join('')
+    + `<button class="sopt" id="shCopy"><i style="background:var(--brand)">${SH_ICON.link}</i><span>Copy link</span></button>`;
+  $('#shCopy').onclick = async () => {
+    try { await navigator.clipboard.writeText(d.url); } catch (e) { prompt('Copy this link:', d.url); return; }
+    $('#shCopy span').textContent = 'Copied!'; setTimeout(() => { const s = $('#shCopy span'); if (s) s.textContent = 'Copy link'; }, 1600);
+  };
+  $('#shNative').classList.toggle('hidden', !navigator.share);
+  $('#shareWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  setTimeout(() => $('#shGrid a').focus({ preventScroll: true }), 30);
+}
+function closeShare() { $('#shareWrap').classList.add('hidden'); document.body.style.overflow = ''; }
+$('#shClose').onclick = closeShare;
+$('#shareWrap').addEventListener('mousedown', e => { if (e.target === $('#shareWrap')) closeShare(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#shareWrap').classList.contains('hidden')) closeShare(); });
+$('#shNative').onclick = async () => { const d = shareData(); try { await navigator.share({ title: d.title, text: d.text, url: d.url }); closeShare(); } catch (e) {} };
+// phones with a native share sheet open it straight away; everyone else gets the panel above
+$('#credit').addEventListener('click', async e => {
+  if (!e.target.closest('#shareSite')) return;
+  const d = shareData();
+  if (navigator.share && matchMedia('(pointer:coarse)').matches) { try { await navigator.share({ title: d.title, text: d.text, url: d.url }); return; } catch (err) { if (err && err.name === 'AbortError') return; } }
+  openShare();
+});
 
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
