@@ -1515,12 +1515,13 @@ async function fetchRank(num, gid, score) {
 }
 function rankLines(v, score) {
   if (!v || typeof v.total !== 'number') return null;
-  const players = v.total + 1; // everyone else plus you
+  const finished = v.total + 1, played = Math.max(v.played || 0, finished); // finished = everyone else plus you; played also counts people still playing or who left
+  const counts = `${fmt(played)} players today`;
   if (v.total < 5) return [`You're one of the first to finish today's birds`, 'Check back later to see how you rank.'];
-  if (score > v.top) return ['You have the top score today', `${fmt(players)} players have finished · your score ${fmt(score)}`];
+  if (score > v.top) return ['You have the top score today', `${counts} · your score ${fmt(score)}`];
   const pct = Math.round((v.below + v.tied / 2) / v.total * 100);
   const main = pct >= 1 ? `You scored higher than ${pct}% of today's players` : "A tough one today. Come back tomorrow!";
-  return [main, `${fmt(players)} players have finished · top score ${fmt(Math.max(v.top, score))}`];
+  return [main, `${counts} · top score ${fmt(Math.max(v.top, score))}`];
 }
 async function fillRank(el, num, gid, score, card) {
   if (!el) return;
