@@ -421,10 +421,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
           <div><span class="lbl">Number of birds</span><div class="seg" data-set="rounds"><button data-v="10">10</button><button data-v="20">20</button><button data-v="0">Endless</button></div></div>
           <div><span class="lbl">Timer per bird</span><div class="seg" data-set="timer"><button data-v="0">Off</button><button data-v="30">30 sec</button><button data-v="15">15 sec</button></div></div>
         </div>
-        <div class="mrow">
-          <label class="tgl"><span>Shadow mode<small>Silhouettes only. Bonus points.</small></span><input type="checkbox" id="shadow"></label>
-          <div><label class="lbl" for="lang">Bird names in</label><select id="lang"></select></div>
-        </div>
+        <label class="tgl"><span>Shadow mode<small>See only the silhouette. Bonus points.</small></span><input type="checkbox" id="shadow"></label>
       </div>
       <button class="btn lg" id="sPlay">Play</button>
     </div>
@@ -582,7 +579,7 @@ let sheetDeck = null, sheetPool = null;
 function syncSheet() {
   $$('#sheet .level').forEach(b => b.setAttribute('aria-checked', String(b.dataset.lv === S.level)));
   $$('#sheet .seg').forEach(seg => $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(S[seg.dataset.set] === b.dataset.v))));
-  $('#shadow').checked = !!S.shadow; $('#lang').value = S.lang;
+  $('#shadow').checked = !!S.shadow;
 }
 function openSheet(deck, pool) {
   sheetDeck = deck; sheetPool = pool || deck.pool;
@@ -605,8 +602,6 @@ $('#sheet').addEventListener('click', e => {
   const sb = e.target.closest('.seg button'); if (sb) { S[sb.parentElement.dataset.set] = sb.dataset.v; syncSheet(); store.save(); }
 });
 $('#shadow').onchange = e => { S.shadow = e.target.checked; store.save(); };
-$('#lang').innerHTML = D.langs.map(([c, l]) => `<option value="${c}">${esc(l)}</option>`).join('');
-$('#lang').onchange = e => { S.lang = e.target.value; store.save(); };
 $('#sPlay').onclick = () => { closeSheet(); startGame(sheetPool, sheetDeck, S.level); };
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#sheetWrap').classList.contains('hidden')) closeSheet(); });
 
@@ -905,7 +900,7 @@ $('#themeBtn').onclick = () => {
 try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
 
 /* ---------- boot ---------- */
-store.load(); renderHome();
+store.load(); S.lang = 'en'; renderHome(); // names are English only for now
 const m = location.hash.match(/deck=([\w-]+)/);
 if (m && deckById[m[1]]) openSheet(deckById[m[1]]);
 })();
