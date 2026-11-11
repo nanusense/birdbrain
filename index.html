@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Birdbrain · The Bird Guessing Game</title>
+<meta name="description" content="Think you know your birds? Guess from 11,000 species, from garden favourites to rare finds. Pick a region, go Easy to Hard, challenge friends. Free to play.">
+<meta name="theme-color" content="#ff6b1a">
+<link rel="canonical" href="https://birdbrain.indianbirds.org/">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<!-- Social sharing (WhatsApp, Facebook, LinkedIn, X) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Birdbrain">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Birdbrain · The Bird Guessing Game">
+<meta property="og:description" content="Think you know your birds? Guess from 11,000 species, from garden favourites to rare finds. Pick a region, go Easy to Hard, challenge friends. Free to play.">
+<meta property="og:url" content="https://birdbrain.indianbirds.org/">
+<meta property="og:image" content="https://birdbrain.indianbirds.org/assets/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Birdbrain logo, a colourful hummingbird, next to stickers of a peacock, a monal and a roller">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Birdbrain · The Bird Guessing Game">
+<meta name="twitter:description" content="Think you know your birds? Guess from 11,000 species. Pick a region, go Easy to Hard, challenge friends. Free to play.">
+<meta name="twitter:image" content="https://birdbrain.indianbirds.org/assets/og.png">
+<meta name="twitter:image:alt" content="Birdbrain logo, a colourful hummingbird, next to stickers of a peacock, a monal and a roller">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@700;800;900&family=Noto+Sans+Devanagari:wght@500;700&family=Quicksand:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#fff; --soft:#efeee9; --ink:#14161a; --muted:#6a707b; --line:#e4e3dd;
+  --brand:#ff6b1a; --brand-d:#e95a0b; --on-brand:#fff;
+  --good:#10a35e; --good-bg:#e2f6eb; --bad:#e5483b; --bad-bg:#fdebe8;
+  --shadow:0 1px 2px rgba(20,22,26,.05),0 14px 34px -14px rgba(20,22,26,.2);
+  --display:"Gabarito","Plus Jakarta Sans",system-ui,sans-serif;
+  --brand-font:"Quicksand","Gabarito",system-ui,sans-serif;
+  --body:"Plus Jakarta Sans","Noto Sans Devanagari",system-ui,sans-serif;
+}
+/* light is the default; dark only when the visitor picks it with the toggle */
+:root[data-theme="dark"]{
+  --bg:#0f1114; --surface:#181b20; --soft:#21252b; --ink:#f3f4f6; --muted:#9aa1ad; --line:#2a2e36;
+  --good:#34c883; --good-bg:#12301f; --bad:#ff6b5e; --bad-bg:#3a1a17; --shadow:0 14px 34px -14px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);min-height:100vh}
+h1,h2,h3,h4,p{margin:0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.02}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:8px}
+.hidden{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+svg{display:block}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:14px 24px;font-weight:700;font-size:16px;background:var(--brand);color:var(--on-brand);transition:transform .12s,background .15s,box-shadow .15s;box-shadow:0 8px 20px -8px rgba(255,107,26,.7)}
+.btn:hover{background:var(--brand-d);transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.ghost:hover{background:var(--soft)}
+.btn.sm{padding:9px 16px;font-size:14px;border-radius:12px}
+.btn.lg{padding:18px 32px;font-size:18px;border-radius:18px}
+.btn.wa{background:#25d366;color:#06240f;box-shadow:0 8px 20px -8px rgba(37,211,102,.7)}
+.btn.wa:hover{background:#20bd5b}
+.iconbtn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line)}
+.iconbtn:hover{background:var(--soft)}
+
+/* ---------- nav ---------- */
+.nav{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--brand-font);font-weight:700;font-size:30px;letter-spacing:-.01em}
+.logo img{width:42px;height:42px;object-fit:contain}
+:root[data-theme="dark"] .logo img{background:#fff;border-radius:12px;padding:3px}
+.navr{display:flex;gap:8px;align-items:center}
+
+/* ---------- home hero ---------- */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:28px 0 46px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.flag{display:inline-flex;width:22px;height:14px;border-radius:3px;overflow:hidden;flex-direction:column;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.flag i{flex:1}.flag i:nth-child(1){background:#ff9933}.flag i:nth-child(2){background:#fff}.flag i:nth-child(3){background:#138808}
+.hero h1{font-size:clamp(42px,6.4vw,84px);font-weight:800}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero p.lead{font-size:19px;color:var(--muted);max-width:30em;margin:20px 0 28px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.collage{position:relative;height:420px}
+.cc{position:absolute;border-radius:28px;display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .3s}
+.cc img{position:absolute;left:7%;top:7%;width:86%;height:86%;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.2))}
+.cc.a{width:62%;height:68%;left:0;top:6%;transform:rotate(-6deg)}
+.cc.b{width:54%;height:58%;right:0;top:0;transform:rotate(5deg)}
+.cc.c{width:58%;height:48%;right:8%;bottom:0;transform:rotate(-2deg)}
+.collage:hover .cc.a{transform:rotate(-8deg) translateY(-4px)}
+.collage:hover .cc.b{transform:rotate(7deg) translateY(-6px)}
+
+/* ---------- deck sections ---------- */
+.sec{padding:10px 0 34px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(28px,3.4vw,38px);font-weight:800;display:flex;align-items:center;gap:12px}
+.sec-h p{color:var(--muted);font-size:15px}
+.decks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.deck{position:relative;text-align:left;background:var(--c);color:#14161a;border-radius:26px;padding:18px;min-height:250px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;transition:transform .2s,box-shadow .2s;box-shadow:var(--shadow)}
+.deck:hover{transform:translateY(-5px)}
+.deck:hover .dimg{transform:rotate(-4deg) scale(1.07)}
+.deck.feature{grid-column:span 2}
+.dimg{position:absolute;right:-4px;top:6px;width:74%;height:62%;object-fit:contain;transition:transform .3s;filter:drop-shadow(0 10px 10px rgba(0,0,0,.2));pointer-events:none}
+.deck.feature .dimg{width:50%;height:80%;right:10px;top:8px}
+.dcount{position:absolute;left:14px;top:14px;color:#14161a;background:rgba(255,255,255,.72);backdrop-filter:blur(6px);border-radius:99px;padding:4px 11px;font-size:12.5px;font-weight:700}
+.dbadge{position:absolute;left:14px;top:46px;background:#14161a;color:#fff;border-radius:99px;padding:3px 10px;font-size:11.5px;font-weight:700;font-family:var(--body)}
+.dt{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.05;letter-spacing:-.02em;position:relative;max-width:11em}
+.dd{font-size:13.5px;margin-top:6px;opacity:.78;position:relative;max-width:20em;line-height:1.35}
+.deck.feature .dt{font-size:32px}
+.build-cta{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:var(--ink);color:var(--bg);border-radius:28px;padding:30px 34px;margin:6px 0 46px}
+.build-cta h3{font-size:30px;font-weight:800}
+.build-cta p{opacity:.7;margin-top:8px;max-width:34em}
+.build-cta .btn{background:var(--bg);color:var(--ink);box-shadow:none}
+.foot{padding:10px 0 60px;text-align:center;color:var(--muted);font-size:13px;line-height:1.8}
+.foot .made{font-size:15px;font-weight:600;color:var(--ink)}
+.foot .made a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- sheet ---------- */
+.sheet-wrap{position:fixed;inset:0;z-index:60;background:rgba(10,12,16,.55);display:grid;place-items:center;padding:20px;animation:fade .18s}
+@keyframes fade{from{opacity:0}}
+.sheet{position:relative;background:var(--surface);border-radius:30px;width:min(900px,100%);max-height:calc(100vh - 40px);overflow:auto;display:grid;grid-template-columns:.85fr 1.15fr;animation:pop .22s cubic-bezier(.2,.9,.3,1.1);box-shadow:0 40px 80px -20px rgba(0,0,0,.5)}
+@keyframes pop{from{transform:translateY(24px) scale(.97);opacity:0}}
+.s-art{background:var(--c);position:relative;display:grid;place-items:center;min-height:300px}
+.s-art img{position:absolute;left:8%;top:8%;width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 14px 16px rgba(0,0,0,.25))}
+.s-art .dcount{left:18px;top:18px}
+.s-body{padding:30px 30px 26px;display:flex;flex-direction:column;gap:18px}
+.s-body h2{font-size:34px;font-weight:800;padding-right:44px}
+.s-body .desc{color:var(--muted);margin-top:8px}
+.s-x{position:absolute;right:16px;top:16px;z-index:2;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.levels{display:grid;gap:8px}
+.level{display:flex;align-items:center;gap:14px;text-align:left;padding:13px 15px;border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--line);transition:.12s;background:var(--surface)}
+.level:hover{background:var(--soft)}
+.level[aria-checked="true"]{box-shadow:inset 0 0 0 2.5px var(--brand);background:color-mix(in srgb,var(--brand) 8%,var(--surface))}
+.level .dot{flex:none;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line);display:grid;place-items:center}
+.level[aria-checked="true"] .dot{box-shadow:inset 0 0 0 2px var(--brand);background:var(--brand)}
+.level[aria-checked="true"] .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.level b{display:block;font-size:16px}
+.level span{display:block;color:var(--muted);font-size:13.5px;line-height:1.3}
+details.more{border-top:1px solid var(--line);padding-top:14px}
+details.more summary{cursor:pointer;font-weight:700;font-size:14.5px;list-style:none;display:flex;align-items:center;gap:8px;color:var(--muted)}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"+";margin-left:auto;font-size:20px;line-height:1}
+details.more[open] summary::after{content:"–"}
+.mopts{display:grid;gap:14px;margin-top:14px}
+.seg{display:flex;background:var(--soft);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;padding:8px 6px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:var(--soft);color:inherit;border:0}
+.tgl{display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:600;font-size:15px}
+.tgl small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+.tgl input{appearance:none;width:46px;height:28px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:.15s;flex:none}
+.tgl input::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tgl input:checked{background:var(--brand)}
+.tgl input:checked::after{transform:translateX(18px)}
+
+/* ---------- builder ---------- */
+.b-head{padding:6px 0 18px}
+.back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--muted);margin-bottom:14px}
+.b-head h1{font-size:clamp(34px,5vw,56px);font-weight:800}
+.b-head p{color:var(--muted);font-size:17px;margin-top:10px;max-width:36em}
+.card{background:var(--surface);border-radius:26px;padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h2{font-size:26px;font-weight:800;display:flex;align-items:center;gap:12px}
+.step{flex:none;width:34px;height:34px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:16px;font-family:var(--display)}
+.card .sub{color:var(--muted);font-size:15px;margin:6px 0 16px}
+.gl{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 9px;display:flex;align-items:center;gap:8px}
+.gl:first-of-type{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:99px;font-weight:600;font-size:15px;background:var(--soft);transition:.12s;box-shadow:inset 0 0 0 1.5px transparent}
+.chip:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.chip .n{font-size:12.5px;color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums}
+.chip .h{font-size:12.5px;color:var(--muted);font-weight:500}
+.chip.on{background:var(--ink);color:var(--bg)}
+.chip.on .n,.chip.on .h{color:inherit;opacity:.7}
+.chip.zero:not(.on){opacity:.35}
+.chip.big{padding:13px 20px;font-size:16px}
+.chip.hot{box-shadow:inset 0 0 0 1.5px var(--brand);background:color-mix(in srgb,var(--brand) 10%,var(--surface))}
+.chip.hot.on{background:var(--brand);color:#fff;box-shadow:none}
+.fold{max-height:0;overflow:hidden;transition:max-height .25s}
+.fold.open{max-height:1400px;margin-top:10px}
+.linkbtn{font-weight:700;font-size:14px;color:var(--brand);margin-top:12px}
+.fsearch{position:relative;margin-top:14px}
+.fsearch input,.typebox input{width:100%;border:0;border-radius:14px;padding:14px 16px;font:inherit;background:var(--soft);color:inherit}
+.sugg{position:absolute;z-index:30;left:0;right:0;top:100%;margin-top:6px;background:var(--surface);border-radius:14px;box-shadow:var(--shadow),0 0 0 1px var(--line);overflow:hidden}
+.sugg button{display:flex;width:100%;justify-content:space-between;gap:8px;text-align:left;padding:11px 14px;font-size:15px}
+.sugg button:hover,.sugg button.act{background:var(--soft)}
+.sugg em{color:var(--muted);font-style:normal;font-size:13px}
+.acc{border-top:1px solid var(--line)}
+.acc:first-of-type{border-top:0}
+.acc summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:16px 2px;font-weight:700;font-size:17px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";font-size:22px;color:var(--muted)}
+.acc[open] summary::after{content:"–"}
+.acc summary .sel{font-weight:600;font-size:13px;background:var(--brand);color:#fff;border-radius:99px;padding:2px 9px;margin-left:10px}
+.acc .chips{padding:0 0 16px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
+.bar .wrap{display:flex;align-items:center;gap:14px}
+.bar .cnt{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1}
+.bar .cnt small{display:block;font-family:var(--body);font-weight:500;font-size:12.5px;color:var(--muted);letter-spacing:0;margin-top:2px}
+.bar .sp{flex:1}
+.build-pad{height:110px}
+
+/* ---------- game ---------- */
+.game{max-width:700px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px 40px}
+.hud{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.segs{flex:1;display:flex;gap:4px;min-width:0}
+.segs i{flex:1;height:8px;border-radius:9px;background:var(--line);transition:.25s}
+.segs i.cur{background:var(--ink);opacity:.35}
+.segs i.ok{background:var(--good)}
+.segs i.no{background:var(--bad)}
+.lives{flex:1;font-size:22px;letter-spacing:4px;color:var(--bad);padding-left:6px}
+.score{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;min-width:64px;text-align:right}
+.streak{display:inline-flex;align-items:center;gap:4px;background:color-mix(in srgb,var(--brand) 14%,var(--surface));color:var(--brand);font-weight:800;font-size:14px;border-radius:99px;padding:4px 10px}
+.stage{position:relative;background:var(--dc,#ffb02e);border-radius:32px;aspect-ratio:1/.82;max-height:50vh;width:100%;display:grid;place-items:center;overflow:hidden}
+.stage img{width:80%;height:84%;object-fit:contain;transition:filter .5s,transform .45s;filter:drop-shadow(0 12px 14px rgba(0,0,0,.22))}
+.stage.shadow:not(.revealed) img{filter:brightness(0);opacity:.9}
+.stage.revealed img{transform:scale(1.05) rotate(-2deg)}
+.skel{position:absolute;width:56px;height:56px;border-radius:50%;border:5px solid rgba(255,255,255,.5);border-top-color:#fff;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tbar{position:absolute;left:0;right:0;top:0;height:7px;background:rgba(255,255,255,.35)}
+.tbar i{display:block;height:100%;background:#14161a;width:100%}
+.qtag{position:absolute;left:16px;top:18px;font-size:13px;font-weight:700;background:rgba(255,255,255,.75);border-radius:99px;padding:4px 12px;color:#14161a}
+.hintrow{margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:36px}
+.hintbtn{font-weight:700;font-size:14px;color:var(--muted);padding:7px 14px;border-radius:99px;box-shadow:inset 0 0 0 1.5px var(--line);display:inline-flex;gap:6px;align-items:center}
+.hintbtn:hover:not([disabled]){color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.hintbtn[disabled]{opacity:.4;cursor:default}
+.hint{background:color-mix(in srgb,var(--brand) 13%,var(--surface));border-radius:99px;padding:6px 14px;font-size:14px;font-weight:600}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;background:var(--surface);border-radius:20px;padding:16px;min-height:72px;font-weight:700;font-size:17px;line-height:1.2;box-shadow:inset 0 0 0 2px var(--line);transition:.12s}
+.opt .k{flex:none;width:28px;height:28px;border-radius:9px;background:var(--soft);display:grid;place-items:center;font-size:13px;color:var(--muted)}
+.opt small{display:block;font-weight:500;color:var(--muted);font-size:14px;margin-top:2px;font-family:var(--body)}
+.opt:hover:not([disabled]){box-shadow:inset 0 0 0 2px var(--ink);transform:translateY(-2px)}
+.opt.good{box-shadow:inset 0 0 0 3px var(--good);background:var(--good-bg)}
+.opt.bad{box-shadow:inset 0 0 0 3px var(--bad);background:var(--bad-bg)}
+.opt.out{opacity:.3;text-decoration:line-through}
+.opt[disabled]{cursor:default}
+.typebox{margin-top:12px;position:relative}
+.typebox form{display:flex;gap:8px}
+.typebox input{font-size:18px;padding:18px 18px;box-shadow:inset 0 0 0 2px var(--line);background:var(--surface)}
+.typebox input:focus{outline:0;box-shadow:inset 0 0 0 2.5px var(--ink)}
+.skip{margin-top:10px;font-weight:700;font-size:14px;color:var(--muted);padding:6px 4px}
+.reveal{position:fixed;left:0;right:0;bottom:0;z-index:45;animation:up .28s cubic-bezier(.2,.9,.3,1.05)}
+@keyframes up{from{transform:translateY(100%)}}
+.reveal .in{max-width:700px;margin:0 auto;border-radius:28px 28px 0 0;padding:20px 22px calc(20px + env(safe-area-inset-bottom));background:var(--good-bg);box-shadow:0 -20px 50px -20px rgba(0,0,0,.35)}
+.reveal.bad .in{background:var(--bad-bg)}
+.reveal .res{font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--good);display:flex;align-items:center;gap:8px}
+.reveal.bad .res{color:var(--bad)}
+.reveal h2{font-size:32px;font-weight:800;margin-top:6px}
+.reveal .hi{font-size:20px;font-weight:700;margin-top:4px}
+.reveal .alt{color:var(--muted);font-size:14.5px;margin-top:4px}
+.reveal .facts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.fact{background:var(--surface);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:600}
+.reveal .rng{font-size:14px;color:var(--muted);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.reveal .row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:14px}
+.reveal .row a{font-weight:700;font-size:14px}
+
+/* ---------- results ---------- */
+.results{max-width:640px;margin:0 auto;padding:30px 16px 60px;text-align:center}
+.results .kick{font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:13px}
+.results .big{font-family:var(--display);font-weight:800;font-size:clamp(84px,18vw,140px);letter-spacing:-.02em;line-height:1;color:var(--brand);margin:6px 0 0}
+.results .grade{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em;margin:6px 0 20px}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:26px}
+.rstat{background:var(--surface);border-radius:20px;padding:14px 8px;box-shadow:var(--shadow)}
+.rstat b{display:block;font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-.02em}
+.rstat span{font-size:12.5px;color:var(--muted);font-weight:600}
+.results h3{font-size:22px;font-weight:800;margin:6px 0 4px;text-align:left}
+.results .tip{text-align:left;color:var(--muted);font-size:14px;margin-bottom:12px}
+.missed{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:26px}
+.mcard{background:var(--surface);border-radius:18px;padding:8px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:var(--shadow);text-align:center}
+.mcard .t{aspect-ratio:1;background:var(--c,#ffb02e);border-radius:12px;display:grid;place-items:center;margin-bottom:7px}
+.mcard img{width:90%;height:90%;object-fit:contain}
+.rbtns{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.rbtns .full{grid-column:1/-1}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
+
+/* ---------- responsive ---------- */
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:10px;gap:10px}
+  .collage{height:300px;order:-1}
+  .sheet-wrap{align-items:end;padding:0}
+  .sheet{grid-template-columns:1fr;border-radius:30px 30px 0 0;max-height:92vh;width:100%}
+  .s-art{min-height:0;height:170px}
+  .s-art img{top:6%;height:88%}
+  .s-body{padding:22px 20px 24px}
+  .s-body h2{font-size:28px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .nav .btn{display:none}
+  .decks{grid-template-columns:repeat(2,1fr);gap:12px}
+  .deck{min-height:210px;padding:14px;border-radius:22px}
+  .deck.feature{grid-column:span 2;min-height:230px}
+  .dt{font-size:19px}.deck.feature .dt{font-size:26px}
+  .dd{display:none}.deck.feature .dd{display:block}
+  .dimg{width:80%;height:56%}
+  .build-cta{padding:24px}
+  .opts{grid-template-columns:1fr}
+  .opt{min-height:62px;padding:13px 14px}
+  .stage{aspect-ratio:1/1;max-height:42vh;border-radius:26px}
+  .reveal h2{font-size:26px}
+  .card{padding:18px;border-radius:22px}
+  .bar .cnt{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav wrap" id="nav">
+  <a class="logo" href="#" id="logoHome" aria-label="Home">
+    <img src="assets/logo-160.png" width="42" height="42" alt="">
+    <span class="brand-name">Birdbrain</span>
+  </a>
+  <div class="navr">
+    <button class="btn ghost sm" id="navBuild">Build your own deck</button>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch light / dark theme"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+<!-- HOME -->
+<main id="home" class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">11,011 birds · 1 sticker each</div>
+      <h1>How well do you know your <em>birds?</em></h1>
+      <p class="lead">Guess the bird from its picture. Start with the ones you see every day, then go wild with 11,000 species from around the world.</p>
+      <div class="cta">
+        <button class="btn lg" id="playNow">Play now</button>
+        <button class="btn ghost lg" id="pickDeck">Choose a deck</button>
+      </div>
+    </div>
+    <div class="collage" id="collage" aria-hidden="true"></div>
+  </section>
+
+  <section class="sec" id="indiaSec">
+    <div class="sec-h"><h2><span class="flag" aria-hidden="true"><i></i><i></i><i></i></span> Birds of India</h2><p>Tap a deck to start</p></div>
+    <div class="decks" id="indiaDecks"></div>
+  </section>
+
+  <section class="sec" id="worldSec">
+    <div class="sec-h"><h2>Around the world</h2><p>From owls to penguins</p></div>
+    <div class="decks" id="worldDecks"></div>
+  </section>
+
+  <div class="build-cta">
+    <div><h3>Want something specific?</h3><p>Mix and match place, habitat, size, diet and bird family. Only wetland birds of the Himalayas? Done.</p></div>
+    <button class="btn" id="ctaBuild">Build your own deck</button>
+  </div>
+  <p class="foot" id="credit"></p>
+</main>
+
+<!-- BUILDER -->
+<main id="build" class="wrap hidden">
+  <div class="b-head">
+    <button class="back" id="backHome"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> All decks</button>
+    <h1>Build your own deck</h1>
+    <p>Pick as many or as few as you like. Leave everything empty to play with every bird.</p>
+  </div>
+  <div id="bsteps"></div>
+  <div class="build-pad"></div>
+  <div class="bar" id="bbar"><div class="wrap">
+    <div class="cnt"><span id="bcount">–</span><small>birds in this deck</small></div>
+    <div class="sp"></div>
+    <button class="btn ghost sm" id="bclear">Clear</button>
+    <button class="btn" id="bplay">Play</button>
+  </div></div>
+</main>
+
+<!-- GAME -->
+<main id="game" class="game hidden" aria-live="polite">
+  <div class="hud">
+    <button class="iconbtn" id="quit" aria-label="Quit game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="segs" id="segs"></div>
+    <div class="lives hidden" id="lives"></div>
+    <span class="streak hidden" id="streak"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9z"/></svg><b id="streakN">0</b></span>
+    <div class="score" id="score">0</div>
+  </div>
+  <div class="stage" id="stage"><div class="skel" id="skel"></div><div class="tbar hidden" id="tbarWrap"><i id="tbar"></i></div><span class="qtag" id="qtag">Name this bird</span><img id="pic" alt="Bird to identify"></div>
+  <div class="hintrow" id="hints"></div>
+  <div id="answer"></div>
+</main>
+<div id="reveal" class="reveal hidden"></div>
+
+<!-- RESULTS -->
+<main id="results" class="results hidden">
+  <div class="kick" id="rKick">Round complete</div>
+  <div class="big" id="rScore">0</div>
+  <div class="grade" id="rGrade"></div>
+  <div class="rstats" id="rStats"></div>
+  <div id="rMissed"></div>
+  <div class="rbtns">
+    <button class="btn wa full" id="shareWa"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.300 1.200-1.800 1.200-.5.1-1 .2-3.200-.7-2.700-1.100-4.400-3.800-4.500-4-.1-.2-1.100-1.400-1.100-2.700 0-1.300.7-1.900.9-2.200.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.900c.1.2.1.400 0 .5l-.4.600-.4.400c-.1.2-.3.300-.1.600.2.300.7 1.200 1.500 1.900 1 .9 1.900 1.200 2.200 1.300.3.100.4.100.6-.1l.8-1c.2-.3.400-.2.600-.1l1.800.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg> Challenge a friend on WhatsApp</button>
+    <button class="btn" id="again">Play again</button>
+    <button class="btn ghost" id="otherDeck">Other decks</button>
+    <button class="btn ghost full sm" id="copy">Copy my score</button>
+  </div>
+</main>
+
+<!-- DECK SHEET -->
+<div class="sheet-wrap hidden" id="sheetWrap">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle" id="sheet">
+    <div class="s-art" id="sArt"><span class="dcount" id="sCount"></span><img id="sImg" alt=""></div>
+    <div class="s-body">
+      <button class="s-x" id="sClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div><h2 id="sTitle"></h2><p class="desc" id="sDesc"></p></div>
+      <div><span class="lbl">How hard?</span>
+        <div class="levels" role="radiogroup" aria-label="Difficulty">
+          <button class="level" role="radio" data-lv="easy"><span class="dot"></span><div><b>Easy</b><span>Pick the right name from 4 choices</span></div></button>
+          <button class="level" role="radio" data-lv="medium"><span class="dot"></span><div><b>Medium</b><span>The wrong answers are look-alike birds</span></div></button>
+          <button class="level" role="radio" data-lv="hard"><span class="dot"></span><div><b>Hard</b><span>No choices. Type the name yourself</span></div></button>
+        </div>
+      </div>
+      <details class="more"><summary>More options</summary>
+        <div class="mopts">
+          <div><span class="lbl">Number of birds</span><div class="seg" data-set="rounds"><button data-v="10">10</button><button data-v="20">20</button><button data-v="0">Endless</button></div></div>
+          <div><span class="lbl">Timer per bird</span><div class="seg" data-set="timer"><button data-v="0">Off</button><button data-v="30">30 sec</button><button data-v="15">15 sec</button></div></div>
+          <label class="tgl"><span>Shadow mode<small>See only the silhouette. Bonus points.</small></span><input type="checkbox" id="shadow"></label>
+          <div><label class="lbl" for="lang">Bird names in</label><select id="lang"></select></div>
+        </div>
+      </details>
+      <button class="btn lg" id="sPlay">Play</button>
+    </div>
+  </div>
+</div>
+<canvas class="confetti hidden" id="confetti"></canvas>
+
+<script src="data/birds-data.js"></script>
+<script>
+(() => {
+"use strict";
+const D = window.BIRD_DATA;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const fmt = n => n.toLocaleString('en-IN');
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^\p{L}\p{N}\p{M}]+/gu, '');
+const RAW = 'https://raw.githubusercontent.com/alchaincyf/huashu-bird-sticker/main/';
+
+const BRAND = 'Birdbrain';
+
+/* ---------- data prep ---------- */
+const SIZES = [['Tiny', 'sunbird'], ['Small', 'sparrow'], ['Medium', 'myna, pigeon'], ['Large', 'crow to goose'], ['Huge', 'eagle, crane, peafowl']];
+const STATUS = ['Least concern', 'Near threatened', 'Vulnerable', 'Endangered', 'Critically endangered', 'Extinct'];
+const HAB_LABEL = { Forest: 'Forest', Woodland: 'Woodland', Shrubland: 'Scrub', Grassland: 'Grassland', Wetland: 'Wetland', Riverine: 'Rivers', Coastal: 'Coast', Marine: 'Open sea', Desert: 'Desert', Rock: 'Cliffs & rocks', 'Human Modified': 'Towns & farms' };
+const DIET_LABEL = { Invertivore: 'Insect-eaters', Omnivore: 'Eats everything', Frugivore: 'Fruit-eaters', Granivore: 'Seed-eaters', Nectarivore: 'Nectar-feeders', 'Aquatic predator': 'Fish & water hunters', Vertivore: 'Hunts animals', 'Herbivore terrestrial': 'Plant-eaters', 'Herbivore aquatic': 'Water-plant eaters', Scavenger: 'Scavengers' };
+const MIG_LABEL = { sedentary: 'Stays in one place', 'partially migratory': 'Some migrate', migratory: 'Long-distance migrants' };
+const sizeOf = w => !w ? -1 : w < 15 ? 0 : w < 50 ? 1 : w < 250 ? 2 : w < 1500 ? 3 : 4;
+const byEn = {};
+for (const b of D.birds) {
+  b.z = sizeOf(b.w);
+  const f = D.fams[b.f];
+  const path = `stickers/${f.o}/${f.l}/${b.i}.webp`;
+  b.url = RAW + path; b.raw = D.cdn + path; // raw GitHub is faster/more reliable; jsDelivr is the fallback
+  byEn[b.n[0]] = b;
+}
+const famByLatin = Object.fromEntries(D.fams.map((f, i) => [f.l, i]));
+const famsOfOrder = o => D.fams.map((f, i) => f.o === o ? i : -1).filter(i => i >= 0);
+const regionIdx = n => D.regions.findIndex(r => r[0] === n);
+const img = (b, cls = '', lazy = true) => `<img class="${cls}" ${lazy ? 'loading="lazy"' : ''} src="${b.url}" alt="" onerror="this.onerror=null;this.src='${b.raw}'">`;
+
+/* ---------- filter engine ---------- */
+const GROUPS = [
+  { key: 'regions', vals: b => b.r }, { key: 'places', vals: b => b.p },
+  { key: 'habitats', vals: b => b.h >= 0 ? [b.h] : [] }, { key: 'diets', vals: b => b.d >= 0 ? [b.d] : [] },
+  { key: 'sizes', vals: b => b.z >= 0 ? [b.z] : [] }, { key: 'iucn', vals: b => b.c >= 0 ? [b.c] : [] },
+  { key: 'migs', vals: b => b.m >= 0 ? [b.m] : [] }, { key: 'fams', vals: b => [b.f] },
+  { key: 'k', vals: b => b.k ? [1] : [] }, { key: 'v', vals: b => b.v ? [1] : [] }
+];
+const emptyF = () => Object.fromEntries(GROUPS.map(g => [g.key, new Set()]));
+function poolOf(F) {
+  const act = GROUPS.filter(g => F[g.key].size);
+  return D.birds.filter(b => act.every(g => g.vals(b).some(v => F[g.key].has(v))));
+}
+function facets(F) {
+  const counts = Object.fromEntries(GROUPS.map(g => [g.key, new Map()])), pool = [];
+  for (const b of D.birds) {
+    let fail = -1, nf = 0;
+    const vs = GROUPS.map(g => g.vals(b));
+    for (let i = 0; i < GROUPS.length; i++) {
+      const set = F[GROUPS[i].key];
+      if (set.size && !vs[i].some(v => set.has(v))) { if (++nf > 1) break; fail = i; }
+    }
+    if (nf === 0) { pool.push(b); for (let i = 0; i < GROUPS.length; i++) { const m = counts[GROUPS[i].key]; for (const v of vs[i]) m.set(v, (m.get(v) || 0) + 1); } }
+    else if (nf === 1) { const m = counts[GROUPS[fail].key]; for (const v of vs[fail]) m.set(v, (m.get(v) || 0) + 1); }
+  }
+  return { pool, counts };
+}
+function mkF(spec) {
+  const F = emptyF();
+  (spec.regions || []).forEach(n => { const i = regionIdx(n); if (i >= 0) F.regions.add(i); });
+  (spec.habitats || []).forEach(n => { const i = D.habitats.indexOf(n); if (i >= 0) F.habitats.add(i); });
+  (spec.places || []).forEach(n => { const i = D.places.indexOf(n); if (i >= 0) F.places.add(i); });
+  (spec.fams || []).forEach(l => { if (l in famByLatin) F.fams.add(famByLatin[l]); });
+  (spec.orders || []).forEach(o => famsOfOrder(o).forEach(i => F.fams.add(i)));
+  for (const k of ['sizes', 'iucn', 'k', 'v']) (spec[k] || []).forEach(v => F[k].add(v));
+  return F;
+}
+
+/* ---------- decks ---------- */
+const C = { saffron: '#ffb02e', tang: '#ff8a4c', coral: '#ff6b6b', pink: '#ff9ec7', sky: '#6cc4ff', teal: '#2ecfb0', leaf: '#92d94f', sun: '#ffd84d', lilac: '#b9a4ff', sand: '#f1d3a1' };
+const RAPTORS = ['Accipitridae', 'Falconidae', 'Pandionidae', 'Sagittariidae', 'Cathartidae'];
+const KINGFISHERS = ['Alcedinidae', 'Halcyonidae', 'Cerylidae'];
+const DECKS = [
+  // --- India ---
+  { id: 'everyday-india', sec: 'india', feature: true, t: 'Everyday Indian birds', d: 'Peacock, parakeet, myna, hoopoe and more, with Hindi names.', c: C.saffron, hero: 'Indian Peafowl', badge: 'हिंदी + English', f: { k: [1] }, level: 'easy' },
+  { id: 'all-india', sec: 'india', t: 'Every bird of India', d: 'Over a thousand species, from deserts to rainforest.', c: C.tang, hero: 'Indian Roller', f: { places: ['India'] } },
+  { id: 'raptors-india', sec: 'india', t: 'Eagles, kites & owls', d: 'The hunters of the Indian sky.', c: C.coral, hero: 'Brahminy Kite', f: { places: ['India'], fams: [...RAPTORS, 'Strigidae', 'Tytonidae'] } },
+  { id: 'water-india', sec: 'india', t: 'Wetland & water birds', d: 'Storks, cranes, herons and kingfishers.', c: C.sky, hero: 'Painted Stork', f: { places: ['India'], habitats: ['Wetland', 'Riverine', 'Coastal'] } },
+  { id: 'himalaya', sec: 'india', t: 'Himalayan birds', d: 'Monals, pheasants and mountain specialists.', c: C.lilac, hero: 'Himalayan Monal', f: { places: ['Himalayas'] } },
+  { id: 'ghats', sec: 'india', t: 'Western Ghats & South', d: 'Malabar trogons, hornbills and Sholas.', c: C.leaf, hero: 'Malabar Trogon', f: { places: ['Western Ghats & South India'] } },
+  { id: 'northeast', sec: 'india', t: 'Northeast India', d: 'Hornbills, laughingthrushes and rare finds.', c: C.teal, hero: 'Great Hornbill', f: { places: ['Northeast India'] } },
+  { id: 'andaman', sec: 'india', t: 'Andaman & Nicobar', d: 'Island birds found nowhere else.', c: C.sky, hero: 'Andaman Treepie', f: { places: ['Andaman & Nicobar'] } },
+  { id: 'tiny-india', sec: 'india', t: 'Small birds of India', d: 'Sunbirds, tailorbirds, sparrows and friends.', c: C.sun, hero: 'Purple Sunbird', f: { places: ['India'], sizes: [0, 1] } },
+  { id: 'winter-india', sec: 'india', t: 'Winter visitors', d: 'Cranes, geese and ducks that fly in for winter.', c: C.sand, hero: 'Demoiselle Crane', f: { v: [1] } },
+  { id: 'endangered-india', sec: 'india', t: 'Endangered Indian birds', d: 'Rare birds that need our help.', c: C.pink, hero: 'Great Indian Bustard', f: { places: ['India'], iucn: [3, 4] } },
+  // --- World ---
+  { id: 'world', sec: 'world', feature: true, t: 'The whole world', d: 'All 11,011 species. Good luck.', c: C.lilac, hero: 'Toco Toucan', f: {}, level: 'medium' },
+  { id: 'parrots', sec: 'world', t: 'Parrots', d: 'Macaws, cockatoos, lorikeets.', c: C.coral, hero: 'Scarlet Macaw', f: { orders: ['Psittaciformes'] } },
+  { id: 'owls', sec: 'world', t: 'Owls', d: 'Silent hunters of the night.', c: C.sand, hero: 'Snowy Owl', f: { fams: ['Strigidae', 'Tytonidae'] } },
+  { id: 'kingfishers', sec: 'world', t: 'Kingfishers', d: 'Tiny jewels with big beaks.', c: C.sky, hero: 'Common Kingfisher', f: { fams: KINGFISHERS } },
+  { id: 'hummingbirds', sec: 'world', t: 'Hummingbirds', d: 'Hovering, glittering and fast.', c: C.teal, hero: 'Ruby-throated Hummingbird', f: { fams: ['Trochilidae'] } },
+  { id: 'raptors', sec: 'world', t: 'Birds of prey', d: 'Eagles, hawks, falcons, vultures.', c: C.tang, hero: 'Bald Eagle', f: { fams: RAPTORS } },
+  { id: 'sea', sec: 'world', t: 'Penguins & seabirds', d: 'Life on the open ocean.', c: C.sky, hero: 'Emperor Penguin', f: { habitats: ['Marine'] } },
+  { id: 'giants', sec: 'world', t: 'Giants', d: 'Over 1.5 kg of pure bird.', c: C.leaf, hero: 'Common Ostrich', f: { sizes: [4] } },
+  { id: 'africa', sec: 'world', t: 'African safari', d: 'Birds of the savanna and rainforest.', c: C.saffron, hero: "Lilac-breasted Roller", f: { regions: ['Africa'] } },
+  { id: 'australia', sec: 'world', t: 'Australia', d: 'Lorikeets, cockatoos and kookaburras.', c: C.pink, hero: 'Rainbow Lorikeet', f: { places: ['Australia'] } },
+  { id: 'usa', sec: 'world', t: 'North American backyard', d: 'Cardinals, jays and chickadees.', c: C.coral, hero: 'Northern Cardinal', f: { places: ['USA'], sizes: [1, 2] } },
+];
+for (const d of DECKS) { d.F = mkF(d.f); d.pool = poolOf(d.F); d.heroB = byEn[d.hero] || d.pool[0]; }
+const deckById = Object.fromEntries(DECKS.map(d => [d.id, d]));
+
+/* ---------- state ---------- */
+const DEFAULTS = { level: 'easy', rounds: '10', timer: '0', shadow: false, lang: 'en' };
+let S = { ...DEFAULTS }, best = { score: 0 }, Fb = emptyF();
+const store = {
+  load() { try { const j = JSON.parse(localStorage.getItem('birdbrain.v1') || '{}'); if (j.S) S = { ...DEFAULTS, ...j.S }; if (j.best) best = j.best; if (j.Fb) for (const k in Fb) Fb[k] = new Set(j.Fb[k] || []); } catch (e) {} },
+  save() { try { localStorage.setItem('birdbrain.v1', JSON.stringify({ S, best, Fb: Object.fromEntries(Object.entries(Fb).map(([k, v]) => [k, [...v]])) })); } catch (e) {} }
+};
+const langIdx = () => Math.max(0, D.langs.findIndex(l => l[0] === S.lang));
+const nm = b => b.n[langIdx()] || b.n[0];
+
+/* ---------- views ---------- */
+const VIEWS = ['home', 'build', 'game', 'results'];
+function view(v) {
+  VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
+  $('#nav').classList.toggle('hidden', v === 'game');
+  $('#reveal').classList.add('hidden');
+  window.scrollTo(0, 0);
+}
+
+/* ---------- home ---------- */
+function renderHome() {
+  const card = d => `<button class="deck${d.feature ? ' feature' : ''}" style="--c:${d.c}" data-deck="${d.id}">
+      <span class="dcount">${fmt(d.pool.length)} birds</span>${d.badge ? `<span class="dbadge">${d.badge}</span>` : ''}
+      ${d.heroB ? img(d.heroB, 'dimg') : ''}<span class="dt">${esc(d.t)}</span><span class="dd">${esc(d.d)}</span></button>`;
+  $('#indiaDecks').innerHTML = DECKS.filter(d => d.sec === 'india').map(card).join('');
+  $('#worldDecks').innerHTML = DECKS.filter(d => d.sec === 'world').map(card).join('');
+  const heroes = [['Indian Peafowl', C.saffron, 'a'], ['Himalayan Monal', C.sky, 'b'], ['Indian Roller', C.leaf, 'c']];
+  $('#collage').innerHTML = heroes.map(([n, c, k]) => byEn[n] ? `<div class="cc ${k}" style="background:${c}">${img(byEn[n], '', false)}</div>` : '').join('');
+  $('#credit').innerHTML = `<span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">Support</a> such games</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
+}
+document.addEventListener('click', e => {
+  const d = e.target.closest('[data-deck]'); if (d) openSheet(deckById[d.dataset.deck]);
+});
+$('#playNow').onclick = () => { const d = deckById['everyday-india']; startGame(d.pool, d, S.level); };
+$('#pickDeck').onclick = () => $('#indiaSec').scrollIntoView({ behavior: 'smooth' });
+$('#navBuild').onclick = $('#ctaBuild').onclick = () => openBuilder();
+$('#logoHome').onclick = e => { e.preventDefault(); stopGame(); view('home'); };
+$('#backHome').onclick = () => view('home');
+
+/* ---------- deck sheet ---------- */
+let sheetDeck = null, sheetPool = null;
+function syncSheet() {
+  $$('#sheet .level').forEach(b => b.setAttribute('aria-checked', String(b.dataset.lv === S.level)));
+  $$('#sheet .seg').forEach(seg => $$('button', seg).forEach(b => b.setAttribute('aria-pressed', String(S[seg.dataset.set] === b.dataset.v))));
+  $('#shadow').checked = !!S.shadow; $('#lang').value = S.lang;
+}
+function openSheet(deck, pool) {
+  sheetDeck = deck; sheetPool = pool || deck.pool;
+  $('#sTitle').textContent = deck.t; $('#sDesc').textContent = deck.d;
+  $('#sArt').style.setProperty('--c', deck.c);
+  $('#sCount').textContent = fmt(sheetPool.length) + ' birds';
+  const hb = deck.heroB || sheetPool[0];
+  $('#sImg').src = hb ? hb.url : ''; $('#sImg').onerror = e => { e.target.onerror = null; e.target.src = hb.raw; };
+  $('#sPlay').disabled = sheetPool.length < 4;
+  $('#sPlay').textContent = sheetPool.length < 4 ? 'Need at least 4 birds' : 'Play';
+  syncSheet();
+  $('#sheetWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  setTimeout(() => $('#sPlay').focus({ preventScroll: true }), 30);
+}
+function closeSheet() { $('#sheetWrap').classList.add('hidden'); document.body.style.overflow = ''; }
+$('#sClose').onclick = closeSheet;
+$('#sheetWrap').addEventListener('mousedown', e => { if (e.target === $('#sheetWrap')) closeSheet(); });
+$('#sheet').addEventListener('click', e => {
+  const lv = e.target.closest('.level'); if (lv) { S.level = lv.dataset.lv; syncSheet(); store.save(); }
+  const sb = e.target.closest('.seg button'); if (sb) { S[sb.parentElement.dataset.set] = sb.dataset.v; syncSheet(); store.save(); }
+});
+$('#shadow').onchange = e => { S.shadow = e.target.checked; store.save(); };
+$('#lang').innerHTML = D.langs.map(([c, l]) => `<option value="${c}">${esc(l)}</option>`).join('');
+$('#lang').onchange = e => { S.lang = e.target.value; store.save(); };
+$('#sPlay').onclick = () => { closeSheet(); startGame(sheetPool, sheetDeck, S.level); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#sheetWrap').classList.contains('hidden')) closeSheet(); });
+
+/* ---------- builder ---------- */
+const KINDS = [
+  ['Parrots', { orders: ['Psittaciformes'] }], ['Owls', { fams: ['Strigidae', 'Tytonidae'] }], ['Birds of prey', { fams: RAPTORS }],
+  ['Kingfishers', { fams: KINGFISHERS }], ['Woodpeckers', { fams: ['Picidae'] }], ['Ducks & geese', { fams: ['Anatidae'] }],
+  ['Pigeons & doves', { fams: ['Columbidae'] }], ['Hummingbirds', { fams: ['Trochilidae'] }], ['Herons & egrets', { fams: ['Ardeidae'] }],
+  ['Hornbills', { fams: ['Bucerotidae'] }], ['Pheasants & partridges', { fams: ['Phasianidae'] }], ['Crows & jays', { fams: ['Corvidae'] }],
+  ['Sunbirds', { fams: ['Nectariniidae'] }], ['Penguins', { fams: ['Spheniscidae'] }]
+].map(([t, s]) => ({ t, idx: [...mkF(s).fams] })).filter(k => k.idx.length);
+const INDIA_PLACES = ['India', 'Himalayas', 'Western Ghats & South India', 'Northeast India', 'Andaman & Nicobar', 'Sri Lanka', 'Nepal'];
+let bfacets = null;
+const chip = (k, v, label, cls = '', hint = '') => `<button class="chip ${cls}" data-k="${k}" data-v="${v}" aria-pressed="false">${esc(label)}${hint ? ` <span class="h">${esc(hint)}</span>` : ''} <span class="n"></span></button>`;
+function buildBuilder() {
+  const indiaIdx = INDIA_PLACES.map(n => D.places.indexOf(n)).filter(i => i >= 0);
+  const otherPlaces = D.places.map((l, i) => [l, i]).filter(([l, i]) => !indiaIdx.includes(i));
+  const acc = (title, key, inner) => `<details class="acc" data-acc="${key}"><summary>${title}<span class="sel hidden"></span></summary><div class="chips">${inner}</div></details>`;
+  $('#bsteps').innerHTML = `
+  <section class="card"><h2><span class="step">1</span> Where do the birds live?</h2>
+    <p class="sub">Choose one or more places.</p>
+    <div class="gl"><span class="flag"><i></i><i></i><i></i></span> India and nearby</div>
+    <div class="chips">${indiaIdx.map(i => chip('places', i, D.places[i], 'big hot')).join('')}</div>
+    <div class="gl">Continents & oceans</div>
+    <div class="chips">${D.regions.map(([l], i) => chip('regions', i, l, 'big')).join('')}</div>
+    <button class="linkbtn" id="morePlaces">Show more countries ▾</button>
+    <div class="fold" id="foldPlaces"><div class="chips">${otherPlaces.map(([l, i]) => chip('places', i, l)).join('')}</div></div>
+  </section>
+  <section class="card"><h2><span class="step">2</span> What kind of bird?</h2>
+    <p class="sub">Pick a popular group, or search for any bird family.</p>
+    <div class="chips">${KINDS.map((k, i) => `<button class="chip big" data-kind="${i}" aria-pressed="false">${esc(k.t)}</button>`).join('')}</div>
+    <div class="fsearch"><input id="famq" type="search" placeholder="Search a family, e.g. warblers, bulbuls, cuckoos" autocomplete="off" aria-label="Search bird families"><div class="sugg hidden" id="sugg"></div></div>
+    <div class="chips" id="famchips" style="margin-top:10px"></div>
+  </section>
+  <section class="card"><h2><span class="step">3</span> Fine-tune <small style="font-family:var(--body);font-size:14px;font-weight:500;color:var(--muted)">(optional)</small></h2>
+    <div style="margin-top:8px">
+    ${acc('Habitat', 'habitats', D.habitats.map((l, i) => chip('habitats', i, HAB_LABEL[l] || l)).join(''))}
+    ${acc('Size', 'sizes', SIZES.map(([l, h], i) => chip('sizes', i, l, '', h)).join(''))}
+    ${acc('What it eats', 'diets', D.diets.map((l, i) => chip('diets', i, DIET_LABEL[l] || l)).join(''))}
+    ${acc('Conservation status', 'iucn', STATUS.map((l, i) => chip('iucn', i, l)).join(''))}
+    ${acc('Migration', 'migs', D.migrations.map((l, i) => chip('migs', i, MIG_LABEL[l] || l)).join(''))}
+    </div>
+  </section>`;
+  const root = $('#bsteps');
+  root.addEventListener('click', e => {
+    const c = e.target.closest('.chip[data-k]');
+    if (c) { const set = Fb[c.dataset.k], v = +c.dataset.v; set.has(v) ? set.delete(v) : set.add(v); updateBuilder(); return; }
+    const kd = e.target.closest('[data-kind]');
+    if (kd) { const idx = KINDS[+kd.dataset.kind].idx, on = idx.every(i => Fb.fams.has(i)); idx.forEach(i => on ? Fb.fams.delete(i) : Fb.fams.add(i)); updateBuilder(); return; }
+    const fd = e.target.closest('[data-fam-del]'); if (fd) { Fb.fams.delete(+fd.dataset.famDel); updateBuilder(); return; }
+    if (e.target.id === 'morePlaces') { const f = $('#foldPlaces'), o = f.classList.toggle('open'); e.target.textContent = o ? 'Show fewer ▴' : 'Show more countries ▾'; }
+  });
+  // family search
+  const q = $('#famq'), sg = $('#sugg'); let act = -1;
+  const showSugg = () => {
+    const t = norm(q.value); if (!t) { sg.classList.add('hidden'); return; }
+    const cur = D.fams.map((f, i) => ({ f, i, n: bfacets.counts.fams.get(i) || 0 })).filter(x => !Fb.fams.has(x.i) && (norm(x.f.e).includes(t) || norm(x.f.l).includes(t))).sort((a, b) => b.n - a.n).slice(0, 7);
+    act = -1;
+    sg.innerHTML = cur.length ? cur.map(x => `<button data-i="${x.i}">${esc(x.f.e)} <em>${x.n} birds</em></button>`).join('') : '<button disabled>No family found</button>';
+    sg.classList.remove('hidden');
+  };
+  const pick = i => { Fb.fams.add(i); q.value = ''; sg.classList.add('hidden'); updateBuilder(); };
+  q.addEventListener('input', showSugg);
+  q.addEventListener('keydown', e => {
+    const bs = $$('button[data-i]', sg);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); act = (act + (e.key === 'ArrowDown' ? 1 : -1) + bs.length) % Math.max(bs.length, 1); bs.forEach((b, k) => b.classList.toggle('act', k === act)); }
+    else if (e.key === 'Enter') { e.preventDefault(); const b = bs[Math.max(act, 0)]; if (b) pick(+b.dataset.i); }
+  });
+  sg.addEventListener('mousedown', e => { const b = e.target.closest('button[data-i]'); if (b) { e.preventDefault(); pick(+b.dataset.i); } });
+  q.addEventListener('blur', () => setTimeout(() => sg.classList.add('hidden'), 120));
+}
+function updateBuilder() {
+  bfacets = facets(Fb);
+  $$('#bsteps .chip[data-k]').forEach(c => {
+    const k = c.dataset.k, v = +c.dataset.v, n = bfacets.counts[k].get(v) || 0, on = Fb[k].has(v);
+    c.classList.toggle('on', on); c.classList.toggle('zero', n === 0); c.setAttribute('aria-pressed', String(on));
+    c.querySelector('.n').textContent = fmt(n);
+  });
+  $$('#bsteps [data-kind]').forEach(c => { const on = KINDS[+c.dataset.kind].idx.every(i => Fb.fams.has(i)); c.classList.toggle('on', on); c.setAttribute('aria-pressed', String(on)); });
+  const kindCovered = new Set(KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).flatMap(k => k.idx));
+  $('#famchips').innerHTML = [...Fb.fams].filter(i => !kindCovered.has(i)).map(i => `<button class="chip on" data-fam-del="${i}" title="Remove">${esc(D.fams[i].e)} <span class="n">✕</span></button>`).join('');
+  $$('#bsteps .acc').forEach(a => { const n = Fb[a.dataset.acc].size, s = $('.sel', a); s.textContent = n; s.classList.toggle('hidden', !n); });
+  const n = bfacets.pool.length;
+  $('#bcount').textContent = fmt(n);
+  $('#bplay').disabled = n < 4;
+  $('#bclear').classList.toggle('hidden', !GROUPS.some(g => Fb[g.key].size));
+  store.save();
+}
+function buildLabel() {
+  const parts = [];
+  for (const i of Fb.places) parts.push(D.places[i]);
+  for (const i of Fb.regions) parts.push(D.regions[i][0]);
+  KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).forEach(k => parts.push(k.t));
+  for (const i of Fb.habitats) parts.push(HAB_LABEL[D.habitats[i]] || D.habitats[i]);
+  for (const i of Fb.sizes) parts.push(SIZES[i][0] + ' birds');
+  return parts;
+}
+function openBuilder() { if (!$('#bsteps').children.length) buildBuilder(); view('build'); updateBuilder(); }
+$('#bclear').onclick = () => { GROUPS.forEach(g => Fb[g.key].clear()); updateBuilder(); };
+$('#bplay').onclick = () => {
+  const parts = buildLabel(), pool = bfacets.pool;
+  const deck = { id: '', t: 'Your custom deck', d: parts.length ? parts.slice(0, 5).join(' · ') + (parts.length > 5 ? ' …' : '') : 'Every bird in the world', c: C.saffron, heroB: pool[Math.random() * pool.length | 0] };
+  openSheet(deck, pool);
+};
+
+/* ---------- game ---------- */
+let G = null, timerId = null;
+function stopGame() { clearInterval(timerId); G = null; }
+function startGame(pool, deck, level) {
+  if (pool.length < 4) return;
+  S.level = level || S.level; store.save();
+  const total = +S.rounds;
+  const mode = S.level === 'hard' ? 'type' : 'choice', diff = S.level === 'easy' ? 'easy' : 'tricky';
+  const q = shuffle(pool).slice(0, total || pool.length);
+  G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [] };
+  const li = langIdx(); G.index = D.birds.map(b => [norm(nm(b)), nm(b)]);
+  view('game');
+  $('#game').style.setProperty('--dc', deck.c);
+  $('#lives').classList.toggle('hidden', !G.endless);
+  $('#segs').classList.toggle('hidden', G.endless);
+  if (!G.endless) $('#segs').innerHTML = q.map(() => '<i></i>').join('');
+  $('#tbarWrap').classList.toggle('hidden', S.timer === '0');
+  nextQ(true);
+}
+function preload() { for (let k = 1; k <= 2; k++) { const b = G.q[G.i + k]; if (b) { const im = new Image(); im.src = b.url; } } }
+function nextQ(first) {
+  if (!first) G.i++;
+  if (G.i >= G.q.length || (G.endless && G.lives <= 0)) return finish();
+  const b = G.q[G.i];
+  G.cur = b; G.hints = 0; G.done = false;
+  $('#reveal').classList.add('hidden'); $('#game').style.paddingBottom = '';
+  const st = $('#stage'); st.classList.remove('revealed'); st.classList.toggle('shadow', !!S.shadow);
+  $('#qtag').textContent = S.shadow ? 'Shadow mode' : 'Name this bird';
+  const pic = $('#pic'), skel = $('#skel'); skel.style.display = ''; pic.style.opacity = 0; pic.dataset.tried = '';
+  pic.onload = () => { skel.style.display = 'none'; pic.style.opacity = 1; };
+  pic.onerror = () => { if (!pic.dataset.tried) { pic.dataset.tried = 1; pic.src = b.raw; } else skel.style.display = 'none'; };
+  pic.src = b.url;
+  $('#hints').innerHTML = '<button class="hintbtn" id="hintBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.500c.7.700 1 1.500 1 2.500h6c0-1 .3-1.800 1-2.500A6 6 0 0 0 12 3z"/></svg> Hint (−25)</button>';
+  $('#hintBtn').onclick = useHint;
+  renderHud(); renderAnswer(); preload(); startTimer();
+}
+function renderHud() {
+  $('#score').textContent = fmt(G.score);
+  const sk = $('#streak'); sk.classList.toggle('hidden', G.streak < 2); $('#streakN').textContent = G.streak;
+  if (G.endless) $('#lives').textContent = '♥'.repeat(Math.max(G.lives, 0)) + '♡'.repeat(3 - Math.max(G.lives, 0));
+  else $$('#segs i').forEach((s, k) => { s.className = G.log[k] === 1 ? 'ok' : G.log[k] === 0 ? 'no' : k === G.i ? 'cur' : ''; });
+}
+function distractors(b) {
+  const same = [], order = [], rest = [];
+  const seen = new Set([norm(nm(b)), norm(b.n[0])]);
+  const ok = x => x !== b && !seen.has(norm(nm(x))) && !seen.has(norm(x.n[0]));
+  const bo = D.fams[b.f].o;
+  const src = shuffle(G.pool);
+  if (G.diff === 'tricky') for (const x of src) { if (x.f === b.f) same.push(x); else if (D.fams[x.f].o === bo) order.push(x); else rest.push(x); } else rest.push(...src);
+  const out = [];
+  for (const x of [...same, ...order, ...rest]) { if (out.length >= 3) break; if (ok(x)) { out.push(x); seen.add(norm(nm(x))); seen.add(norm(x.n[0])); } }
+  return out;
+}
+function renderAnswer() {
+  const b = G.cur, A = $('#answer');
+  if (G.mode === 'choice') {
+    G.opts = shuffle([b, ...distractors(b)]);
+    A.innerHTML = `<div class="opts" id="opts">${G.opts.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span><span>${esc(nm(o))}${o.hi ? `<small>${esc(o.hi[0])}</small>` : ''}</span></button>`).join('')}</div>`;
+    $('#opts').onclick = e => { const o = e.target.closest('.opt'); if (o && !G.done) answer(G.opts[+o.dataset.i]); };
+  } else {
+    A.innerHTML = `<div class="typebox"><form id="tf" autocomplete="off"><input id="ti" type="text" placeholder="Type the bird's name" aria-label="Your answer" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="btn" type="submit">Guess</button></form><div class="sugg hidden" id="ts"></div></div><button class="skip" id="giveup">I don't know</button>`;
+    const ti = $('#ti'), ts = $('#ts'); let cur = [], act = -1;
+    ti.addEventListener('input', () => {
+      const t = norm(ti.value); if (t.length < 2) { ts.classList.add('hidden'); return; }
+      const seen = new Set(); cur = [];
+      for (const [k, n] of G.index) { if (k.includes(t) && !seen.has(n)) { seen.add(n); cur.push([k, n]); if (cur.length > 80) break; } }
+      cur.sort((a, c) => (a[0].startsWith(t) ? 0 : 1) - (c[0].startsWith(t) ? 0 : 1) || a[1].length - c[1].length);
+      cur = cur.slice(0, 6).map(x => x[1]); act = -1;
+      ts.innerHTML = cur.map(n => `<button type="button">${esc(n)}</button>`).join(''); ts.classList.toggle('hidden', !cur.length);
+    });
+    ti.addEventListener('keydown', e => {
+      const bs = $$('button', ts);
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && bs.length) { e.preventDefault(); act = (act + (e.key === 'ArrowDown' ? 1 : -1) + bs.length) % bs.length; bs.forEach((x, k) => x.classList.toggle('act', k === act)); ti.value = cur[act]; }
+    });
+    ts.addEventListener('mousedown', e => { const x = e.target.closest('button'); if (x) { e.preventDefault(); ti.value = x.textContent; ts.classList.add('hidden'); ti.focus(); } });
+    $('#tf').onsubmit = e => { e.preventDefault(); if (G.done || !ti.value.trim()) return; ts.classList.add('hidden'); answer(null, ti.value); };
+    $('#giveup').onclick = () => { if (!G.done) answer(null, ''); };
+    setTimeout(() => ti.focus({ preventScroll: true }), 50);
+  }
+}
+function useHint() {
+  if (G.done || G.hints >= 3) return;
+  const b = G.cur; G.hints++;
+  let txt;
+  if (G.hints === 1) txt = `Family: ${D.fams[b.f].e}`;
+  else if (G.hints === 2) txt = b.r.length ? `Lives in: ${b.r.map(i => D.regions[i][0]).join(', ')}` : `Order: ${D.fams[b.f].o}`;
+  else if (G.mode === 'choice') {
+    shuffle($$('.opt').filter(o => G.opts[+o.dataset.i] !== b)).slice(0, 2).forEach(o => { o.classList.add('out'); o.disabled = true; });
+    txt = 'Two wrong answers removed';
+  } else txt = 'Starts with: ' + nm(b).split(/(\s+|-)/).map(w => /^[\s-]+$/.test(w) ? w : w.charAt(0) + '·'.repeat(Math.max(w.length - 1, 0))).join('');
+  $('#hints').insertAdjacentHTML('beforeend', `<span class="hint">${esc(txt)}</span>`);
+  if (G.hints >= 3) $('#hintBtn').disabled = true;
+}
+function startTimer() {
+  clearInterval(timerId);
+  const T = +S.timer; if (!T) return;
+  const bar = $('#tbar'); bar.style.width = '100%'; G.tEnd = Date.now() + T * 1000;
+  timerId = setInterval(() => {
+    const left = G.tEnd - Date.now(); bar.style.width = Math.max(left / (T * 1000) * 100, 0) + '%';
+    if (left <= 0) { clearInterval(timerId); if (!G.done) answer(null, '', true); }
+  }, 100);
+}
+const CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7"/></svg>';
+const CROSS = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+function answer(choice, typed, timeout) {
+  if (G.done) return; G.done = true; clearInterval(timerId);
+  const b = G.cur; G.answered++;
+  let correct = false;
+  if (G.mode === 'choice') correct = choice === b;
+  else if (typed) { const t = norm(typed); correct = t === norm(nm(b)) || t === norm(b.n[0]) || t === norm(b.s) || (b.hi && (t === norm(b.hi[0]) || t === norm(b.hi[1]))); }
+  let pts = 0;
+  if (correct) {
+    G.streak++; G.right++; G.bestStreak = Math.max(G.bestStreak, G.streak);
+    pts = Math.max((G.mode === 'type' ? 150 : 100) - 25 * G.hints, 25) + Math.min(G.streak - 1, 10) * 10;
+    if (+S.timer) pts += Math.round(Math.max(G.tEnd - Date.now(), 0) / (+S.timer * 1000) * 50);
+    if (S.shadow) pts = Math.round(pts * 1.5);
+    G.score += pts;
+  } else { G.streak = 0; G.missed.push(b); if (G.endless) G.lives--; }
+  G.log[G.i] = correct ? 1 : 0;
+  $('#stage').classList.add('revealed');
+  if (G.mode === 'choice') $$('.opt').forEach(o => { o.disabled = true; const x = G.opts[+o.dataset.i]; if (x === b) o.classList.add('good'); else if (x === choice) o.classList.add('bad'); });
+  else { const ti = $('#ti'); if (ti) { ti.disabled = true; ti.style.boxShadow = `inset 0 0 0 2.5px var(--${correct ? 'good' : 'bad'})`; } $('#giveup')?.remove(); }
+  $('#hints').innerHTML = '';
+  renderHud();
+  const last = G.endless ? (G.lives <= 0 || G.i === G.q.length - 1) : G.i === G.q.length - 1;
+  const facts = [D.fams[b.f].e, b.w ? (b.w >= 1000 ? (b.w / 1000).toFixed(1) + ' kg' : Math.round(b.w) + ' g') : '', b.h >= 0 ? (HAB_LABEL[D.habitats[b.h]] || D.habitats[b.h]) : '', b.c >= 0 ? STATUS[b.c] : '']
+    .filter(Boolean).map(x => `<span class="fact">${esc(x)}</span>`).join('');
+  const en = b.n[0], mine = nm(b);
+  const R = $('#reveal'); R.className = 'reveal' + (correct ? '' : ' bad');
+  R.innerHTML = `<div class="in"><div class="res">${correct ? CHECK + ` Correct +${pts}` : timeout ? CROSS + ' Time\'s up' : (G.mode === 'type' && !typed) ? CROSS + ' Skipped' : CROSS + ' Not quite'}</div>
+    <h2>${esc(mine)}</h2>${b.hi ? `<div class="hi">${esc(b.hi[0])} <span style="font-weight:500;color:var(--muted)">· ${esc(b.hi[1])}</span></div>` : ''}
+    <div class="alt">${mine !== en ? esc(en) + ' · ' : ''}<i>${esc(b.s)}</i></div>
+    <div class="facts">${facts}</div>${b.x ? `<div class="rng">${esc(b.x)}${b.x.length >= 180 ? '…' : ''}</div>` : ''}
+    <div class="row">${b.g ? `<a href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener">More about this bird ↗</a>` : '<span></span>'}
+    <button class="btn" id="nextBtn">${last ? 'See results' : 'Next bird'}</button></div></div>`;
+  $('#nextBtn').onclick = () => nextQ();
+  $('#nextBtn').focus({ preventScroll: true });
+  requestAnimationFrame(() => { $('#game').style.paddingBottom = R.offsetHeight + 20 + 'px'; });
+}
+$('#quit').onclick = () => { clearInterval(timerId); G && G.answered ? finish() : (stopGame(), view('home')); };
+document.addEventListener('keydown', e => {
+  if (!G || $('#game').classList.contains('hidden') || !$('#sheetWrap').classList.contains('hidden')) return;
+  if (G.done) { if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.id !== 'nextBtn') { e.preventDefault(); nextQ(); } return; }
+  if (G.mode === 'choice' && /^[1-4]$/.test(e.key)) { const x = G.opts[+e.key - 1]; if (x) answer(x); }
+  if (e.key.toLowerCase() === 'h' && document.activeElement?.tagName !== 'INPUT') useHint();
+});
+
+/* ---------- results ---------- */
+function shareText() {
+  const link = location.href.split('#')[0].split('?')[0] + (G.deck.id ? '#deck=' + G.deck.id : '');
+  return `I scored ${fmt(G.score)} in ${BRAND} on "${G.deck.t}": ${G.right}/${G.answered} birds right. Can you beat me? ${link}`;
+}
+function finish() {
+  clearInterval(timerId); view('results');
+  const n = G.answered, acc = n ? Math.round(G.right / n * 100) : 0;
+  const grades = [[90, 'Master Ornithologist'], [70, 'Seasoned Birder'], [50, 'Keen Twitcher'], [30, 'Backyard Beginner'], [0, 'Still an egg']];
+  const isBest = G.score > best.score && G.score > 0;
+  if (isBest) best.score = G.score; store.save();
+  $('#rKick').textContent = isBest ? 'New personal best!' : G.deck.t;
+  $('#rScore').textContent = fmt(G.score);
+  $('#rGrade').textContent = G.endless ? (G.right >= 25 ? 'Endless legend' : G.right >= 10 ? 'Going strong' : 'Warming up') : grades.find(g => acc >= g[0])[1];
+  $('#rStats').innerHTML = [[`${G.right}/${n}`, 'Correct'], [acc + '%', 'Accuracy'], [G.bestStreak, 'Best streak']].map(([a, b]) => `<div class="rstat"><b>${a}</b><span>${b}</span></div>`).join('');
+  $('#rMissed').innerHTML = G.missed.length ? `<h3>Birds to get to know</h3><p class="tip">Tap a bird to read more about it.</p><div class="missed">${G.missed.map(b => `<a class="mcard" style="--c:${G.deck.c}" ${b.g ? `href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener"` : ''}><div class="t">${img(b)}</div>${esc(nm(b))}</a>`).join('')}</div>` : '<h3 style="text-align:center;margin:0 0 24px">Flawless. Not one bird got past you.</h3>';
+  if (acc >= 70 && G.score > 0) confetti();
+}
+$('#again').onclick = () => startGame(G.pool, G.deck, S.level);
+$('#otherDeck').onclick = () => { stopGame(); view('home'); };
+$('#shareWa').onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank', 'noopener');
+$('#copy').onclick = async () => {
+  try { await navigator.clipboard.writeText(shareText()); $('#copy').textContent = 'Copied'; } catch (e) { prompt('Copy your score:', shareText()); }
+  setTimeout(() => $('#copy').textContent = 'Copy my score', 1600);
+};
+
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const c = $('#confetti'), x = c.getContext('2d'); c.classList.remove('hidden'); c.width = innerWidth; c.height = innerHeight;
+  const cols = ['#ff6b1a', '#ffb02e', '#10a35e', '#6cc4ff', '#ff6b6b'];
+  const ps = Array.from({ length: 120 }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5, r: 4 + Math.random() * 6, vx: -1.5 + Math.random() * 3, vy: 2 + Math.random() * 4, col: cols[Math.random() * cols.length | 0], a: Math.random() * 6 }));
+  let t = 0; (function f() {
+    x.clearRect(0, 0, c.width, c.height);
+    ps.forEach(p => { p.x += p.vx; p.y += p.vy; p.a += .1; x.fillStyle = p.col; x.save(); x.translate(p.x, p.y); x.rotate(p.a); x.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); x.restore(); });
+    if (++t < 170) requestAnimationFrame(f); else c.classList.add('hidden');
+  })();
+}
+
+/* ---------- theme ---------- */
+$('#themeBtn').onclick = () => {
+  const r = document.documentElement;
+  r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('birdbrain.theme', r.dataset.theme); } catch (e) {}
+};
+try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+
+/* ---------- boot ---------- */
+store.load(); renderHome();
+const m = location.hash.match(/deck=([\w-]+)/);
+if (m && deckById[m[1]]) openSheet(deckById[m[1]]);
+})();
+</script>
+</body>
+</html>
