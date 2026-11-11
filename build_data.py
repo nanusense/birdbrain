@@ -71,9 +71,14 @@ EVERYDAY = {
     "Oriental Magpie-Robin", "House Sparrow", "Rock Dove", "Spotted Dove", "Black Drongo", "Great Hornbill",
     "Greater Coucal", "Common Tailorbird", "Purple Sunbird", "Jungle Babbler", "Great Indian Bustard",
     "Indian Pitta", "Grey Francolin", "Black Francolin", "Common Quail", "Red Junglefowl", "Common Hawk-Cuckoo",
-    "Eurasian Golden Oriole", "Shikra", "Peregrine Falcon", "Indian Vulture", "Barn Swallow", "Baya Weaver",
+    "Indian Golden Oriole", "Shikra", "Peregrine Falcon", "Indian Vulture", "Barn Swallow", "Baya Weaver",
     "Scaly-breasted Munia", "Red Avadavat", "Rosy Starling", "White Wagtail", "Asian Green Bee-eater",
     "Coppersmith Barbet", "Himalayan Monal",
+}
+# Name corrections. AviList's English name (left) is shown to players as the name on the right.
+# The original name is still accepted when someone types an answer. Add a line here to fix any other name.
+NAME_OVERRIDES = {
+    "Rock Dove": "Rock Pigeon",   # the name used in India (and by eBird)
 }
 PLACES = [(n, re.compile(rx)) for n, rx in PLACES]
 IND_STRICT_RX = re.compile(IND_STRICT)
@@ -129,6 +134,9 @@ for s in species:
         "x": (rng.get("text") or "")[:180],
     }
     b["n"][0] = b["n"][0] or s["names"]["en"]
+    if en_name in NAME_OVERRIDES:
+        b["alt"] = [en_name]
+        b["n"][0] = NAME_OVERRIDES[en_name]
     if en_name in EVERYDAY: enseen.add(en_name)
     birds.append(b)
 

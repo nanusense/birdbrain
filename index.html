@@ -844,7 +844,7 @@ function answer(choice, typed, timeout) {
   const b = G.cur; G.answered++;
   let correct = false;
   if (G.mode === 'choice') correct = choice === b;
-  else if (typed) { const t = norm(typed); correct = t === norm(nm(b)) || t === norm(b.n[0]) || t === norm(b.s); }
+  else if (typed) { const t = norm(typed); correct = t === norm(nm(b)) || t === norm(b.n[0]) || t === norm(b.s) || (b.alt && b.alt.some(a => t === norm(a))); }
   let pts = 0;
   if (correct) {
     G.streak++; G.right++; G.bestStreak = Math.max(G.bestStreak, G.streak);
