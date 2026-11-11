@@ -530,6 +530,17 @@ const STATS_URL = location.hostname === 'localhost' ? 'http://localhost:8787' : 
 const STATS_ON = location.hostname === 'birdbrain.indianbirds.org' || (() => { try { return localStorage.getItem('birdbrain.track') === '1'; } catch (e) { return false; } })();
 const rid = () => { const a = new Uint8Array(12); crypto.getRandomValues(a); return Array.from(a, b => (b % 36).toString(36)).join(''); };
 let PID; try { PID = localStorage.getItem('birdbrain.pid'); if (!PID || !/^[a-z0-9]{8,24}$/.test(PID)) { PID = rid(); localStorage.setItem('birdbrain.pid', PID); } } catch (e) { PID = rid(); }
+// how this visit started: a tagged share link (?r=wa), another website, or direct. Remembered for the visit.
+const SRC = (() => {
+  try {
+    const v0 = sessionStorage.getItem('birdbrain.src'); if (v0) return v0;
+    const tag = new URLSearchParams(location.search).get('r');
+    let r = { wa: 'whatsapp-share', card: 'score-card', cp: 'copied-link', site: 'site-share', fb: 'facebook-share', x: 'x-share', li: 'linkedin-share', tg: 'telegram-share', em: 'email-share', nat: 'phone-share' }[tag] || '';
+    if (!r && document.referrer) { const h = new URL(document.referrer).hostname.replace(/^www\./, ''); if (h && h !== location.hostname) r = h; }
+    r = (r || 'direct').toLowerCase().replace(/[^a-z0-9.-]/g, '').slice(0, 40) || 'direct';
+    sessionStorage.setItem('birdbrain.src', r); return r;
+  } catch (e) { return 'direct'; }
+})();
 function track(t, data) {
   if (!STATS_ON) return;
   try { fetch(STATS_URL + '/e', { method: 'POST', body: JSON.stringify({ t, ...data }), headers: { 'Content-Type': 'text/plain' }, keepalive: true }).catch(() => {}); } catch (e) {}
@@ -930,7 +941,7 @@ function startGame(pool, deck, level) {
   G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [] };
   G.index = buildIndex(G.pool);
   G.t0 = Date.now(); G.qlog = []; G.hintsTotal = 0; G.sent = false;
-  G.meta = { gid: rid(), pid: PID, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : deck.d, level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
+  G.meta = { gid: rid(), pid: PID, src: SRC, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : deck.d, level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
   track('start', G.meta);
   view('game');
   $('#game').style.setProperty('--dc', deck.c);
@@ -1095,8 +1106,8 @@ document.addEventListener('keydown', e => {
 
 /* ---------- results ---------- */
 const SITE = 'https://birdbrain.indianbirds.org/';
-function shareText() {
-  const link = SITE + (G.deck.id ? '#deck=' + G.deck.id : '');
+function shareText(r = 'wa') {
+  const link = SITE + '?r=' + r + (G.deck.id ? '#deck=' + G.deck.id : ''); // ?r= tells the stats where a visitor came from
   const lvl = { easy: 'Easy', medium: 'Medium', hard: 'Hard' }[S.level] || 'Easy';
   return `I scored ${fmt(G.score)} on "${G.deck.t}" (${lvl}) in ${BRAND}: ${G.right}/${G.answered} birds right! 🐦\n\n`
     + `${BRAND} is a free bird guessing game: you see a picture and name the bird. Choose a deck, from everyday garden birds to rare finds, and play Easy to Hard.\n\n`
@@ -1197,7 +1208,7 @@ $('#shareCard').onclick = async () => {
     const blob = await cardBlob(); track('share', { kind: 'card', deck: G.deck.id || 'custom' });
     const file = new File([blob], 'birdbrain-score.png', { type: 'image/png' });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: 'My Birdbrain score', text: shareText() }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+      try { await navigator.share({ files: [file], title: 'My Birdbrain score', text: shareText('card') }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
     }
     if (cardUrl) URL.revokeObjectURL(cardUrl); cardUrl = URL.createObjectURL(blob); $('#cardImg').src = cardUrl;
     $('#cdCopy').classList.toggle('hidden', !(navigator.clipboard && window.ClipboardItem));
@@ -1209,10 +1220,10 @@ $('#shareCard').onclick = async () => {
 };
 $('#again').onclick = () => startGame(G.pool, G.deck, S.level);
 $('#otherDeck').onclick = () => { stopGame(); view('home'); };
-$('#shareWa').onclick = () => { track('share', { kind: 'whatsapp', deck: G.deck.id || 'custom' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank', 'noopener'); };
+$('#shareWa').onclick = () => { track('share', { kind: 'whatsapp', deck: G.deck.id || 'custom' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText('wa')), '_blank', 'noopener'); };
 $('#copy').onclick = async () => {
   track('share', { kind: 'copy', deck: G.deck.id || 'custom' });
-  try { await navigator.clipboard.writeText(shareText()); $('#copy').textContent = 'Copied'; } catch (e) { prompt('Copy your score:', shareText()); }
+  try { await navigator.clipboard.writeText(shareText('cp')); $('#copy').textContent = 'Copied'; } catch (e) { prompt('Copy your score:', shareText('cp')); }
   setTimeout(() => $('#copy').textContent = 'Copy my score', 1600);
 };
 
@@ -1241,20 +1252,20 @@ const SH_ICON = {
   link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></svg>',
 };
 function openShare() {
-  const d = shareData(), enc = encodeURIComponent, both = `${d.title}\n${d.text}\n${d.url}`;
+  const d = shareData(), enc = encodeURIComponent, withR = r => d.url + (d.url.includes('?') ? '&' : '?') + 'r=' + r, both = `${d.title}\n${d.text}\n${withR('wa')}`;
   $('#shImg').src = d.image; $('#shT').textContent = d.title; $('#shD').textContent = d.text; $('#shU').textContent = d.url.replace(/^https?:\/\//, '');
   const opts = [
     ['WhatsApp', '#25d366', SH_ICON.whatsapp, 'https://wa.me/?text=' + enc(both)],
-    ['Facebook', '#1877f2', 'f', 'https://www.facebook.com/sharer/sharer.php?u=' + enc(d.url)],
-    ['X', '#14161a', SH_ICON.x, `https://twitter.com/intent/tweet?text=${enc(d.title + ' - ' + d.text)}&url=${enc(d.url)}`],
-    ['LinkedIn', '#0a66c2', 'in', 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(d.url)],
-    ['Telegram', '#2aabee', SH_ICON.telegram, `https://t.me/share/url?url=${enc(d.url)}&text=${enc(d.title + ' - ' + d.text)}`],
-    ['Email', '#6a707b', SH_ICON.email, `mailto:?subject=${enc(d.title)}&body=${enc(d.text + '\n\n' + d.url)}`],
+    ['Facebook', '#1877f2', 'f', 'https://www.facebook.com/sharer/sharer.php?u=' + enc(withR('fb'))],
+    ['X', '#14161a', SH_ICON.x, `https://twitter.com/intent/tweet?text=${enc(d.title + ' - ' + d.text)}&url=${enc(withR('x'))}`],
+    ['LinkedIn', '#0a66c2', 'in', 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(withR('li'))],
+    ['Telegram', '#2aabee', SH_ICON.telegram, `https://t.me/share/url?url=${enc(withR('tg'))}&text=${enc(d.title + ' - ' + d.text)}`],
+    ['Email', '#6a707b', SH_ICON.email, `mailto:?subject=${enc(d.title)}&body=${enc(d.text + '\n\n' + withR('em'))}`],
   ];
   $('#shGrid').innerHTML = opts.map(([n, c, ic, href]) => `<a class="sopt" href="${href}" target="_blank" rel="noopener"><i style="background:${c}">${ic}</i>${n}</a>`).join('')
     + `<button class="sopt" id="shCopy"><i style="background:var(--brand)">${SH_ICON.link}</i><span>Copy link</span></button>`;
   $('#shCopy').onclick = async () => {
-    try { await navigator.clipboard.writeText(d.url); } catch (e) { prompt('Copy this link:', d.url); return; }
+    try { await navigator.clipboard.writeText(withR('cp')); } catch (e) { prompt('Copy this link:', withR('cp')); return; }
     $('#shCopy span').textContent = 'Copied!'; setTimeout(() => { const s = $('#shCopy span'); if (s) s.textContent = 'Copy link'; }, 1600);
   };
   $('#shNative').classList.toggle('hidden', !navigator.share);
@@ -1265,12 +1276,12 @@ function closeShare() { $('#shareWrap').classList.add('hidden'); document.body.s
 $('#shClose').onclick = closeShare;
 $('#shareWrap').addEventListener('mousedown', e => { if (e.target === $('#shareWrap')) closeShare(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#shareWrap').classList.contains('hidden')) closeShare(); });
-$('#shNative').onclick = async () => { const d = shareData(); try { await navigator.share({ title: d.title, text: d.text, url: d.url }); closeShare(); } catch (e) {} };
+$('#shNative').onclick = async () => { const d = shareData(); try { await navigator.share({ title: d.title, text: d.text, url: d.url + '?r=nat' }); closeShare(); } catch (e) {} };
 // phones with a native share sheet open it straight away; everyone else gets the panel above
 $('#credit').addEventListener('click', async e => {
   if (!e.target.closest('#shareSite')) return;
   const d = shareData();
-  if (navigator.share && matchMedia('(pointer:coarse)').matches) { try { await navigator.share({ title: d.title, text: d.text, url: d.url }); return; } catch (err) { if (err && err.name === 'AbortError') return; } }
+  if (navigator.share && matchMedia('(pointer:coarse)').matches) { try { await navigator.share({ title: d.title, text: d.text, url: d.url + '?r=nat' }); return; } catch (err) { if (err && err.name === 'AbortError') return; } }
   openShare();
 });
 

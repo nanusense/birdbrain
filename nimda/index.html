@@ -23,7 +23,7 @@ h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.1}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none;padding:0}
 .hidden{display:none!important}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px 60px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px 60px}
 :focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:8px}
 
 /* login */
@@ -33,7 +33,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .lcard h1{font-size:28px;margin:12px 0 4px}
 .lcard p{color:var(--muted);margin-bottom:20px}
 .lcard input{width:100%;border:0;border-radius:14px;background:var(--soft);padding:15px 16px;font-size:18px;text-align:center;letter-spacing:.2em;margin-bottom:12px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:13px 22px;font-weight:700;background:var(--brand);color:#fff;transition:.12s;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:13px 22px;font-weight:700;background:var(--brand);color:#fff;transition:.12s;width:100%}
 .btn:hover{background:var(--brand-d)}
 .btn[disabled]{opacity:.5;cursor:wait}
 .btn.sm{width:auto;padding:9px 16px;font-size:14px;border-radius:12px}
@@ -41,84 +41,86 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .btn.ghost:hover{background:var(--soft)}
 .err{color:var(--bad);font-weight:600;min-height:22px;margin-top:10px;font-size:14px}
 
-/* dashboard */
+/* layout */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;font-family:"Quicksand",var(--display);font-weight:700;font-size:26px;letter-spacing:-.01em}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Quicksand",var(--display);font-weight:700;font-size:26px}
 .brand img{width:40px;height:40px}
 .brand small{font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;margin-left:4px}
 .tools{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
-.insights{background:var(--ink);color:#fff;border-radius:26px;padding:22px 24px;margin-bottom:16px}
+.sec-t{font-family:var(--display);font-weight:800;font-size:24px;margin:30px 0 4px}
+.sec-s{color:var(--muted);margin-bottom:14px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+.card{background:var(--surface);border-radius:24px;padding:20px 22px;box-shadow:var(--shadow);min-width:0}
+.card h3{font-size:19px;margin-bottom:2px}
+.card .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.empty{color:var(--muted);padding:12px 0}
+
+/* all-time hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:12px}
+.kpi{background:var(--surface);border-radius:24px;padding:20px 22px;box-shadow:var(--shadow)}
+.kpi .l{font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.03em;line-height:1.1;margin:4px 0 2px}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.big{background:var(--brand);color:#fff}
+.kpi.big .l,.kpi.big .s{color:rgba(255,255,255,.88)}
+.kpi.big .v{font-size:62px}
+.periods{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.periods .kpi .v{font-size:30px}
+.up{color:var(--good);font-weight:700}.dn{color:var(--bad);font-weight:700}
+.insights{background:var(--ink);color:#fff;border-radius:26px;padding:22px 24px;margin:16px 0 0}
 .insights h2{font-size:22px;margin-bottom:10px}
-.insights ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:8px 28px}
+.insights ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:8px 28px}
 .insights li{padding-left:20px;position:relative;opacity:.95}
 .insights li::before{content:"";position:absolute;left:0;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--brand)}
 .insights b{color:#ffb98a}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
-.kpi{background:var(--surface);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow)}
-.kpi .l{font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.kpi .v{font-family:var(--display);font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1.1;margin:4px 0 2px}
-.kpi .s{font-size:13px;color:var(--muted)}
-.kpi.hero{background:var(--brand);color:#fff}
-.kpi.hero .l,.kpi.hero .s{color:rgba(255,255,255,.85)}
-.kpi.hero .v{font-size:54px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:16px}
-.grid.wide{grid-template-columns:repeat(auto-fit,minmax(480px,1fr))}
-.card{background:var(--surface);border-radius:24px;padding:20px 22px;box-shadow:var(--shadow);min-width:0}
-.card h3{font-size:20px;margin-bottom:2px}
-.card .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-.empty{color:var(--muted);padding:16px 0}
-/* bar lists */
+
+/* charts and lists */
 .bl{display:grid;gap:9px}
-.br{display:grid;grid-template-columns:minmax(90px,42%) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.br{display:grid;grid-template-columns:minmax(90px,40%) 1fr auto;gap:10px;align-items:center;font-size:14px}
 .br .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .br .t{height:12px;background:var(--soft);border-radius:99px;overflow:hidden}
 .br .t i{display:block;height:100%;background:var(--brand);border-radius:99px}
 .br.b .t i{background:var(--blue)}
 .br .c{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;white-space:nowrap}
 .br .c b{color:var(--ink)}
-/* column charts */
-.cols{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:6px}
-.col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+.cols{display:flex;align-items:flex-end;gap:3px;height:140px;padding-top:6px}
+.col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
 .col i{display:block;background:#ffcfb0;border-radius:5px 5px 0 0;min-height:2px;position:relative}
 .col i u{position:absolute;left:0;right:0;bottom:0;background:var(--brand);border-radius:5px 5px 0 0;text-decoration:none}
 .col.one i{background:var(--brand)}
+.col.blue i{background:var(--blue)}
 .axis{display:flex;gap:3px;margin-top:6px;font-size:11px;color:var(--muted)}
-.axis span{flex:1;text-align:center;min-width:0;overflow:visible;white-space:nowrap}
-.legend{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-bottom:6px}
-.legend s{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;text-decoration:none}
-/* stat rows */
-.rows{display:grid;gap:0}
-.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
-.row:first-child{border-top:0}
-.row span:first-child{color:var(--muted)}
-.row b{font-variant-numeric:tabular-nums}
-.split{display:flex;height:16px;border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.axis span{flex:1;text-align:center;min-width:0;white-space:nowrap}
+.split{display:flex;height:18px;border-radius:99px;overflow:hidden;margin:6px 0 10px;background:var(--soft)}
 .split i{display:block;height:100%}
-.sl{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.sl{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .sl b{color:var(--ink)}
-/* birds */
+.sl s{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;text-decoration:none}
+.big-n{font-family:var(--display);font-weight:800;font-size:44px;letter-spacing:-.03em;line-height:1.05}
+.rows .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.rows .row:first-child{border-top:0}
+.rows .row span:first-child{color:var(--muted)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:6px 10px 8px}
+td{padding:9px 10px;border-top:1px solid var(--line);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+td .mini{display:inline-block;vertical-align:middle;height:8px;border-radius:99px;background:var(--brand);margin-right:8px}
 .birds{display:grid;gap:10px}
 .bird{display:flex;align-items:center;gap:12px}
-.bird .th{flex:none;width:52px;height:52px;border-radius:14px;background:var(--soft);display:grid;place-items:center;overflow:hidden}
-.bird .th img{width:92%;height:92%;object-fit:contain}
+.bird .th{flex:none;width:52px;height:52px;border-radius:14px;background:var(--soft);position:relative;overflow:hidden}
+.bird .th img{position:absolute;left:4%;top:4%;width:92%;height:92%;object-fit:contain}
 .bird .bn{flex:1;min-width:0;font-weight:700;line-height:1.2}
 .bird .bn small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
 .bird .pc{font-family:var(--display);font-weight:800;font-size:22px}
 .bird .pc.lo{color:var(--bad)}.bird .pc.hi{color:var(--good)}
-/* table */
-.tw{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
-th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:6px 10px 8px}
-td{padding:9px 10px;border-top:1px solid var(--line);white-space:nowrap}
-.pill{display:inline-block;border-radius:99px;padding:2px 9px;font-size:12px;font-weight:700;background:var(--soft)}
-.pill.ok{background:#dff4e8;color:#0b7a46}.pill.no{background:#fde5e1;color:#b13324}
-.note{color:var(--muted);font-size:12.5px;margin-top:22px;text-align:center}
-@media (max-width:560px){.grid,.grid.wide{grid-template-columns:1fr}.kpi.hero .v{font-size:46px}.insights ul{grid-template-columns:1fr}}
+.note{color:var(--muted);font-size:12.5px;margin-top:26px;text-align:center}
+@media (max-width:860px){.hero{grid-template-columns:1fr 1fr}.kpi.big{grid-column:1/-1}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}.periods{grid-template-columns:1fr}.insights ul{grid-template-columns:1fr}.kpi.big .v{font-size:52px}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login" id="login">
   <form class="lcard" id="form" autocomplete="off">
     <img src="../assets/logo-160.png" alt="">
@@ -130,7 +132,6 @@ td{padding:9px 10px;border-top:1px solid var(--line);white-space:nowrap}
   </form>
 </div>
 
-<!-- DASHBOARD -->
 <div class="wrap hidden" id="dash">
   <header class="top">
     <div class="brand"><img src="../assets/logo-160.png" alt=""> Birdbrain <small>Admin</small></div>
@@ -148,8 +149,11 @@ const RAW = 'https://raw.githubusercontent.com/alchaincyf/huashu-bird-sticker/ma
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const nf = n => Math.round(n || 0).toLocaleString('en-IN');
-const pc = x => (x == null ? '–' : Math.round(x * 100) + '%');
+const pc = x => (x == null || isNaN(x) ? '–' : Math.round(x * 100) + '%');
 const LV = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+const SRCNAME = { direct: 'Direct (typed or bookmarked link)', 'whatsapp-share': 'WhatsApp challenge link', 'score-card': 'Score card share', 'copied-link': 'Copied link', 'site-share': 'Footer share button', 'facebook-share': 'Facebook share', 'x-share': 'X share', 'linkedin-share': 'LinkedIn share', 'telegram-share': 'Telegram share', 'email-share': 'Email share', 'phone-share': "Phone's share sheet" };
+const SHARELINK = new Set(['whatsapp-share', 'score-card', 'copied-link', 'site-share', 'facebook-share', 'x-share', 'linkedin-share', 'telegram-share', 'email-share', 'phone-share']);
+const srcName = s => SRCNAME[s] || s;
 const CN = (() => { try { const r = new Intl.DisplayNames(['en'], { type: 'region' }); return c => (c && c.length === 2 && c !== '??' ? r.of(c) : 'Unknown'); } catch (e) { return c => c || 'Unknown'; } })();
 let pw = '';
 
@@ -184,123 +188,144 @@ function loadBirds() {
   if (birdMap) return Promise.resolve(birdMap);
   return new Promise(res => {
     const s = document.createElement('script'); s.src = '../data/birds-data.js';
-    s.onload = () => { const D = window.BIRD_DATA, m = {}; for (const b of D.birds) { const f = D.fams[b.f]; m[b.i] = { name: b.n[0], sci: b.s, url: RAW + `stickers/${f.o}/${f.l}/${b.i}.webp` }; } birdMap = m; res(m); };
+    s.onload = () => { const D = window.BIRD_DATA, m = {}; for (const b of D.birds) { const f = D.fams[b.f]; m[b.i] = { name: b.n[0], url: RAW + `stickers/${f.o}/${f.l}/${b.i}.webp` }; } birdMap = m; res(m); };
     s.onerror = () => res({});
     document.head.appendChild(s);
   });
 }
 
-/* ---------- small chart helpers ---------- */
-const barList = (rows, { max, cls = '', fmt = r => `<b>${nf(r.n)}</b>` } = {}) => {
+/* ---------- helpers ---------- */
+const barList = (rows, { cls = '', fmt = r => `<b>${nf(r.n)}</b>` } = {}) => {
   if (!rows.length) return '<div class="empty">No data yet.</div>';
-  const m = max || Math.max(...rows.map(r => r.n), 1);
+  const m = Math.max(...rows.map(r => r.n), 1);
   return `<div class="bl">${rows.map(r => `<div class="br ${cls}"><span class="n" title="${esc(r.label)}">${esc(r.label)}</span><span class="t"><i style="width:${Math.max(r.n / m * 100, 2)}%"></i></span><span class="c">${fmt(r)}</span></div>`).join('')}</div>`;
 };
 const istDate = off => new Date(Date.now() + 19800e3 - off * 864e5).toISOString().slice(0, 10);
 const hourLabel = h => (h % 12 || 12) + (h < 12 ? 'a' : 'p');
+const dayLabel = k => k.slice(8) + '/' + k.slice(5, 7);
 
 /* ---------- render ---------- */
 async function render(d) {
-  const t = d.totals || {}, started = t.started || 0, played = t.played || 0, fin = t.finished || 0;
+  const a = d.allTime || {}, e = d.earlier || {}, t = d.totals || {}, p = d.periods || {};
   $('#updated').textContent = 'Updated ' + new Date(d.generated).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }) + ' IST';
-  if (!started) { $('#body').innerHTML = '<div class="card" style="text-align:center;padding:50px 20px"><h3>No games yet</h3><p class="sub">Play a game on the live site and refresh this page.</p></div>'; return; }
+  const earlierG = e.earlier_games || 0, earlierP = e.earlier_players || 0;
+  const totalGames = (a.started || 0) + earlierG, tracked = t.games || 0, players = (t.players || 0) + earlierP;
+  if (!tracked && !earlierG) { $('#body').innerHTML = '<div class="card" style="text-align:center;padding:50px 20px"><h3>No games yet</h3><p class="sub">Play a game on the live site and refresh this page.</p></div>'; return; }
 
-  const shareTotal = (d.shares || []).reduce((a, r) => a + r.n, 0), wa = ((d.shares || []).find(r => r.kind === 'whatsapp') || {}).n || 0, cardN = ((d.shares || []).find(r => r.kind === 'card') || {}).n || 0;
-  const players = t.players || 0, retPct = players ? d.returning / players : 0;
-  const hints = t.answers ? (t.hints || 0) / Math.max(played, 1) : 0;
-  const mmss = s => (s == null ? '–' : Math.floor(s / 60) + 'm ' + String(Math.round(s % 60)).padStart(2, '0') + 's');
+  const fin = t.finished || 0, shares = (d.shares || []).reduce((x, r) => x + r.n, 0), sk = k => ((d.shares || []).find(r => r.kind === k) || {}).n || 0;
+  const d7 = p.d7 || 0, prev7 = p.prev7 || 0, trend = prev7 ? (d7 - prev7) / prev7 : null;
+  const comeBack = t.players ? d.multiDay / t.players : 0;
+  const decks = d.decks || [], decks7 = Object.fromEntries((d.decks7 || []).map(r => [r.deck, r.n])), n7 = (d.decks7 || []).reduce((x, r) => x + r.n, 0);
 
-  // ---- auto insights ----
+  // ---- what stands out ----
   const ins = [];
-  const topDeck = (d.decks || [])[0]; if (topDeck) ins.push(`The most played deck is <b>${esc(topDeck.title)}</b>, with <b>${pc(topDeck.n / started)}</b> of all games.`);
-  const lv = Object.fromEntries((d.levels || []).map(l => [l.level, l]));
-  const lvTop = [...(d.levels || [])].sort((a, b) => b.n - a.n)[0]; if (lvTop) ins.push(`<b>${pc(lvTop.n / started)}</b> of games are played on <b>${LV[lvTop.level]}</b>. Players get <b>${pc(lvTop.acc)}</b> right there.`);
-  ins.push(`<b>${pc(started ? fin / started : 0)}</b> of games are played to the end. Players answer <b>${pc(t.avg_acc)}</b> of birds correctly on average.`);
-  if (players > 1) ins.push(`<b>${pc(retPct)}</b> of players came back for another game (${(started / players).toFixed(1)} games per player).`);
-  const hr = [...(d.hourly || [])].sort((a, b) => b.n - a.n)[0]; if (hr) ins.push(`The busiest hour is <b>${(hr.h % 12 || 12) + (hr.h < 12 ? ' AM' : ' PM')} IST</b>.`);
-  const ct = (d.countries || [])[0]; if (ct) ins.push(`Most players are from <b>${esc(CN(ct.country))}</b> (${pc(ct.n / started)} of games).`);
-  if (d.hardest && d.hardest[0]) { const h = d.hardest[0]; ins.push(`The hardest bird so far is <b>_HARD_</b>: only <b>${pc(h.ok / h.seen)}</b> of players get it right.`); }
-  if (shareTotal) ins.push(`Players shared a result <b>${nf(shareTotal)}</b> times (${nf(wa)} on WhatsApp), about <b>${pc(shareTotal / Math.max(fin, 1))}</b> of finished games.`);
-  const modes = []; if (t.shadow) modes.push(`${pc(t.shadow / started)} use shadow mode`); if (t.timed) modes.push(`${pc(t.timed / started)} use the timer`); if (t.custom) modes.push(`${pc(t.custom / started)} build a custom deck`);
-  if (modes.length) ins.push('Of all games, ' + modes.join(', ') + '.');
+  ins.push(`<b>${nf(totalGames)}</b> games played in all, by about <b>${nf(players)}</b> players${earlierG ? ` (includes about ${nf(earlierG)} games before tracking began)` : ''}.`);
+  ins.push(`<b>${nf(d7)}</b> games in the last 7 days${trend == null ? '' : `, <b>${trend >= 0 ? 'up' : 'down'} ${Math.abs(Math.round(trend * 100))}%</b> on the week before`}.`);
+  if (decks[0]) { const top = decks[0], all = top.n / tracked, wk = n7 ? (decks7[top.deck] || 0) / n7 : null; ins.push(`<b>${esc(top.title)}</b> is ${pc(all)} of all games${wk == null ? '' : ` and <b>${pc(wk)}</b> of the last 7 days`}.`); }
+  if (t.players > 1) ins.push(`<b>${pc(comeBack)}</b> of players came back on a different day.`);
+  if (tracked) ins.push(`<b>${pc(fin / tracked)}</b> of games are played to the end${t.no_answer / tracked >= 0.01 ? `, and <b>${pc(t.no_answer / tracked)}</b> are left before the first answer` : ''}.`);
+  if (d.hardest && d.hardest[0]) ins.push(`The hardest bird is <b>_HARD_</b>: only <b>${pc(d.hardest[0].ok / d.hardest[0].seen)}</b> of players get it right.`);
+  const viaShare = (d.sources || []).filter(s => SHARELINK.has(s.s)).reduce((x, s) => x + s.n, 0);
+  if (tracked) ins.push(`<b>${pc(viaShare / tracked)}</b> of games started from a link someone shared. ${shares && fin ? `Players share about <b>1 result per ${Math.max(1, Math.round(fin / shares))}</b> finished games.` : ''}`);
+  const ct = (d.countries || [])[0]; if (ct) ins.push(`Most players are from <b>${esc(CN(ct.country))}</b> (${pc(ct.n / tracked)}).`);
 
-  // ---- daily + hourly charts ----
-  const dayMap = Object.fromEntries((d.daily || []).map(r => [r.d, r]));
+  // ---- charts ----
+  const dayMap = Object.fromEntries((d.daily || []).map(r => [r.d, r])), npMap = Object.fromEntries((d.newPlayers || []).map(r => [r.d, r.n]));
   const days = Array.from({ length: 30 }, (_, i) => istDate(29 - i));
-  const dmax = Math.max(...days.map(k => (dayMap[k] || {}).n || 0), 1);
-  const dcols = days.map(k => { const r = dayMap[k] || { n: 0, f: 0 }; return `<div class="col" title="${k}: ${r.n} started, ${r.f || 0} finished"><i style="height:${r.n / dmax * 100}%"><u style="height:${r.n ? (r.f || 0) / r.n * 100 : 0}%"></u></i></div>`; }).join('');
-  const daxis = days.map((k, i) => `<span>${i % 5 === 0 ? k.slice(8) + '/' + k.slice(5, 7) : ''}</span>`).join('');
+  const dmax = Math.max(...days.map(k => (dayMap[k] || {}).n || 0), 1), nmax = Math.max(...days.map(k => npMap[k] || 0), 1);
+  const gcols = days.map(k => { const r = dayMap[k] || { n: 0, f: 0 }; return `<div class="col" title="${k}: ${r.n} games, ${r.f || 0} finished"><i style="height:${r.n / dmax * 100}%"><u style="height:${r.n ? (r.f || 0) / r.n * 100 : 0}%"></u></i></div>`; }).join('');
+  const ncols = days.map(k => `<div class="col blue" title="${k}: ${npMap[k] || 0} new players"><i style="height:${(npMap[k] || 0) / nmax * 100}%"></i></div>`).join('');
+  const axis = days.map((k, i) => `<span>${i % 5 === 0 ? dayLabel(k) : ''}</span>`).join('');
   const hMap = Object.fromEntries((d.hourly || []).map(r => [r.h, r.n])), hmax = Math.max(...Object.values(hMap), 1);
   const hcols = Array.from({ length: 24 }, (_, h) => `<div class="col one" title="${hourLabel(h)}: ${hMap[h] || 0} games"><i style="height:${(hMap[h] || 0) / hmax * 100}%"></i></div>`).join('');
   const haxis = Array.from({ length: 24 }, (_, h) => `<span>${h % 3 === 0 ? hourLabel(h) : ''}</span>`).join('');
-  const amap = Object.fromEntries((d.accuracy || []).map(r => [r.b, r.n])), amax = Math.max(...Object.values(amap), 1);
-  const acols = Array.from({ length: 10 }, (_, b) => `<div class="col one" title="${b * 10}–${b * 10 + 10}% correct: ${amap[b] || 0} games"><i style="height:${(amap[b] || 0) / amax * 100}%"></i></div>`).join('');
-  const aaxis = Array.from({ length: 10 }, (_, b) => `<span>${b * 10}</span>`).join('');
 
-  // ---- device split ----
-  const dev = d.devices || [], devTot = dev.reduce((a, r) => a + r.n, 0) || 1;
-  const devColors = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
-  const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devColors[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><b>${esc(r.device)}</b> ${pc(r.n / devTot)}</span>`).join('')}</div>`;
+  // ---- how games end ----
+  const endParts = [['Finished', fin, 'var(--good)'], ['Left early', t.left_early || 0, '#f2b134'], ['Left before answering', t.no_answer || 0, 'var(--bad)']];
+  const endHtml = `<div class="split">${endParts.map(([, n, c]) => `<i style="width:${n / Math.max(tracked, 1) * 100}%;background:${c}"></i>`).join('')}</div>
+    <div class="sl">${endParts.map(([l, n, c]) => `<span><s style="background:${c}"></s><b>${pc(n / Math.max(tracked, 1))}</b> ${l}</span>`).join('')}</div>
+    ${t.left_early_at ? `<p class="sub" style="margin:12px 0 0">People who leave early usually do so after about <b style="color:var(--ink)">${Math.round(t.left_early_at)}</b> answers.</p>` : ''}`;
 
-  const roundsLbl = r => (r.rounds === 0 ? 'Endless' : r.rounds + ' birds'), timerLbl = r => (r.timer === 0 ? 'No timer' : r.timer + ' sec timer');
+  // ---- games per player ----
+  const order = ['1', '2', '3-5', '6-10', '11+'], pp = Object.fromEntries((d.perPlayer || []).map(r => [r.b, r.n]));
+  const ppRows = order.filter(k => pp[k]).map(k => ({ label: k === '1' ? '1 game' : k + ' games', n: pp[k] }));
+
+  // ---- decks table ----
+  const dmaxN = Math.max(...decks.map(r => r.n), 1);
+  const deckRows = decks.map(r => { const wk = n7 ? (decks7[r.deck] || 0) / n7 : null;
+    return `<tr><td>${esc(r.title)}</td><td class="num"><span class="mini" style="width:${Math.max(r.n / dmaxN * 60, 3)}px"></span>${nf(r.n)}</td><td class="num">${pc(r.n / tracked)}</td><td class="num">${wk == null ? '–' : pc(wk)}</td><td class="num">${pc(r.f / r.n)}</td><td class="num">${pc(r.acc)}</td></tr>`; }).join('');
+  const levels = ['easy', 'medium', 'hard'].map(k => (d.levels || []).find(l => l.level === k)).filter(Boolean);
+  const feat = [['Hard mode', ((d.levels || []).find(l => l.level === 'hard') || {}).n || 0], ['Custom decks', t.custom || 0], ['Timer on', t.timed || 0], ['Shadow mode', t.shadow || 0], ['Endless', t.endless || 0]];
+
+  // ---- audience ----
+  const dev = d.devices || [], devTot = dev.reduce((x, r) => x + r.n, 0) || 1, devC = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
+  const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devC[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><s style="background:${devC[r.device] || '#999'}"></s><b>${pc(r.n / devTot)}</b> ${esc(r.device)}</span>`).join('')}</div>`;
+  const sharesNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score' };
 
   $('#body').innerHTML = `
+    <section class="hero">
+      <div class="kpi big"><div class="l">Games played, all time</div><div class="v">${nf(totalGames)}</div><div class="s">${earlierG ? `Includes about ${nf(earlierG)} games from before tracking began (estimate)` : 'Counted permanently'}${a.first_day ? ` · tracked since ${a.first_day}` : ''}</div></div>
+      <div class="kpi"><div class="l">Players</div><div class="v">${nf(players)}</div><div class="s">${earlierP ? `Includes about ${nf(earlierP)} from before tracking` : 'Unique devices'}</div></div>
+      <div class="kpi"><div class="l">Finished games</div><div class="v">${pc(tracked ? fin / tracked : 0)}</div><div class="s">${nf(fin)} played to the end</div></div>
+      <div class="kpi"><div class="l">Results shared</div><div class="v">${nf(shares)}</div><div class="s">${nf(sk('whatsapp'))} WhatsApp · ${nf(sk('card'))} score card · ${nf(sk('copy'))} copied</div></div>
+    </section>
+    <section class="periods">
+      <div class="kpi"><div class="l">Today</div><div class="v">${nf(p.d1)}</div><div class="s">games</div></div>
+      <div class="kpi"><div class="l">Last 7 days</div><div class="v">${nf(d7)}</div><div class="s">${trend == null ? 'games' : `<span class="${trend >= 0 ? 'up' : 'dn'}">${trend >= 0 ? '▲' : '▼'} ${Math.abs(Math.round(trend * 100))}%</span> vs the week before`}</div></div>
+      <div class="kpi"><div class="l">Last 30 days</div><div class="v">${nf(p.d30)}</div><div class="s">games</div></div>
+    </section>
     <section class="insights"><h2>What stands out</h2><ul>${ins.map(i => `<li>${i}</li>`).join('')}</ul></section>
-    <section class="kpis">
-      <div class="kpi hero"><div class="l">Games played</div><div class="v">${nf(started)}</div><div class="s">Today ${nf(d.periods.d1)} · 7 days ${nf(d.periods.d7)} · 30 days ${nf(d.periods.d30)}</div></div>
-      <div class="kpi"><div class="l">Finished games</div><div class="v">${nf(fin)}</div><div class="s">${pc(fin / started)} of games played to the end</div></div>
-      <div class="kpi"><div class="l">Players</div><div class="v">${nf(players)}</div><div class="s">${pc(retPct)} played more than once</div></div>
-      <div class="kpi"><div class="l">Average accuracy</div><div class="v">${pc(t.avg_acc)}</div><div class="s">of birds named correctly</div></div>
-      <div class="kpi"><div class="l">Average score</div><div class="v">${nf(t.avg_score)}</div><div class="s">Best ever ${nf(t.best_score)}</div></div>
-      <div class="kpi"><div class="l">Time per game</div><div class="v">${mmss(t.avg_secs)}</div><div class="s">${(t.avg_streak || 0).toFixed(1)} best streak on average</div></div>
-      <div class="kpi"><div class="l">Results shared</div><div class="v">${nf(shareTotal)}</div><div class="s">${nf(wa)} WhatsApp · ${nf(cardN)} score card · ${nf(shareTotal - wa - cardN)} copied</div></div>
-      <div class="kpi"><div class="l">Hints per game</div><div class="v">${hints.toFixed(1)}</div><div class="s">${nf(t.answers)} birds answered in total</div></div>
-    </section>
 
-    <section class="grid wide">
-      <div class="card"><h3>Games per day</h3><div class="sub">Last 30 days (IST)</div>
-        <div class="legend"><span><s style="background:#ffcfb0"></s>Started</span><span><s style="background:var(--brand)"></s>Finished</span></div>
-        <div class="cols">${dcols}</div><div class="axis">${daxis}</div></div>
-      <div class="card"><h3>When people play</h3><div class="sub">Games by hour of day (IST), all time</div>
-        <div class="cols">${hcols}</div><div class="axis">${haxis}</div></div>
-    </section>
-
+    <h2 class="sec-t">Is it growing?</h2><p class="sec-s">Games and new players, last 30 days</p>
     <section class="grid">
-      <div class="card"><h3>Popular decks</h3><div class="sub">Games started, with the average accuracy</div>
-        ${barList((d.decks || []).map(r => ({ label: r.title, n: r.n, acc: r.acc })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.acc)}` })}</div>
-      <div class="card"><h3>Difficulty</h3><div class="sub">Games and accuracy by level</div>
-        ${barList(['easy', 'medium', 'hard'].filter(k => lv[k]).map(k => ({ label: LV[k], n: lv[k].n, acc: lv[k].acc })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.acc)} correct` })}
-        <h3 style="margin-top:22px;font-size:17px">How people set up a game</h3><div class="rows" style="margin-top:8px">
-          ${(d.rounds || []).map(r => `<div class="row"><span>${roundsLbl(r)}</span><b>${pc(r.n / started)}</b></div>`).join('')}
-          ${(d.timers || []).map(r => `<div class="row"><span>${timerLbl(r)}</span><b>${pc(r.n / started)}</b></div>`).join('')}
-          <div class="row"><span>Shadow mode on</span><b>${pc((t.shadow || 0) / started)}</b></div>
-          <div class="row"><span>Custom (built) deck</span><b>${pc((t.custom || 0) / started)}</b></div></div></div>
-      <div class="card"><h3>Where players are</h3><div class="sub">Games by country</div>
-        ${barList((d.countries || []).map(r => ({ label: CN(r.country), n: r.n })), { cls: 'b', fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.n / started)}` })}
-        <h3 style="margin-top:22px;font-size:17px">Device</h3>${devHtml}</div>
+      <div class="card"><h3>Games per day</h3><div class="sub">Dark = played to the end</div><div class="cols">${gcols}</div><div class="axis">${axis}</div></div>
+      <div class="card"><h3>New players per day</h3><div class="sub">First time we have seen the player</div><div class="cols">${ncols}</div><div class="axis">${axis}</div></div>
     </section>
 
+    <h2 class="sec-t">Do people stick around?</h2><p class="sec-s">Return visits and where games end</p>
     <section class="grid">
-      <div class="card"><h3>Hardest birds</h3><div class="sub">Lowest share answered correctly (at least 5 answers)</div><div class="birds" id="hardest"></div></div>
-      <div class="card"><h3>Easiest birds</h3><div class="sub">Highest share answered correctly (at least 5 answers)</div><div class="birds" id="easiest"></div></div>
-      <div class="card"><h3>How well players do</h3><div class="sub">Games by % of birds answered correctly (games with 3+ answers)</div>
-        <div class="cols">${acols}</div><div class="axis">${aaxis}</div>
-        ${(d.customLabels || []).length ? `<h3 style="margin-top:22px;font-size:17px">Popular custom decks</h3><div style="margin-top:10px">${barList(d.customLabels.map(r => ({ label: r.label, n: r.n })), { cls: 'b' })}</div>` : ''}</div>
+      <div class="card"><h3>Came back on another day</h3><div class="sub">Players with games on 2 or more different days</div><div class="big-n">${pc(comeBack)}</div><div class="sub" style="margin-top:4px">${nf(d.multiDay)} of ${nf(t.players)} tracked players</div></div>
+      <div class="card"><h3>Games per player</h3><div class="sub">How many games each player has played</div>${barList(ppRows, { cls: 'b' })}</div>
+      <div class="card"><h3>How games end</h3><div class="sub">Of all tracked games</div>${endHtml}</div>
     </section>
 
-    <section class="card"><h3>Latest games</h3><div class="sub">The 15 most recent</div>
-      <div class="tw"><table><thead><tr><th>When (IST)</th><th>Deck</th><th>Level</th><th>Score</th><th>Correct</th><th>Result</th><th>Country</th><th>Device</th></tr></thead><tbody>
-      ${(d.recent || []).map(r => `<tr><td>${new Date(r.ts_start).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}</td><td>${esc(r.deck_title)}</td><td>${LV[r.level] || ''}${r.shadow ? ' · shadow' : ''}</td><td>${nf(r.score)}</td><td>${r.answered ? r.correct + '/' + r.answered : '–'}</td><td><span class="pill ${r.finished ? 'ok' : 'no'}">${r.finished ? 'finished' : 'left early'}</span></td><td>${esc(CN(r.country))}</td><td>${esc(r.device)}</td></tr>`).join('')}
-      </tbody></table></div></section>`;
+    <h2 class="sec-t">What do they play?</h2><p class="sec-s">Decks, difficulty and features</p>
+    <section class="card"><h3>Decks</h3><div class="sub">"Last 7 days" shows whether the home page changes are spreading play around. Finished = games played to the end.</div>
+      <div class="tw"><table><thead><tr><th>Deck</th><th class="num">Games</th><th class="num">All time</th><th class="num">Last 7 days</th><th class="num">Finished</th><th class="num">Accuracy</th></tr></thead><tbody>${deckRows}</tbody></table></div></section>
+    <section class="grid" style="margin-top:16px">
+      <div class="card"><h3>Difficulty</h3><div class="sub">Share of games, how many finish, and accuracy</div>
+        <div class="tw"><table style="min-width:0"><thead><tr><th>Level</th><th class="num">Games</th><th class="num">Finished</th><th class="num">Accuracy</th></tr></thead><tbody>${levels.map(l => `<tr><td>${LV[l.level]}</td><td class="num">${pc(l.n / tracked)}</td><td class="num">${pc(l.f / l.n)}</td><td class="num">${pc(l.acc)}</td></tr>`).join('')}</tbody></table></div></div>
+      <div class="card"><h3>Features used</h3><div class="sub">Share of all games</div><div class="rows">${feat.map(([l, n]) => `<div class="row"><span>${l}</span><b>${pc(n / Math.max(tracked, 1))}</b></div>`).join('')}</div></div>
+    </section>
+
+    <h2 class="sec-t">Which birds need attention?</h2><p class="sec-s">From every answer players have given (a bird needs 5 answers to appear)</p>
+    <section class="grid">
+      <div class="card"><h3>Hardest birds</h3><div class="sub">Lowest share named correctly</div><div class="birds" id="hardest"></div></div>
+      <div class="card"><h3>Easiest birds</h3><div class="sub">Highest share named correctly</div><div class="birds" id="easiest"></div></div>
+    </section>
+
+    <h2 class="sec-t">How do people find it?</h2><p class="sec-s">Where games started from, and sharing</p>
+    <section class="grid">
+      <div class="card"><h3>How players arrive</h3><div class="sub">Games by where the visit came from. Shared links are tagged, so WhatsApp is not hidden as "direct".</div>
+        ${barList((d.sources || []).map(r => ({ label: srcName(r.s), n: r.n })), { cls: 'b', fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.n / tracked)}` })}</div>
+      <div class="card"><h3>Sharing</h3><div class="sub">${shares && fin ? `About 1 share per ${Math.max(1, Math.round(fin / shares))} finished games` : 'Result shares'}</div>
+        ${barList((d.shares || []).map(r => ({ label: sharesNames[r.kind] || r.kind, n: r.n })))}</div>
+    </section>
+
+    <h2 class="sec-t">Who is playing?</h2><p class="sec-s">Country, device and time of day</p>
+    <section class="grid">
+      <div class="card"><h3>Countries</h3><div class="sub">Games by country</div>${barList((d.countries || []).map(r => ({ label: CN(r.country), n: r.n })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.n / tracked)}` })}</div>
+      <div class="card"><h3>Device</h3><div class="sub">Phone or computer</div>${devHtml}
+        <h3 style="margin-top:22px;font-size:17px">When people play</h3><div class="sub">Games by hour (IST)</div><div class="cols" style="height:100px">${hcols}</div><div class="axis">${haxis}</div></div>
+    </section>`;
 
   // bird names + pictures arrive a moment later
   const names = await loadBirds();
-  const birdRow = (r, cls) => { const b = names[r.bird] || { name: r.bird.replace(/_/g, ' '), sci: '' }; const p = r.ok / r.seen;
-    return `<div class="bird"><div class="th">${b.url ? `<img loading="lazy" src="${b.url}" alt="">` : ''}</div><div class="bn">${esc(b.name)}<small>${nf(r.seen)} answers</small></div><div class="pc ${cls}">${pc(p)}</div></div>`; };
-  const fill = (id, rows, cls) => { $('#' + id).innerHTML = rows.length ? rows.map(r => birdRow(r, cls)).join('') : '<div class="empty">Needs a few more games (a bird needs 5 answers to show up).</div>'; };
+  const birdRow = (r, cls) => { const b = names[r.bird] || { name: r.bird.replace(/_/g, ' '), url: '' }; return `<div class="bird"><div class="th">${b.url ? `<img loading="lazy" src="${b.url}" alt="">` : ''}</div><div class="bn">${esc(b.name)}<small>${nf(r.seen)} answers</small></div><div class="pc ${cls}">${pc(r.ok / r.seen)}</div></div>`; };
+  const fill = (id, list, cls) => { $('#' + id).innerHTML = list.length ? list.map(r => birdRow(r, cls)).join('') : '<div class="empty">Needs a few more games.</div>'; };
   fill('hardest', d.hardest || [], 'lo'); fill('easiest', d.easiest || [], 'hi');
-  if (d.hardest && d.hardest[0]) { const b = names[d.hardest[0].bird]; const li = [...document.querySelectorAll('.insights li')].find(x => x.innerHTML.includes('_HARD_')); if (li) li.innerHTML = li.innerHTML.replace('_HARD_', esc(b ? b.name : d.hardest[0].bird)); }
-  else { const li = [...document.querySelectorAll('.insights li')].find(x => x.innerHTML.includes('_HARD_')); if (li) li.remove(); }
+  const li = [...document.querySelectorAll('.insights li')].find(x => x.innerHTML.includes('_HARD_'));
+  if (li) { if (d.hardest && d.hardest[0]) { const b = names[d.hardest[0].bird]; li.innerHTML = li.innerHTML.replace('_HARD_', esc(b ? b.name : d.hardest[0].bird)); } else li.remove(); }
 }
 })();
 </script>
