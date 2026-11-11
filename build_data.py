@@ -89,6 +89,7 @@ enseen = set()
 HAB = ["Forest", "Woodland", "Shrubland", "Grassland", "Wetland", "Riverine", "Coastal", "Marine", "Desert", "Rock", "Human Modified"]
 DIET = ["Invertivore", "Omnivore", "Frugivore", "Granivore", "Nectarivore", "Aquatic predator", "Vertivore", "Herbivore terrestrial", "Herbivore aquatic", "Scavenger"]
 MIG = ["sedentary", "partially migratory", "migratory"]
+LIFE = ["Aerial", "Aquatic", "Terrestrial"]  # only the lifestyles that make a fun fact
 IUCN = ["LC", "NT", "VU", "EN", "CR", "EX"]  # EX incl. EW
 fams, famidx = [], {}
 birds = []
@@ -132,12 +133,14 @@ for s in species:
         "m": MIG.index(tr["migration"]) if tr.get("migration") in MIG else -1,
         "c": IUCN.index(iu) if iu in IUCN else -1,
         "w": round(tr["massG"], 1) if tr.get("massG") else 0,
+        "hw": round(tr["handWingIndex"]) if tr.get("handWingIndex") else 0,   # hand-wing index: how long and pointed the wings are
+        "ls": LIFE.index(tr["primaryLifestyle"]) if tr.get("primaryLifestyle") in LIFE else -1,
+        "ss": min(len(s.get("subspecies") or []), 99),                         # number of subspecies
         "r": sorted(regs), "p": places,
         "n": names.get(s["id"]) or [s["names"]["en"]] + [""] * (len(LANGS) - 1),
         "g": page.get(s["id"], ""),
         "v": 1 if visitor else 0,
         "k": 1 if en_name in EVERYDAY else 0,
-        "x": (rng.get("text") or "")[:180],
     }
     b["n"][0] = b["n"][0] or s["names"]["en"]
     if en_name in NAME_OVERRIDES:

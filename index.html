@@ -293,7 +293,11 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .reveal .alt{color:var(--muted);font-size:14.5px;margin-top:4px}
 .reveal .facts{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
 .fact{background:var(--surface);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:600}
-.reveal .rng{font-size:14px;color:var(--muted);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.reveal .fun{background:var(--surface);border-radius:18px;padding:12px 16px 12px;margin-top:10px}
+.reveal .fun .fl{display:block;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);margin-bottom:3px}
+.reveal .fun p{font-size:16px;line-height:1.4;font-weight:500;margin:0}
+.reveal .fun .fmore{margin-top:6px;font-weight:700;font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.reveal .fun .fmore:hover{color:var(--ink)}
 .reveal .row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:14px}
 .reveal .row a{font-weight:700;font-size:14px}
 
@@ -486,6 +490,14 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <button class="btn ghost native hidden" id="shNative">More ways to share…</button>
   </div>
 </div>
+<!-- LEAVE GAME? -->
+<div class="sheet-wrap hidden" id="quitWrap">
+  <div class="sharebox" role="alertdialog" aria-modal="true" aria-labelledby="qTitle" aria-describedby="qText">
+    <h2 id="qTitle">Leave this game?</h2>
+    <p id="qText" class="cardnote" style="text-align:left;font-size:15px;margin:10px 0 18px"></p>
+    <div class="cardbtns"><button class="btn" id="qKeep">Keep playing</button><button class="btn ghost" id="qLeave">Leave game</button></div>
+  </div>
+</div>
 <!-- SCORE CARD PREVIEW -->
 <div class="sheet-wrap hidden" id="cardWrap">
   <div class="sharebox" role="dialog" aria-modal="true" aria-labelledby="cdTitle">
@@ -539,6 +551,65 @@ for (const b of D.birds) {
   byEn[b.n[0]] = b;
 }
 const famByLatin = Object.fromEntries(D.fams.map((f, i) => [f.l, i]));
+
+/* ---------- fun facts: worked out from the bird data (weights, wing shape, diet, migration, family) ---------- */
+// everyday things with well-known weights, in grams
+const OBJECTS = [[1, 'a paperclip', 'paperclips'], [4, 'a teaspoon of sugar', 'teaspoons of sugar'], [24, 'an AA battery', 'AA batteries'], [46, 'a golf ball', 'golf balls'],
+  [55, "a hen's egg", "hens' eggs"], [100, 'a bar of soap', 'bars of soap'], [160, 'a cricket ball', 'cricket balls'], [200, 'a smartphone', 'smartphones'],
+  [430, 'a football', 'footballs'], [1000, 'a litre bottle of water', 'litre bottles of water'], [1200, 'a cricket bat', 'cricket bats'], [2000, 'a laptop', 'laptops'], [4000, 'a house cat', 'house cats'],
+  [6500, 'a bowling ball', 'bowling balls'], [10000, 'a 10 kg bag of rice', 'bags of rice (10 kg each)']];
+const massSorted = D.birds.filter(b => b.w > 0).map(b => b.w).sort((a, c) => a - c);
+const famCount = {}, famMin = {}, famMax = {};
+for (const b of D.birds) { famCount[b.f] = (famCount[b.f] || 0) + 1; if (b.w > 0) { famMin[b.f] = Math.min(famMin[b.f] ?? Infinity, b.w); famMax[b.f] = Math.max(famMax[b.f] ?? 0, b.w); } }
+const famMassN = {}; for (const b of D.birds) if (b.w > 0) famMassN[b.f] = (famMassN[b.f] || 0) + 1;
+const hash = str => { let h = 7; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return Math.abs(h); };
+function massFact(w) {
+  let best = OBJECTS[0], bd = Infinity;
+  for (const o of OBJECTS) { const d = Math.abs(Math.log(w / o[0])); if (d < bd) { bd = d; best = o; } }
+  const r = w / best[0];
+  if (r >= 0.8 && r <= 1.25) return `Weighs about as much as ${best[1]}.`;
+  if (r > 1.25 && r < 1.6) return `A little heavier than ${best[1]}.`;
+  if (r >= 0.65 && r < 0.8) return `A little lighter than ${best[1]}.`;
+  if (r >= 1.6) return `Weighs about as much as ${Math.round(r)} ${best[2]}.`;
+  return `Lighter than ${best[1]}.`;
+}
+const DIET_FACT = { Invertivore: 'Lives mostly on insects and other small creatures without backbones.', Omnivore: 'Has a very varied diet.',
+  Frugivore: 'Feeds mainly on fruit, and so helps to spread seeds.', Granivore: 'Feeds mainly on seeds and grains.', Nectarivore: 'Feeds mainly on nectar, and helps to pollinate flowers.',
+  'Aquatic predator': 'Finds most of its food in or around water.', Vertivore: 'Hunts other animals for food.',
+  'Herbivore terrestrial': 'Eats mainly plants: leaves, shoots and grass.', 'Herbivore aquatic': 'Grazes mainly on water plants.', Scavenger: 'Feeds mainly on dead animals, a valuable clean-up job.' };
+const MIG_FACT = ['Stays in or near the same area all year round.', null, 'Many of these birds migrate, moving between regions with the seasons.'];
+const LIFE_FACT = ['Spends much of its life in the air.', 'Spends most of its life on or near the water.', null];
+const STATUS_FACT = [null, null, 'Vulnerable: it faces a high risk of disappearing from the wild.',
+  'Endangered: it faces a very high risk of disappearing from the wild.', 'Critically endangered: one of the most at-risk birds in the world.', 'Believed to be extinct, or no longer living in the wild.'];
+function factsFor(b) {
+  const top = [], rest = [], f = D.fams[b.f];
+  const n = famCount[b.f];
+  // the most interesting kinds first
+  if (b.w > 0 && famMassN[b.f] >= 5 && famMassN[b.f] / n >= 0.9 && famMax[b.f] > famMin[b.f]) {
+    if (b.w >= famMax[b.f]) top.push(`By average weight, the heaviest of the ${n} species in its family (${f.e}).`);
+    else if (b.w <= famMin[b.f]) top.push(`By average weight, the lightest of the ${n} species in its family (${f.e}).`);
+  }
+  if (b.w > 0) {
+    let lo = 0, hi = massSorted.length; while (lo < hi) { const m = (lo + hi) >> 1; if (massSorted[m] < b.w) lo = m + 1; else hi = m; }
+    const p = lo / massSorted.length;
+    if (p >= 0.9) top.push(`Heavier than ${Math.min(99, Math.floor(p * 100))}% of the world's birds.`);
+    else if (p <= 0.1) top.push(`Lighter than ${Math.min(99, Math.floor((1 - p) * 100))}% of the world's birds.`);
+  }
+  if (b.c >= 2 && STATUS_FACT[b.c]) top.push(STATUS_FACT[b.c]);
+  if (b.v) top.push('A winter visitor to India: it breeds elsewhere and comes here for the cooler months.');
+  // everyday facts
+  if (b.w > 0) rest.push(massFact(b.w));
+  // wing shape only where it is a fair thing to say: long pointed wings for migrants, short rounded wings for forest and scrub birds (not penguins, ostriches or hummingbirds)
+  if (b.hw >= 50 && b.m === 2) rest.push('Its long, pointed wings help it cover long distances on migration.');
+  else if (b.hw > 0 && b.hw <= 12 && [0, 1, 2].includes(b.h) && b.ls !== 1) rest.push('Short, rounded wings are typical of birds that dart through dense cover.');
+  if (b.d >= 0 && DIET_FACT[D.diets[b.d]]) rest.push(DIET_FACT[D.diets[b.d]]);
+  if (b.m >= 0 && MIG_FACT[b.m]) rest.push(MIG_FACT[b.m]);
+  if (b.ls >= 0 && LIFE_FACT[b.ls]) rest.push(LIFE_FACT[b.ls]);
+  if (b.ss >= 6) rest.push(`Scientists recognise ${b.ss} different subspecies of this bird.`);
+  const mix = arr => arr.map((t, i) => [hash(b.i + i), t]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+  const last = n > 1 ? `One of ${n} species in the "${f.e}" family.` : `The only species in the "${f.e}" family.`;
+  return [...mix(top), ...mix(rest), last];
+}
 const famsOfOrder = o => D.fams.map((f, i) => f.o === o ? i : -1).filter(i => i >= 0);
 const regionIdx = n => D.regions.findIndex(r => r[0] === n);
 const img = (b, cls = '', lazy = true) => `<img class="${cls}" ${lazy ? 'loading="lazy"' : ''} src="${b.url}" alt="" onerror="this.onerror=null;this.src='${b.raw}'">`;
@@ -892,10 +963,10 @@ function useHint() {
   $('#hints').insertAdjacentHTML('beforeend', `<span class="hint">${esc(txt)}</span>`);
   if (G.hints >= 3) $('#hintBtn').disabled = true;
 }
-function startTimer() {
+function startTimer(resumeMs) {
   clearInterval(timerId);
   const T = +S.timer; if (!T) return;
-  const bar = $('#tbar'); bar.style.width = '100%'; G.tEnd = Date.now() + T * 1000;
+  const bar = $('#tbar'); bar.style.width = (resumeMs != null ? resumeMs / (T * 1000) * 100 : 100) + '%'; G.tEnd = Date.now() + (resumeMs != null ? resumeMs : T * 1000);
   timerId = setInterval(() => {
     const left = G.tEnd - Date.now(); bar.style.width = Math.max(left / (T * 1000) * 100, 0) + '%';
     if (left <= 0) { clearInterval(timerId); if (!G.done) answer(null, '', true); }
@@ -927,20 +998,46 @@ function answer(choice, typed, timeout) {
   const facts = [D.fams[b.f].e, b.w ? (b.w >= 1000 ? (b.w / 1000).toFixed(1) + ' kg' : Math.round(b.w) + ' g') : '', b.h >= 0 ? (HAB_LABEL[D.habitats[b.h]] || D.habitats[b.h]) : '', b.c >= 0 ? STATUS[b.c] : '']
     .filter(Boolean).map(x => `<span class="fact">${esc(x)}</span>`).join('');
   const en = b.n[0], mine = nm(b);
+  const funList = factsFor(b); let funI = 0;
   const R = $('#reveal'); R.className = 'reveal' + (correct ? '' : ' bad');
   R.innerHTML = `<div class="in"><div class="res">${correct ? CHECK + ` Correct +${pts}` : timeout ? CROSS + ' Time\'s up' : (G.mode === 'type' && !typed) ? CROSS + ' Skipped' : CROSS + ' Not quite'}</div>
     <h2>${esc(mine)}</h2>
     <div class="alt">${mine !== en ? esc(en) + ' · ' : ''}<i>${esc(b.s)}</i></div>
-    <div class="facts">${facts}</div>${b.x ? `<div class="rng">${esc(b.x)}${b.x.length >= 180 ? '…' : ''}</div>` : ''}
+    <div class="facts">${facts}</div>
+    <div class="fun"><span class="fl">Did you know?</span><p id="funText"></p>${funList.length > 1 ? '<button class="fmore" id="funMore">Another fact</button>' : ''}</div>
     <div class="row">${b.g ? `<a href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener">More about this bird ↗</a>` : '<span></span>'}
     <button class="btn" id="nextBtn">${last ? 'See results' : 'Next bird'}</button></div></div>`;
+  $('#funText').textContent = funList[0];
+  if ($('#funMore')) $('#funMore').onclick = () => { funI = (funI + 1) % funList.length; $('#funText').textContent = funList[funI]; $('#game').style.paddingBottom = R.offsetHeight + 20 + 'px'; };
   $('#nextBtn').onclick = () => nextQ();
   $('#nextBtn').focus({ preventScroll: true });
   requestAnimationFrame(() => { $('#game').style.paddingBottom = R.offsetHeight + 20 + 'px'; });
 }
-$('#quit').onclick = () => { clearInterval(timerId); G && G.answered ? finish(true) : (stopGame(), view('home')); };
+/* leaving a game: ask first. Leaving goes back home (no results card). In endless mode, ending the game is the normal way to finish, so it shows the results. */
+function askQuit() {
+  if (!G) return;
+  if (!G.answered) { stopGame(); view('home'); return; }          // nothing to lose
+  G.pausedLeft = G.tEnd ? Math.max(G.tEnd - Date.now(), 0) : null; // freeze the timer while the question is open
+  clearInterval(timerId);
+  const n = G.answered, endless = G.endless;
+  $('#qTitle').textContent = endless ? 'End your game?' : 'Leave this game?';
+  $('#qText').textContent = endless ? `You've named ${G.right} of ${n} bird${n === 1 ? '' : 's'} so far. End the game to see your results.`
+    : `You've answered ${n} of ${G.q.length} birds. If you leave now, this game won't be scored.`;
+  $('#qLeave').textContent = endless ? 'See my results' : 'Leave game';
+  $('#quitWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  setTimeout(() => $('#qKeep').focus({ preventScroll: true }), 30);
+}
+function closeQuit(resume) {
+  $('#quitWrap').classList.add('hidden'); document.body.style.overflow = '';
+  if (resume && G && !G.done && +S.timer && G.pausedLeft != null) startTimer(G.pausedLeft);
+}
+$('#quit').onclick = askQuit;
+$('#qKeep').onclick = () => closeQuit(true);
+$('#qLeave').onclick = () => { const endless = G && G.endless; closeQuit(false); if (endless) finish(true); else { stopGame(); view('home'); } };
+$('#quitWrap').addEventListener('mousedown', e => { if (e.target === $('#quitWrap')) closeQuit(true); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#quitWrap').classList.contains('hidden')) closeQuit(true); });
 document.addEventListener('keydown', e => {
-  if (!G || $('#game').classList.contains('hidden') || !$('#sheetWrap').classList.contains('hidden')) return;
+  if (!G || $('#game').classList.contains('hidden') || !$('#sheetWrap').classList.contains('hidden') || !$('#quitWrap').classList.contains('hidden')) return;
   if (G.done) { if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.id !== 'nextBtn') { e.preventDefault(); nextQ(); } return; }
   if (G.mode === 'choice' && /^[1-4]$/.test(e.key)) { const x = G.opts[+e.key - 1]; if (x) answer(x); }
   if (e.key.toLowerCase() === 'h' && document.activeElement?.tagName !== 'INPUT') useHint();
