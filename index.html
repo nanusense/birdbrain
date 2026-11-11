@@ -100,7 +100,15 @@ svg{display:block}
 .hero h1{font-size:clamp(42px,6.4vw,84px);font-weight:800}
 .hero h1 em{font-style:normal;color:var(--brand)}
 .hero p.lead{font-size:19px;color:var(--muted);max-width:30em;margin:20px 0 28px}
-.cta{display:flex;gap:12px;flex-wrap:wrap}
+.cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.pickhead{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.quick{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;max-width:38em}
+.qchip{display:inline-flex;align-items:center;gap:10px;padding:5px 18px 5px 5px;border-radius:99px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:15px;transition:.12s;text-align:left}
+.qchip:hover{box-shadow:inset 0 0 0 2px var(--ink);transform:translateY(-1px)}
+.qi{flex:none;width:44px;height:44px;border-radius:50%;background:var(--c,var(--soft));position:relative;overflow:hidden;display:grid;place-items:center}
+.qi img{position:absolute;left:4%;top:4%;width:92%;height:92%;object-fit:contain}
+.cta .linkbtn{margin-top:0;font-size:15px;padding:8px 4px}
+.qchip.build .qi{background:var(--ink);color:#fff;font-size:24px;font-weight:700}
 .collage{position:relative;height:420px}
 .cc{position:absolute;border-radius:28px;display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .3s}
 .cc img{position:absolute;left:7%;top:7%;width:86%;height:86%;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.2))}
@@ -139,6 +147,9 @@ svg{display:block}
 .sharebox{position:relative;background:var(--surface);border-radius:28px;width:min(440px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:22px;box-shadow:0 40px 80px -20px rgba(0,0,0,.5);animation:pop .22s cubic-bezier(.2,.9,.3,1.1)}
 .sharebox h2{font-size:26px;font-weight:800;padding-right:44px}
 .sharebox .s-x{right:14px;top:14px}
+.cardimg{display:block;width:100%;max-height:58vh;object-fit:contain;border-radius:18px;margin:14px 0;background:var(--soft)}
+.cardbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cardnote{color:var(--muted);font-size:13px;text-align:center;margin-top:12px}
 .sp{background:var(--soft);border-radius:18px;overflow:hidden;margin:14px 0 16px}
 .sp img{display:block;width:100%;aspect-ratio:1200/630;object-fit:cover;background:var(--line)}
 .sp div{padding:10px 14px 12px}
@@ -318,6 +329,12 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   .s-body h2{font-size:28px}
 }
 @media (max-width:560px){
+  .collage{height:150px;margin-bottom:6px}
+  .hero{padding-bottom:30px}
+  .hero p.lead{font-size:16px;margin:14px 0 18px}
+  .quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .qchip{font-size:13.5px;line-height:1.15;padding:5px 12px 5px 5px;border-radius:26px;width:100%;min-width:0}
+  .qi{width:40px;height:40px}
   .mrow{grid-template-columns:1fr}
   .wrap{padding:0 16px}
   .nav .btn{display:none}
@@ -358,10 +375,12 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <div>
       <div class="eyebrow">11,011 birds · 1 sticker each</div>
       <h1>How well do you know your <em>birds?</em></h1>
-      <p class="lead">Guess the bird from its picture. Start with the ones you see every day, then go wild with 11,000 species from around the world.</p>
+      <p class="lead">Guess the bird from its picture. Pick what you want to play, from the birds you see every day to rare finds from around the world.</p>
+      <p class="pickhead">Pick your set</p>
+      <div class="quick" id="quickDecks"></div>
       <div class="cta">
-        <button class="btn lg" id="playNow">Play now</button>
-        <button class="btn ghost lg" id="pickDeck">Browse decks</button>
+        <button class="btn ghost" id="surprise"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.500" cy="8.500" r="1" fill="currentColor"/><circle cx="15.500" cy="15.500" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="15.500" cy="8.500" r="1" fill="currentColor"/><circle cx="8.500" cy="15.500" r="1" fill="currentColor"/></svg> Surprise me</button>
+        <button class="linkbtn" id="pickDeck">See all decks ↓</button>
       </div>
     </div>
     <div class="collage" id="collage" aria-hidden="true"></div>
@@ -424,6 +443,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div class="rstats" id="rStats"></div>
   <div id="rMissed"></div>
   <div class="rbtns">
+    <button class="btn full" id="shareCard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/></svg> Share my score card</button>
     <button class="btn wa full" id="shareWa"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.300 1.200-1.800 1.200-.5.1-1 .2-3.200-.7-2.700-1.100-4.400-3.800-4.500-4-.1-.2-1.100-1.400-1.100-2.700 0-1.300.7-1.900.9-2.200.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.900c.1.2.1.400 0 .5l-.4.600-.4.400c-.1.2-.3.300-.1.600.2.300.7 1.200 1.500 1.900 1 .9 1.900 1.200 2.200 1.300.3.100.4.100.6-.1l.8-1c.2-.3.400-.2.600-.1l1.800.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg> Challenge a friend on WhatsApp</button>
     <button class="btn" id="again">Play again</button>
     <button class="btn ghost" id="otherDeck">Other decks</button>
@@ -464,6 +484,16 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <div class="sp"><img id="shImg" alt=""><div><b id="shT"></b><span id="shD"></span><small id="shU"></small></div></div>
     <div class="sgrid" id="shGrid"></div>
     <button class="btn ghost native hidden" id="shNative">More ways to share…</button>
+  </div>
+</div>
+<!-- SCORE CARD PREVIEW -->
+<div class="sheet-wrap hidden" id="cardWrap">
+  <div class="sharebox" role="dialog" aria-modal="true" aria-labelledby="cdTitle">
+    <button class="s-x" id="cdClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 id="cdTitle">Your score card</h2>
+    <img class="cardimg" id="cardImg" alt="Your Birdbrain score card">
+    <div class="cardbtns"><button class="btn" id="cdDl">Download image</button><button class="btn ghost" id="cdCopy">Copy image</button></div>
+    <p class="cardnote">Post it on your WhatsApp status or Instagram story and tag a friend.</p>
   </div>
 </div>
 <canvas class="confetti hidden" id="confetti"></canvas>
@@ -617,7 +647,12 @@ function renderHome() {
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-deck]'); if (d) openSheet(deckById[d.dataset.deck]);
 });
-$('#playNow').onclick = () => openSheet(deckById['everyday-india']); // shows the deck name, description and difficulty first
+const QUICK = ['everyday-india', 'parrots', 'owls', 'himalaya', 'raptors', 'world'];
+$('#quickDecks').innerHTML = QUICK.map(id => deckById[id]).filter(Boolean).map(d =>
+  `<button class="qchip" data-deck="${d.id}" style="--c:${d.c}"><span class="qi">${d.heroB ? img(d.heroB, '', false) : ''}</span>${esc(d.t)}</button>`).join('')
+  + `<button class="qchip build" id="qBuild"><span class="qi">+</span>Build your own</button>`;
+$('#qBuild').onclick = () => openBuilder();
+$('#surprise').onclick = () => { const ok = DECKS.filter(d => d.pool.length >= 20); openSheet(ok[Math.random() * ok.length | 0]); };
 $('#pickDeck').onclick = () => $('#indiaSec').scrollIntoView({ behavior: 'smooth' });
 $('#navBuild').onclick = $('#ctaBuild').onclick = () => openBuilder();
 $('#logoHome').onclick = e => { e.preventDefault(); stopGame(); view('home'); };
@@ -783,7 +818,7 @@ function startGame(pool, deck, level) {
   $('#tbarWrap').classList.toggle('hidden', S.timer === '0');
   nextQ(true);
 }
-function preload() { for (let k = 1; k <= 2; k++) { const b = G.q[G.i + k]; if (b) { const im = new Image(); im.src = b.url; } } }
+function preload() { for (let k = 1; k <= 2; k++) { const b = G.q[G.i + k]; if (b) { const im = new Image(); im.crossOrigin = 'anonymous'; im.src = b.url; } } }
 function nextQ(first) {
   if (!first) G.i++;
   if (G.i >= G.q.length || (G.endless && G.lives <= 0)) return finish();
@@ -795,7 +830,7 @@ function nextQ(first) {
   const pic = $('#pic'), skel = $('#skel'); skel.style.display = ''; pic.style.opacity = 0; pic.dataset.tried = '';
   pic.onload = () => { skel.style.display = 'none'; pic.style.opacity = 1; };
   pic.onerror = () => { if (!pic.dataset.tried) { pic.dataset.tried = 1; pic.src = b.raw; } else skel.style.display = 'none'; };
-  pic.src = b.url;
+  pic.crossOrigin = 'anonymous'; pic.src = b.url;
   $('#hints').innerHTML = '<button class="hintbtn" id="hintBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.500c.7.700 1 1.500 1 2.500h6c0-1 .3-1.800 1-2.500A6 6 0 0 0 12 3z"/></svg> Hint (−25)</button>';
   $('#hintBtn').onclick = useHint;
   renderHud(); renderAnswer(); preload(); startTimer();
@@ -933,7 +968,98 @@ function finish(partial) {
   $('#rStats').innerHTML = [[`${G.right}/${n}`, 'Correct'], [acc + '%', 'Accuracy'], [G.bestStreak, 'Best streak']].map(([a, b]) => `<div class="rstat"><b>${a}</b><span>${b}</span></div>`).join('');
   $('#rMissed').innerHTML = G.missed.length ? `<h3>Birds to get to know</h3><p class="tip">Tap a bird to read more about it.</p><div class="missed">${G.missed.map(b => `<a class="mcard" style="--c:${G.deck.c}" ${b.g ? `href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener"` : ''}><div class="t">${img(b)}</div>${esc(nm(b))}</a>`).join('')}</div>` : '<h3 style="text-align:center;margin:0 0 24px">Flawless. Not one bird got past you.</h3>';
   if (acc >= 70 && G.score > 0) confetti();
+  G.cardPromise = makeCard().catch(() => null); // draw the share picture now, so sharing is instant when tapped
 }
+/* ---------- score card picture (drawn in the browser, nothing is uploaded) ---------- */
+function loadImg(url, alt) {
+  return new Promise(res => {
+    const im = new Image(); im.crossOrigin = 'anonymous'; let tried = false;
+    const t = setTimeout(() => res(null), 14000);
+    im.onload = () => { clearTimeout(t); res(im); };
+    im.onerror = () => { if (!tried && alt) { tried = true; im.src = alt; } else { clearTimeout(t); res(null); } };
+    im.src = url;
+  });
+}
+function rrect(x, X, Y, w, h, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
+async function makeCard(withPictures = true) {
+  const W = 1080, H = 1350, INK = '#14161a', BRAND_C = '#ff6b1a';
+  await Promise.all(['900 100px Gabarito', '800 60px Gabarito', '700 60px Quicksand', '600 40px "Plus Jakarta Sans"'].map(f => document.fonts.load(f).catch(() => {})));
+  const n = G.answered, acc = n ? Math.round(G.right / n * 100) : 0;
+  const lvl = { easy: 'Easy', medium: 'Medium', hard: 'Hard' }[G.meta.level] || 'Easy';
+  const shown = G.q.slice(0, Math.min(G.answered, 10)).map((b, i) => ({ b, ok: G.log[i] === 1 }));
+  const logo = await loadImg('assets/logo.png');
+  const imgs = withPictures ? await Promise.all(shown.map(o => loadImg(o.b.url, o.b.raw))) : [];
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  // background in the deck colour
+  x.fillStyle = G.deck.c; x.fillRect(0, 0, W, H);
+  x.fillStyle = 'rgba(255,255,255,.18)'; x.beginPath(); x.arc(W - 120, 90, 300, 0, 7); x.fill();
+  x.beginPath(); x.arc(80, H - 60, 220, 0, 7); x.fill();
+  // brand
+  if (logo) x.drawImage(logo, 70, 62, 110, 110);
+  x.textAlign = 'left'; x.fillStyle = INK; x.font = '700 66px Quicksand, sans-serif'; x.fillText('Birdbrain', 200, 142);
+  x.textAlign = 'center';
+  // panel
+  x.save(); x.shadowColor = 'rgba(0,0,0,.22)'; x.shadowBlur = 50; x.shadowOffsetY = 20; x.fillStyle = '#fff'; rrect(x, 60, 215, 960, 1025, 56); x.fill(); x.restore();
+  // deck title (shrinks to fit)
+  let ts = 58; x.fillStyle = INK; do { x.font = `800 ${ts}px Gabarito, sans-serif`; ts -= 2; } while (x.measureText(G.deck.t).width > 860 && ts > 30);
+  x.fillText(G.deck.t, W / 2, 308);
+  x.fillStyle = '#6a707b'; x.font = '600 34px "Plus Jakarta Sans", sans-serif'; x.fillText(`${lvl} · ${n} bird${n === 1 ? '' : 's'}${G.meta.shadow ? ' · Shadow' : ''}`, W / 2, 360);
+  // score
+  x.fillStyle = '#6a707b'; x.font = '700 32px "Plus Jakarta Sans", sans-serif'; x.fillText('I SCORED', W / 2, 442);
+  x.fillStyle = BRAND_C; x.font = '900 230px Gabarito, sans-serif'; x.fillText(fmt(G.score), W / 2, 636);
+  // grade
+  x.fillStyle = INK; x.font = '800 58px Gabarito, sans-serif'; x.fillText($('#rGrade').textContent, W / 2, 726);
+  // stat chips
+  const chips = [`${G.right}/${n} correct`, `${acc}% accuracy`, `${G.bestStreak} best streak`];
+  x.font = '700 30px "Plus Jakarta Sans", sans-serif';
+  const cw = chips.map(t => x.measureText(t).width + 56), gap = 16, total = cw.reduce((a, b) => a + b, 0) + gap * 2; let cx = (W - total) / 2;
+  chips.forEach((t, i) => { x.fillStyle = '#f1efe9'; rrect(x, cx, 765, cw[i], 66, 33); x.fill(); x.fillStyle = INK; x.fillText(t, cx + cw[i] / 2, 808); cx += cw[i] + gap; });
+  // bird tiles: green = got it, red = missed
+  const T = 150, g = 14, perRow = 5;
+  shown.forEach((o, i) => {
+    const row = Math.floor(i / perRow), inRow = Math.min(perRow, shown.length - row * perRow), col = i % perRow;
+    const tx = (W - (inRow * T + (inRow - 1) * g)) / 2 + col * (T + g), ty = 872 + row * (T + g);
+    x.fillStyle = o.ok ? '#e2f6eb' : '#fdebe8'; rrect(x, tx, ty, T, T, 30); x.fill();
+    const im = imgs[i];
+    if (im) { const k = Math.min(T * .86 / im.width, T * .86 / im.height); x.save(); x.globalAlpha = o.ok ? 1 : .4; x.drawImage(im, tx + (T - im.width * k) / 2, ty + (T - im.height * k) / 2, im.width * k, im.height * k); x.restore(); }
+    else { x.fillStyle = o.ok ? '#10a35e' : '#e5483b'; x.font = '800 60px Gabarito, sans-serif'; x.fillText(o.b.n[0].charAt(0), tx + T / 2, ty + T / 2 + 20); }
+    const bx = tx + T - 22, by = ty + T - 22; x.fillStyle = o.ok ? '#10a35e' : '#e5483b'; x.beginPath(); x.arc(bx, by, 22, 0, 7); x.fill();
+    x.strokeStyle = '#fff'; x.lineWidth = 5; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath();
+    if (o.ok) { x.moveTo(bx - 9, by); x.lineTo(bx - 2, by + 8); x.lineTo(bx + 10, by - 8); } else { x.moveTo(bx - 8, by - 8); x.lineTo(bx + 8, by + 8); x.moveTo(bx + 8, by - 8); x.lineTo(bx - 8, by + 8); }
+    x.stroke();
+  });
+  // call to action
+  x.fillStyle = INK; x.font = '800 44px Gabarito, sans-serif'; x.fillText('Can you beat me?', W / 2, 1296);
+  x.fillStyle = 'rgba(20,22,26,.75)'; x.font = '700 30px "Plus Jakarta Sans", sans-serif'; x.fillText('birdbrain.indianbirds.org', W / 2, 1336);
+  return new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error('no image')), 'image/png'));
+}
+async function cardBlob() {
+  let b = null; try { b = await G.cardPromise; } catch (e) {}
+  if (!b) { try { b = await makeCard(true); } catch (e) { b = await makeCard(false); } } // a picture that fails to load must not stop sharing
+  return b;
+}
+let cardUrl = null;
+function closeCard() { $('#cardWrap').classList.add('hidden'); document.body.style.overflow = ''; if (cardUrl) { URL.revokeObjectURL(cardUrl); cardUrl = null; } }
+$('#cdClose').onclick = closeCard;
+$('#cardWrap').addEventListener('mousedown', e => { if (e.target === $('#cardWrap')) closeCard(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#cardWrap').classList.contains('hidden')) closeCard(); });
+$('#shareCard').onclick = async () => {
+  const btn = $('#shareCard'), label = btn.innerHTML; btn.disabled = true; btn.textContent = 'Making your card…';
+  try {
+    const blob = await cardBlob(); track('share', { kind: 'card', deck: G.deck.id || 'custom' });
+    const file = new File([blob], 'birdbrain-score.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: 'My Birdbrain score', text: shareText() }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    if (cardUrl) URL.revokeObjectURL(cardUrl); cardUrl = URL.createObjectURL(blob); $('#cardImg').src = cardUrl;
+    $('#cdCopy').classList.toggle('hidden', !(navigator.clipboard && window.ClipboardItem));
+    $('#cdDl').onclick = () => { const a = document.createElement('a'); a.href = cardUrl; a.download = 'birdbrain-score.png'; document.body.appendChild(a); a.click(); a.remove(); };
+    $('#cdCopy').onclick = async () => { try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); $('#cdCopy').textContent = 'Copied!'; setTimeout(() => $('#cdCopy').textContent = 'Copy image', 1600); } catch (e) { $('#cdCopy').textContent = 'Could not copy'; } };
+    $('#cardWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  } catch (e) { alert('Sorry, the score card could not be made. Try the WhatsApp button instead.'); }
+  finally { btn.disabled = false; btn.innerHTML = label; }
+};
 $('#again').onclick = () => startGame(G.pool, G.deck, S.level);
 $('#otherDeck').onclick = () => { stopGame(); view('home'); };
 $('#shareWa').onclick = () => { track('share', { kind: 'whatsapp', deck: G.deck.id || 'custom' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank', 'noopener'); };

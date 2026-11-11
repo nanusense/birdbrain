@@ -205,7 +205,7 @@ async function render(d) {
   $('#updated').textContent = 'Updated ' + new Date(d.generated).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }) + ' IST';
   if (!started) { $('#body').innerHTML = '<div class="card" style="text-align:center;padding:50px 20px"><h3>No games yet</h3><p class="sub">Play a game on the live site and refresh this page.</p></div>'; return; }
 
-  const shareTotal = (d.shares || []).reduce((a, r) => a + r.n, 0), wa = ((d.shares || []).find(r => r.kind === 'whatsapp') || {}).n || 0;
+  const shareTotal = (d.shares || []).reduce((a, r) => a + r.n, 0), wa = ((d.shares || []).find(r => r.kind === 'whatsapp') || {}).n || 0, cardN = ((d.shares || []).find(r => r.kind === 'card') || {}).n || 0;
   const players = t.players || 0, retPct = players ? d.returning / players : 0;
   const hints = t.answers ? (t.hints || 0) / Math.max(played, 1) : 0;
   const mmss = s => (s == null ? '–' : Math.floor(s / 60) + 'm ' + String(Math.round(s % 60)).padStart(2, '0') + 's');
@@ -253,7 +253,7 @@ async function render(d) {
       <div class="kpi"><div class="l">Average accuracy</div><div class="v">${pc(t.avg_acc)}</div><div class="s">of birds named correctly</div></div>
       <div class="kpi"><div class="l">Average score</div><div class="v">${nf(t.avg_score)}</div><div class="s">Best ever ${nf(t.best_score)}</div></div>
       <div class="kpi"><div class="l">Time per game</div><div class="v">${mmss(t.avg_secs)}</div><div class="s">${(t.avg_streak || 0).toFixed(1)} best streak on average</div></div>
-      <div class="kpi"><div class="l">Results shared</div><div class="v">${nf(shareTotal)}</div><div class="s">${nf(wa)} WhatsApp · ${nf(shareTotal - wa)} copied</div></div>
+      <div class="kpi"><div class="l">Results shared</div><div class="v">${nf(shareTotal)}</div><div class="s">${nf(wa)} WhatsApp · ${nf(cardN)} score card · ${nf(shareTotal - wa - cardN)} copied</div></div>
       <div class="kpi"><div class="l">Hints per game</div><div class="v">${hints.toFixed(1)}</div><div class="s">${nf(t.answers)} birds answered in total</div></div>
     </section>
 
