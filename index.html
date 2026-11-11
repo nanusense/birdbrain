@@ -578,7 +578,7 @@ const DECKS = [
   { id: 'giants', sec: 'world', t: 'Giants', d: 'Over 1.5 kg of pure bird.', c: C.leaf, hero: 'Common Ostrich', f: { sizes: [4] } },
   { id: 'africa', sec: 'world', t: 'African safari', d: 'Birds of the savanna and rainforest.', c: C.saffron, hero: "Lilac-breasted Roller", f: { regions: ['Africa'] } },
   { id: 'australia', sec: 'world', t: 'Australia', d: 'Lorikeets, cockatoos and kookaburras.', c: C.pink, hero: 'Rainbow Lorikeet', f: { places: ['Australia'] } },
-  { id: 'usa', sec: 'world', t: 'North American backyard', d: 'Cardinals, jays and chickadees.', c: C.coral, hero: 'Northern Cardinal', f: { places: ['USA'], sizes: [1, 2] } },
+  { id: 'usa', sec: 'world', t: 'North American backyard', d: 'Cardinals, jays and chickadees.', c: C.coral, hero: 'Northern Cardinal', f: { places: ['USA'], sizes: [1, 2], habitats: ['Forest', 'Woodland', 'Shrubland', 'Grassland', 'Human Modified'] } },
 ];
 for (const d of DECKS) { d.F = mkF(d.f); d.pool = poolOf(d.F); d.heroB = byEn[d.hero] || d.pool[0]; }
 const deckById = Object.fromEntries(DECKS.map(d => [d.id, d]));

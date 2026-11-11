@@ -30,16 +30,16 @@ REGIONS = [  # IOC breeding-region code -> label
 rcode = {c: i for i, (c, _, _) in enumerate(REGIONS)}
 rcode["TrO"] = rcode["PO"]  # tropical oceans: lump with Pacific so they stay findable
 
-IND_CORE = (r"\bIndia\b|Indian [Ss]ubcontinent|South(ern)? Asia|Indomalay|Andaman|Nicobar|Kashmir|Assam|Sikkim|Kerala|Ghats|Gujarat|Rajasthan|"
-            r"Maharashtra|Karnataka|Tamil Nadu|Bengal|Odisha|Orissa|Himachal|Uttarakhand|Arunachal|Meghalaya|Nagaland|Manipur|Mizoram|Tripura|Deccan|"
+IND_CORE = (r"\bIndia\b|Indian [Ss]ubcontinent|South(ern)? Asia|Indomalay|Andaman(?! Sea)|Nicobar|Kashmir|Assam|Sikkim|Kerala|Ghats|Gujarat|Rajasthan|"
+            r"Maharashtra|Karnataka|Tamil Nadu|(?<!Bay of )Bengal|Odisha|Orissa|Himachal|Uttarakhand|Arunachal|Meghalaya|Nagaland|Manipur|Mizoram|Tripura|Deccan|"
             r"Himalaya|Nepal|Bhutan|Bangladesh|Pakistan (to|through|and|east)|from Pakistan")
-IND_STRICT = r"\bIndia\b|Indian [Ss]ubcontinent|South(ern)? Asia|Andaman|Nicobar|Kerala|Ghats|Gujarat|Rajasthan|Bengal|Deccan|Assam|Pakistan (to|through)"
+IND_STRICT = r"\bIndia\b|Indian [Ss]ubcontinent|South(ern)? Asia|Andaman(?! Sea)|Nicobar|Kerala|Ghats|Gujarat|Rajasthan|(?<!Bay of )Bengal|Deccan|Assam|Pakistan (to|through)"
 PLACES = [
     ("India", IND_CORE),
     ("Himalayas", r"Himalaya"),
-    ("Western Ghats & South India", r"Ghats|Kerala|Karnataka|Tamil Nadu|Nilgiri|[Ss]outhern India|[Pp]eninsular India|southwestern India|\bGoa\b"),
-    ("Northeast India", r"Assam|Arunachal|Meghalaya|Nagaland|Manipur|Mizoram|Tripura|Sikkim|[Nn]ortheast(ern)? India"),
-    ("Andaman & Nicobar", r"Andaman|Nicobar"),
+    ("Western Ghats & South India", r"Ghats|Kerala|Karnataka|Tamil Nadu|Nilgiri|\b[Ss]outhern Indian?\b(?!\s+(?:Ocean|oceans?|and (?:Pacific|Atlantic)))|\b[Pp]eninsular Indian?\b(?!\s+(?:Ocean|oceans?|and (?:Pacific|Atlantic)))|\b[Ss]outhwestern Indian?\b(?!\s+(?:Ocean|oceans?|and (?:Pacific|Atlantic)))|\bGoa\b"),
+    ("Northeast India", r"Assam|Arunachal|Meghalaya|Nagaland|Manipur|Mizoram|Tripura|Sikkim|[Nn]ortheast(ern)? Indian?\b(?!\s+(?:Ocean|oceans?|and (?:Pacific|Atlantic)))"),
+    ("Andaman & Nicobar", r"Andaman(?! Sea)|Nicobar"),
     ("Sri Lanka", r"Sri Lanka"), ("Nepal", r"Nepal"),
     ("Australia", r"\bAustralia\b|Queensland|New South Wales|Tasmania"),
     ("New Zealand", r"New Zealand"), ("New Guinea", r"New Guinea"),
@@ -82,6 +82,7 @@ NAME_OVERRIDES = {
 }
 PLACES = [(n, re.compile(rx)) for n, rx in PLACES]
 IND_STRICT_RX = re.compile(IND_STRICT)
+PELAGIC_RX = re.compile(r"Petrel|Shearwater|Albatross|Penguin|Booby|Boobies|Frigatebird|Tropicbird|Skua|Auk")
 enseen = set()
 enseen = set()
 
@@ -109,13 +110,18 @@ for s in species:
         elif c.startswith("Worldwide"):
             regs.update(range(len(REGIONS)))
     text = " ".join([rng.get("text") or "", ioc.get("breeding") or "", ioc.get("nonbreeding") or ""])
+    pel = bool(PELAGIC_RX.search(t.get("familyEnglish") or ""))   # open-ocean families
     places = [i for i, (n, rx) in enumerate(PLACES) if rx.search(text)]
+    if pel:  # open-ocean birds (petrels, shearwaters, penguins...) stay out of the India decks: nobody sees them from land
+        places = [i for i in places if PLACES[i][0] not in ("India", "Himalayas", "Western Ghats & South India", "Northeast India", "Andaman & Nicobar")]
+    if s["names"]["en"] in EVERYDAY and 0 not in places:
+        places.insert(0, 0)  # index 0 = India
     for i in places:
         placecount[PLACES[i][0]] += 1
     en_name = s["names"]["en"]
     br_txt = ioc.get("breeding") or (rng.get("text") or "").split("winter")[0]
     nb_txt = (ioc.get("nonbreeding") or "") + " " + ("winter".join((rng.get("text") or "").split("winter")[1:]) if "winter" in (rng.get("text") or "") else "")
-    visitor = bool(IND_STRICT_RX.search(nb_txt)) and not IND_STRICT_RX.search(br_txt) and tr.get("migration") in ("migratory", "partially migratory")
+    visitor = (not pel) and bool(IND_STRICT_RX.search(nb_txt)) and not IND_STRICT_RX.search(br_txt) and tr.get("migration") in ("migratory", "partially migratory")
     iu = (s.get("conservation") or {}).get("iucn") or ""
     iu = iu.split(" ")[0]
     iu = "EX" if iu in ("EW",) else iu
