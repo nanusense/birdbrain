@@ -29,6 +29,18 @@
 <meta name="twitter:description" content="Think you know your birds? Guess from 11,000 species. Pick a region, go Easy to Hard, challenge friends. Free to play.">
 <meta name="twitter:image" content="https://birdbrain.indianbirds.org/assets/og.png">
 <meta name="twitter:image:alt" content="Birdbrain logo, a colourful hummingbird, next to stickers of a peacock, a monal and a roller">
+<!-- Google Analytics. Only runs on the live site, so local testing doesn't count as visits. -->
+<script>
+if (location.hostname === 'birdbrain.indianbirds.org') {
+  var ga = document.createElement('script'); ga.async = true;
+  ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-3B2TXD8K2Q';
+  document.head.appendChild(ga);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', 'G-3B2TXD8K2Q');
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@700;800;900&family=Quicksand:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
