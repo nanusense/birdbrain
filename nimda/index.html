@@ -44,7 +44,8 @@ button{cursor:pointer;border:0;background:none;padding:0}
 /* layout */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font-family:"Quicksand",var(--display);font-weight:700;font-size:26px}
-.brand img{width:40px;height:40px}
+.brand img.wm{width:auto;height:46px}
+.lcard img.wm{width:auto;height:74px}
 .brand small{font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;margin-left:4px}
 .tools{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
 .sec-t{font-family:var(--display);font-weight:800;font-size:24px;margin:30px 0 4px}
@@ -127,7 +128,7 @@ td .lbl{display:inline-block;max-width:300px;overflow:hidden;text-overflow:ellip
 
 <div class="login" id="login">
   <form class="lcard" id="form" autocomplete="off">
-    <img src="../assets/logo-160.png" alt="">
+    <img class="wm" src="../assets/wordmark.png" alt="Birdbrain">
     <h1>Admin</h1>
     <p>Enter the password to see how Birdbrain is being played.</p>
     <input id="pw" type="password" inputmode="numeric" placeholder="Password" aria-label="Password" autofocus>
@@ -138,7 +139,7 @@ td .lbl{display:inline-block;max-width:300px;overflow:hidden;text-overflow:ellip
 
 <div class="wrap hidden" id="dash">
   <header class="top">
-    <div class="brand"><img src="../assets/logo-160.png" alt=""> Birdbrain <small>Admin</small></div>
+    <div class="brand"><img class="wm" src="../assets/wordmark.png" alt="Birdbrain"> <small>Admin</small></div>
     <div class="tools"><span id="updated"></span><button class="btn ghost sm" id="refresh">Refresh</button><button class="btn ghost sm" id="logout">Log out</button></div>
   </header>
   <div id="body"></div>

@@ -23,12 +23,12 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Birdbrain logo, a colourful hummingbird, next to stickers of a peacock, a monal and a roller">
+<meta property="og:image:alt" content="The Birdbrain logo next to stickers of a peacock, a monal and a roller">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Birdbrain · The Bird Guessing Game">
 <meta name="twitter:description" content="Think you know your birds? Guess from 11,000 species. Pick a region, go Easy to Hard, challenge friends. Free to play.">
 <meta name="twitter:image" content="https://birdbrain.indianbirds.org/assets/og.png">
-<meta name="twitter:image:alt" content="Birdbrain logo, a colourful hummingbird, next to stickers of a peacock, a monal and a roller">
+<meta name="twitter:image:alt" content="The Birdbrain logo next to stickers of a peacock, a monal and a roller">
 <!-- Google Analytics. Only runs on the live site, so local testing doesn't count as visits. -->
 <script>
 if (location.hostname === 'birdbrain.indianbirds.org') {
@@ -89,6 +89,12 @@ svg{display:block}
 .nav{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--brand-font);font-weight:700;font-size:30px;letter-spacing:-.01em}
 .logo img{width:42px;height:42px;object-fit:contain}
+.logo img.wordmark{width:auto;height:54px}
+.logo img.wm-dark{display:none}
+/* dark mode: the logo's BRAIN turns solid white with no border, so it needs no white tile */
+:root[data-theme="dark"] .logo img.wm-light{display:none}
+:root[data-theme="dark"] .logo img.wm-dark{display:block;background:none;padding:0;border-radius:0}
+@media (max-width:560px){.logo img.wordmark{height:46px}}
 :root[data-theme="dark"] .logo img{background:#fff;border-radius:12px;padding:3px}
 .navr{display:flex;gap:8px;align-items:center}
 
@@ -108,7 +114,7 @@ svg{display:block}
 .qi{flex:none;width:44px;height:44px;border-radius:50%;background:var(--c,var(--soft));position:relative;overflow:hidden;display:grid;place-items:center}
 .qi img{position:absolute;left:4%;top:4%;width:92%;height:92%;object-fit:contain}
 .cta .linkbtn{margin-top:0;font-size:15px;padding:8px 4px}
-.qchip.build .qi{background:var(--ink);color:#fff;font-size:24px;font-weight:700}
+.qchip.build .qi{background:var(--ink);color:var(--bg);font-size:24px;font-weight:700}
 .collage{position:relative;height:420px}
 .cc{position:absolute;border-radius:28px;display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .3s}
 .cc img{position:absolute;left:7%;top:7%;width:86%;height:86%;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.2))}
@@ -363,9 +369,9 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 <body>
 
 <header class="nav wrap" id="nav">
-  <a class="logo" href="#" id="logoHome" aria-label="Home">
-    <img src="assets/logo-160.png" width="42" height="42" alt="">
-    <span class="brand-name">Birdbrain</span>
+  <a class="logo" href="#" id="logoHome" aria-label="Birdbrain home">
+    <img class="wordmark wm-light" src="assets/wordmark.png" width="141" height="54" alt="Birdbrain">
+    <img class="wordmark wm-dark" src="assets/wordmark-dark.png" width="141" height="54" alt="" aria-hidden="true">
   </a>
   <div class="navr">
     <button class="btn ghost sm" id="navBuild">Build your own deck</button>
@@ -1150,7 +1156,7 @@ async function makeCard(withPictures = true) {
   const n = G.answered, acc = n ? Math.round(G.right / n * 100) : 0;
   const lvl = { easy: 'Easy', medium: 'Medium', hard: 'Hard' }[G.meta.level] || 'Easy';
   const shown = G.q.slice(0, Math.min(G.answered, 10)).map((b, i) => ({ b, ok: G.log[i] === 1 }));
-  const logo = await loadImg('assets/logo.png');
+  const logo = await loadImg('assets/wordmark.png');
   const imgs = withPictures ? await Promise.all(shown.map(o => loadImg(o.b.url, o.b.raw))) : [];
   const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
   x.textAlign = 'center'; x.textBaseline = 'alphabetic';
@@ -1159,9 +1165,9 @@ async function makeCard(withPictures = true) {
   x.fillStyle = 'rgba(255,255,255,.18)'; x.beginPath(); x.arc(W - 120, 90, 300, 0, 7); x.fill();
   x.beginPath(); x.arc(80, H - 60, 220, 0, 7); x.fill();
   // brand
-  if (logo) x.drawImage(logo, 70, 62, 110, 110);
-  x.textAlign = 'left'; x.fillStyle = INK; x.font = '700 66px Quicksand, sans-serif'; x.fillText('Birdbrain', 200, 142);
-  x.textAlign = 'center';
+  x.save(); x.shadowColor = 'rgba(0,0,0,.18)'; x.shadowBlur = 24; x.shadowOffsetY = 8; x.fillStyle = '#fff'; rrect(x, 60, 40, 300, 140, 30); x.fill(); x.restore(); // the logo sits on a white card so it reads on every deck colour
+  if (logo) { const lh = 104, lw = lh * logo.width / logo.height; x.drawImage(logo, 60 + (300 - lw) / 2, 40 + (140 - lh) / 2, lw, lh); }
+  else { x.fillStyle = INK; x.font = '900 64px Gabarito, sans-serif'; x.fillText('Birdbrain', 210, 132); } // fallback if the logo is slow to load
   // panel
   x.save(); x.shadowColor = 'rgba(0,0,0,.22)'; x.shadowBlur = 50; x.shadowOffsetY = 20; x.fillStyle = '#fff'; rrect(x, 60, 215, 960, 1025, 56); x.fill(); x.restore();
   // deck title (shrinks to fit)
