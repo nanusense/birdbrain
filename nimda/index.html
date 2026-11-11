@@ -228,7 +228,7 @@ async function render(d) {
   const ins = [];
   ins.push(`<b>${nf(totalGames)}</b> games played in all, by about <b>${nf(players)}</b> players${earlierG ? ` (includes about ${nf(earlierG)} games before tracking began)` : ''}.`);
   ins.push(`<b>${nf(d7)}</b> games in the last 7 days${trend == null ? '' : `, <b>${trend >= 0 ? 'up' : 'down'} ${Math.abs(Math.round(trend * 100))}%</b> on the week before`}.`);
-  if (decks[0]) { const top = decks[0], all = top.n / tracked, wk = n7 ? (decks7[top.deck] || 0) / n7 : null; ins.push(`<b>${esc(top.title)}</b> is ${pc(all)} of all games${wk == null ? '' : ` and <b>${pc(wk)}</b> of the last 7 days`}.`); }
+  if (decks[0]) { const top = decks[0], all = top.n / tracked, wk = n7 ? (decks7[top.deck] || 0) / n7 : null; ins.push(`<b>${esc(top.deck === 'daily' ? 'The Daily challenge' : top.title)}</b> is ${pc(all)} of all games${wk == null ? '' : ` and <b>${pc(wk)}</b> of the last 7 days`}.`); }
   if (t.players > 1) ins.push(`<b>${pc(comeBack)}</b> of players came back on a different day.`);
   if (tracked) ins.push(`<b>${pc(fin / tracked)}</b> of games are played to the end${t.no_answer / tracked >= 0.01 ? `, and <b>${pc(t.no_answer / tracked)}</b> are left before the first answer` : ''}.`);
   if (d.hardest && d.hardest[0]) ins.push(`The hardest bird is <b>_HARD_</b>: only <b>${pc(d.hardest[0].ok / d.hardest[0].seen)}</b> of players get it right.`);
@@ -260,7 +260,7 @@ async function render(d) {
   // ---- decks table ----
   const dmaxN = Math.max(...decks.map(r => r.n), 1);
   const deckRows = decks.map(r => { const wk = n7 ? (decks7[r.deck] || 0) / n7 : null;
-    return `<tr><td>${esc(r.title)}</td><td class="num"><span class="mini" style="width:${Math.max(r.n / dmaxN * 60, 3)}px"></span>${nf(r.n)}</td><td class="num">${pc(r.n / tracked)}</td><td class="num">${wk == null ? '–' : pc(wk)}</td><td class="num">${pc(r.f / r.n)}</td><td class="num">${pc(r.acc)}</td></tr>`; }).join('');
+    return `<tr><td>${esc(r.deck === 'daily' ? 'Daily challenge (all days)' : r.title)}</td><td class="num"><span class="mini" style="width:${Math.max(r.n / dmaxN * 60, 3)}px"></span>${nf(r.n)}</td><td class="num">${pc(r.n / tracked)}</td><td class="num">${wk == null ? '–' : pc(wk)}</td><td class="num">${pc(r.f / r.n)}</td><td class="num">${pc(r.acc)}</td></tr>`; }).join('');
   const levels = ['easy', 'medium', 'hard'].map(k => (d.levels || []).find(l => l.level === k)).filter(Boolean);
   const feat = [['Hard mode', ((d.levels || []).find(l => l.level === 'hard') || {}).n || 0], ['Custom decks', t.custom || 0], ['Timer on', t.timed || 0], ['Shadow mode', t.shadow || 0], ['Endless', t.endless || 0]];
 
@@ -275,6 +275,26 @@ async function render(d) {
     const deckCell = r.custom ? `<span class="lbl" title="${esc(r.custom_label || '')}"><b>Custom:</b> ${esc(r.custom_label || 'every bird')}</span>` : esc(r.deck_title);
     return `<tr><td>${timeIST(r.ts_start)}<span class="ago">${ago(r.ts_start)}</span></td><td>${deckCell}</td><td>${LV[r.level] || ''}${r.shadow ? ' · shadow' : ''}</td><td class="num">${nf(r.score)}</td><td class="num">${r.answered ? r.correct + '/' + r.answered : '–'}</td><td>${result}</td><td>${esc(srcName(r.src).replace(/ \(typed.*\)/, ''))}</td><td>${esc(CN(r.country))}</td><td>${esc(r.device)}</td></tr>`;
   }).join('');
+
+  // ---- daily challenge ----
+  const dc = d.dailyChallenge || {}, dcRows = dc.byDay || [], dcT = dc.totals || {}, dcNum = r => +(String(r.title).match(/#(\d+)/) || [0, 0])[1];
+  const todayRow = dcRows.find(r => istDate(0) === new Date(r.first + 19800e3).toISOString().slice(0, 10));
+  const dcShares = (dc.shares || []).reduce((x, r) => x + r.n, 0);
+  const dcRecent = dcRows.slice(0, 14).reverse(), dcMax = Math.max(...dcRecent.map(r => r.started), 1);
+  const dcCols = dcRecent.map(r => `<div class="col" title="${esc(r.title)}: ${r.started} started, ${r.finished || 0} finished"><i style="height:${r.started / dcMax * 100}%"><u style="height:${r.started ? (r.finished || 0) / r.started * 100 : 0}%"></u></i></div>`).join('');
+  const dcAxis = dcRecent.map(r => `<span>#${dcNum(r)}</span>`).join('');
+  const dcTable = dcRows.map(r => `<tr><td><b>${esc(r.title)}</b><span class="ago">${new Date(r.first + 19800e3).toISOString().slice(0, 10)}</span></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.started)}</td><td class="num">${nf(r.finished || 0)}</td><td class="num">${pc(r.started ? (r.finished || 0) / r.started : 0)}</td><td class="num">${r.avg_score == null ? '–' : nf(Math.round(r.avg_score))}</td><td class="num">${r.avg_correct == null ? '–' : r.avg_correct.toFixed(1) + '/10'}</td></tr>`).join('');
+  const dailySection = `
+    <h2 class="sec-t">Daily challenge</h2><p class="sec-s">Everyone gets the same 10 birds each day (the day changes at midnight IST). Counted from games played in Daily mode.</p>
+    <section class="periods" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:0;margin-bottom:16px">
+      <div class="kpi"><div class="l">Played today</div><div class="v">${nf(todayRow ? todayRow.players : 0)}</div><div class="s">${todayRow ? `${nf(todayRow.finished || 0)} finished · ${esc(todayRow.title)}` : 'No one yet today'}</div></div>
+      <div class="kpi"><div class="l">Daily games, all time</div><div class="v">${nf(dcT.started || 0)}</div><div class="s">${nf(dcT.finished || 0)} finished · ${pc(dcT.started ? (dcT.finished || 0) / dcT.started : 0)}</div></div>
+      <div class="kpi"><div class="l">Daily players</div><div class="v">${nf(dcT.players || 0)}</div><div class="s">${nf(dc.repeat || 0)} came back for another day</div></div>
+      <div class="kpi"><div class="l">Average score</div><div class="v">${dcT.avg_score == null ? '–' : nf(Math.round(dcT.avg_score))}</div><div class="s">${nf(dcShares)} Daily results shared</div></div>
+    </section>
+    <section class="card"><h3>Daily games per day</h3><div class="sub">Dark = finished all 10 birds. Last 14 days with games.</div>${dcRows.length ? `<div class="cols">${dcCols}</div><div class="axis">${dcAxis}</div>` : '<div class="empty">No Daily games yet.</div>'}</section>
+    <section class="card" style="margin-top:16px"><h3>Day by day</h3><div class="sub">Players = different devices. Score and correct are for finished games.</div>
+        <div class="tw"><table style="min-width:520px"><thead><tr><th>Day</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Rate</th><th class="num">Avg score</th><th class="num">Avg right</th></tr></thead><tbody>${dcTable || '<tr><td colspan="7" class="empty">No Daily games yet.</td></tr>'}</tbody></table></div></section>`;
 
   $('#body').innerHTML = `
     <section class="hero">
@@ -292,6 +312,8 @@ async function render(d) {
 
     <h2 class="sec-t">Latest games</h2><p class="sec-s">The last 15 games played, newest first (IST)</p>
     <section class="card"><div class="tw"><table style="min-width:760px"><thead><tr><th>When</th><th>Deck</th><th>Level</th><th class="num">Score</th><th class="num">Correct</th><th>Result</th><th>Came from</th><th>Country</th><th>Device</th></tr></thead><tbody>${recentRows || '<tr><td colspan="9" class="empty">No games yet.</td></tr>'}</tbody></table></div></section>
+
+    ${dailySection}
 
     <h2 class="sec-t">Is it growing?</h2><p class="sec-s">Games and new players, last 30 days</p>
     <section class="grid">

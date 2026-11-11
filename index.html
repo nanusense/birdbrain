@@ -367,6 +367,11 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .rdaily .rstat{background:linear-gradient(135deg,#2c32bf,#5a5ff0);color:#fff}
 .rdaily .rstat span{color:rgba(255,255,255,.85)}
 .rdaily .rstat b{font-variant-numeric:tabular-nums}
+.rankcard{background:var(--surface);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow);margin:-12px 0 18px;text-align:center}
+.rankcard b{display:block;font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.rankcard span{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}
+.d-rank{margin-top:12px;font-size:14.5px;font-weight:700}
+.d-rank span{display:block;font-weight:600;opacity:.85;font-size:13.5px;margin-top:2px}
 .rnote{color:var(--muted);font-size:14px;margin:-12px 0 24px}
 @media (max-width:560px){.daily{padding:20px 18px;border-radius:24px}.d-btn{width:100%}.collage{height:190px!important}.hero p.lead{margin:14px 0 20px;font-size:17px}.hero h1{font-size:40px}}
 
@@ -499,6 +504,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div class="grade" id="rGrade"></div>
   <div class="rstats" id="rStats"></div>
   <div class="rdaily hidden" id="rDaily"></div>
+  <div class="rankcard hidden" id="rRank"></div>
   <p class="rnote hidden" id="rNote">Everyone got the same 10 birds today. Send your result to a friend and compare.</p>
   <div id="rMissed"></div>
   <div class="rbtns">
@@ -1212,7 +1218,8 @@ function finish(partial) {
   $('#rKick').textContent = G.daily ? `Daily Birdbrain #${G.daily.num} · ${G.daily.label}` : isBest ? 'New personal best!' : G.deck.t;
   $('#again').classList.toggle('hidden', !!G.daily); $('#rNote').classList.toggle('hidden', !G.daily); $('#rDaily').classList.toggle('hidden', !G.daily);
   $('#otherDeck').textContent = G.daily ? 'Play free games' : 'Other decks'; $('#otherDeck').classList.toggle('full', !!G.daily);
-  if (G.daily) renderDailyResult();
+  $('#rRank').classList.add('hidden');
+  if (G.daily) { renderDailyResult(); fillRank($('#rRank'), G.daily.num, G.meta.gid, G.score, true); }
   $('#rScore').textContent = fmt(G.score);
   $('#rGrade').textContent = G.endless ? (G.right >= 25 ? 'Endless legend' : G.right >= 10 ? 'Going strong' : 'Warming up') : grades.find(g => acc >= g[0])[1];
   $('#rStats').innerHTML = [[`${G.right}/${n}`, 'Correct'], [acc + '%', 'Accuracy'], [G.bestStreak, 'Best streak']].map(([a, b]) => `<div class="rstat"><b>${a}</b><span>${b}</span></div>`).join('');
@@ -1475,7 +1482,9 @@ function renderDaily() {
     const right = p.log.filter(Boolean).length;
     el.innerHTML = `${top}<h2>You've done today's birds</h2><div class="d-done" style="margin-top:14px"><div class="d-score"><b>${right}/${p.log.length}</b><span>${fmt(p.score)} points</span></div><div class="d-grid">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}</div></div>
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">See result &amp; share</button>${streak}</div>
+      <p class="d-rank hidden" id="dRank"></p>
       <p class="d-count" style="margin-top:14px">Next birds in <b id="dCount">--:--:--</b></p>`;
+    fillRank($('#dRank'), t.num, p.gid, p.score, false);
   } else if (n > 0) {
     el.innerHTML = `${top}<h2>Pick up where you left off</h2><div class="d-prog" style="margin-top:14px">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">Continue · ${n} of 10 done</button>${streak}</div>`;
@@ -1492,6 +1501,35 @@ function tickDaily() {
   if (dailyShown && dailyShown !== dailyInfo().str && !$('#home').classList.contains('hidden')) renderDaily(); // the day changed while the page was open
 }
 setInterval(tickDaily, 1000);
+// how today's score compares with everyone else who finished (anonymous counts from the stats server)
+const rankCache = {};
+async function fetchRank(num, gid, score) {
+  if (!STATS_ON || !gid) return null;
+  const key = num + '|' + score, c = rankCache[key];
+  if (c && Date.now() - c.t < 60000) return c.v;
+  try {
+    const r = await fetch(`${STATS_URL}/rank?n=${num}&gid=${encodeURIComponent(gid)}&score=${score}`);
+    if (!r.ok) return null;
+    const v = await r.json(); rankCache[key] = { t: Date.now(), v }; return v;
+  } catch (e) { return null; }
+}
+function rankLines(v, score) {
+  if (!v || typeof v.total !== 'number') return null;
+  const players = v.total + 1; // everyone else plus you
+  if (v.total < 5) return [`You're one of the first to finish today's birds`, 'Check back later to see how you rank.'];
+  if (score > v.top) return ['You have the top score today', `${fmt(players)} players have finished · your score ${fmt(score)}`];
+  const pct = Math.round((v.below + v.tied / 2) / v.total * 100);
+  const main = pct >= 1 ? `You scored higher than ${pct}% of today's players` : "A tough one today. Come back tomorrow!";
+  return [main, `${fmt(players)} players have finished · top score ${fmt(Math.max(v.top, score))}`];
+}
+async function fillRank(el, num, gid, score, card) {
+  if (!el) return;
+  el.classList.add('hidden');
+  const lines = rankLines(await fetchRank(num, gid, score), score);
+  if (!lines || !el.isConnected) return;
+  el.innerHTML = card ? `<b>${esc(lines[0])}</b><span>${esc(lines[1])}</span>` : `${esc(lines[0])}<span>${esc(lines[1])}</span>`;
+  el.classList.remove('hidden');
+}
 function renderDailyResult() {
   const st = dailyStreak();
   $('#rDaily').innerHTML = `<div class="rstat"><b>${st.cur > 0 ? FLAME.replace('width="15" height="15"', 'width="28" height="28" style="display:inline;vertical-align:-5px"') + ' ' + st.cur : '–'}</b><span>day streak</span></div><div class="rstat"><b id="rdTimer">--:--:--</b><span>until tomorrow's birds</span></div>`;
