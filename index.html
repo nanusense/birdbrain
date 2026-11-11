@@ -454,6 +454,16 @@ const RAW = 'https://raw.githubusercontent.com/alchaincyf/huashu-bird-sticker/ma
 
 const BRAND = 'Birdbrain';
 
+/* ---------- anonymous play stats: no names, no IPs, just a random id and what was played ---------- */
+const STATS_URL = location.hostname === 'localhost' ? 'http://localhost:8787' : 'https://birdbrain-stats.birdbrain-stats.workers.dev';
+const STATS_ON = location.hostname === 'birdbrain.indianbirds.org' || (() => { try { return localStorage.getItem('birdbrain.track') === '1'; } catch (e) { return false; } })();
+const rid = () => { const a = new Uint8Array(12); crypto.getRandomValues(a); return Array.from(a, b => (b % 36).toString(36)).join(''); };
+let PID; try { PID = localStorage.getItem('birdbrain.pid'); if (!PID || !/^[a-z0-9]{8,24}$/.test(PID)) { PID = rid(); localStorage.setItem('birdbrain.pid', PID); } } catch (e) { PID = rid(); }
+function track(t, data) {
+  if (!STATS_ON) return;
+  try { fetch(STATS_URL + '/e', { method: 'POST', body: JSON.stringify({ t, ...data }), headers: { 'Content-Type': 'text/plain' }, keepalive: true }).catch(() => {}); } catch (e) {}
+}
+
 /* ---------- data prep ---------- */
 const SIZES = [['Tiny', 'sunbird'], ['Small', 'sparrow'], ['Medium', 'myna, pigeon'], ['Large', 'crow to goose'], ['Huge', 'eagle, crane, peafowl']];
 const STATUS = ['Least concern', 'Near threatened', 'Vulnerable', 'Endangered', 'Critically endangered', 'Extinct'];
@@ -719,7 +729,12 @@ $('#bplay').onclick = () => {
 
 /* ---------- game ---------- */
 let G = null, timerId = null;
-function stopGame() { clearInterval(timerId); G = null; }
+function stopGame() { clearInterval(timerId); if (G && !G.sent && G.answered > 0) sendEnd(false); G = null; }
+function sendEnd(finished) {
+  G.sent = true;
+  track('end', { ...G.meta, score: G.score, correct: G.right, answered: G.answered, bestStreak: G.bestStreak, hints: G.hintsTotal, secs: Math.round((Date.now() - G.t0) / 1000), finished: finished ? 1 : 0, answers: G.qlog });
+}
+addEventListener('pagehide', () => { if (G && !G.sent && G.answered > 0) sendEnd(false); }); // player closed the tab mid-game
 function startGame(pool, deck, level) {
   if (pool.length < 4) return;
   S.level = level || S.level; store.save();
@@ -728,6 +743,9 @@ function startGame(pool, deck, level) {
   const q = shuffle(pool).slice(0, total || pool.length);
   G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [] };
   const li = langIdx(); G.index = D.birds.map(b => [norm(nm(b)), nm(b)]);
+  G.t0 = Date.now(); G.qlog = []; G.hintsTotal = 0; G.sent = false;
+  G.meta = { gid: rid(), pid: PID, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : deck.d, level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
+  track('start', G.meta);
   view('game');
   $('#game').style.setProperty('--dc', deck.c);
   $('#lives').classList.toggle('hidden', !G.endless);
@@ -835,7 +853,7 @@ function answer(choice, typed, timeout) {
     if (S.shadow) pts = Math.round(pts * 1.5);
     G.score += pts;
   } else { G.streak = 0; G.missed.push(b); if (G.endless) G.lives--; }
-  G.log[G.i] = correct ? 1 : 0;
+  G.log[G.i] = correct ? 1 : 0; G.qlog.push([b.i, correct ? 1 : 0]); G.hintsTotal += G.hints;
   $('#stage').classList.add('revealed');
   if (G.mode === 'choice') $$('.opt').forEach(o => { o.disabled = true; const x = G.opts[+o.dataset.i]; if (x === b) o.classList.add('good'); else if (x === choice) o.classList.add('bad'); });
   else { const ti = $('#ti'); if (ti) { ti.disabled = true; ti.style.boxShadow = `inset 0 0 0 2.5px var(--${correct ? 'good' : 'bad'})`; } $('#giveup')?.remove(); }
@@ -856,7 +874,7 @@ function answer(choice, typed, timeout) {
   $('#nextBtn').focus({ preventScroll: true });
   requestAnimationFrame(() => { $('#game').style.paddingBottom = R.offsetHeight + 20 + 'px'; });
 }
-$('#quit').onclick = () => { clearInterval(timerId); G && G.answered ? finish() : (stopGame(), view('home')); };
+$('#quit').onclick = () => { clearInterval(timerId); G && G.answered ? finish(true) : (stopGame(), view('home')); };
 document.addEventListener('keydown', e => {
   if (!G || $('#game').classList.contains('hidden') || !$('#sheetWrap').classList.contains('hidden')) return;
   if (G.done) { if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.id !== 'nextBtn') { e.preventDefault(); nextQ(); } return; }
@@ -873,8 +891,9 @@ function shareText() {
     + `${BRAND} is a free bird guessing game: you see a picture and name the bird. Choose a deck, from everyday garden birds to rare finds, and play Easy to Hard.\n\n`
     + `Think you can beat me? Play here: ${link}`;
 }
-function finish() {
+function finish(partial) {
   clearInterval(timerId); view('results');
+  if (!G.sent) sendEnd(!partial);
   const n = G.answered, acc = n ? Math.round(G.right / n * 100) : 0;
   const grades = [[90, 'Master Ornithologist'], [70, 'Seasoned Birder'], [50, 'Keen Twitcher'], [30, 'Backyard Beginner'], [0, 'Still an egg']];
   const isBest = G.score > best.score && G.score > 0;
@@ -888,8 +907,9 @@ function finish() {
 }
 $('#again').onclick = () => startGame(G.pool, G.deck, S.level);
 $('#otherDeck').onclick = () => { stopGame(); view('home'); };
-$('#shareWa').onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank', 'noopener');
+$('#shareWa').onclick = () => { track('share', { kind: 'whatsapp', deck: G.deck.id || 'custom' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank', 'noopener'); };
 $('#copy').onclick = async () => {
+  track('share', { kind: 'copy', deck: G.deck.id || 'custom' });
   try { await navigator.clipboard.writeText(shareText()); $('#copy').textContent = 'Copied'; } catch (e) { prompt('Copy your score:', shareText()); }
   setTimeout(() => $('#copy').textContent = 'Copy my score', 1600);
 };

@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Birdbrain · Admin</title>
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#fff; --soft:#efeee9; --ink:#14161a; --muted:#6a707b; --line:#e4e3dd;
+  --brand:#ff6b1a; --brand-d:#e95a0b; --good:#10a35e; --bad:#e5483b; --blue:#4aa8ec;
+  --shadow:0 1px 2px rgba(20,22,26,.05),0 14px 34px -16px rgba(20,22,26,.22);
+  --display:"Gabarito","Plus Jakarta Sans",system-ui,sans-serif; --body:"Plus Jakarta Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.1}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+.hidden{display:none!important}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 60px}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:8px}
+
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lcard{background:var(--surface);border-radius:28px;padding:34px 30px;width:min(380px,100%);box-shadow:var(--shadow);text-align:center}
+.lcard img{width:64px;height:64px}
+.lcard h1{font-size:28px;margin:12px 0 4px}
+.lcard p{color:var(--muted);margin-bottom:20px}
+.lcard input{width:100%;border:0;border-radius:14px;background:var(--soft);padding:15px 16px;font-size:18px;text-align:center;letter-spacing:.2em;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:13px 22px;font-weight:700;background:var(--brand);color:#fff;transition:.12s;width:100%}
+.btn:hover{background:var(--brand-d)}
+.btn[disabled]{opacity:.5;cursor:wait}
+.btn.sm{width:auto;padding:9px 16px;font-size:14px;border-radius:12px}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.ghost:hover{background:var(--soft)}
+.err{color:var(--bad);font-weight:600;min-height:22px;margin-top:10px;font-size:14px}
+
+/* dashboard */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Quicksand",var(--display);font-weight:700;font-size:26px;letter-spacing:-.01em}
+.brand img{width:40px;height:40px}
+.brand small{font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:99px;padding:3px 10px;margin-left:4px}
+.tools{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+.insights{background:var(--ink);color:#fff;border-radius:26px;padding:22px 24px;margin-bottom:16px}
+.insights h2{font-size:22px;margin-bottom:10px}
+.insights ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:8px 28px}
+.insights li{padding-left:20px;position:relative;opacity:.95}
+.insights li::before{content:"";position:absolute;left:0;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--brand)}
+.insights b{color:#ffb98a}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow)}
+.kpi .l{font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:var(--display);font-weight:800;font-size:38px;letter-spacing:-.03em;line-height:1.1;margin:4px 0 2px}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.hero{background:var(--brand);color:#fff}
+.kpi.hero .l,.kpi.hero .s{color:rgba(255,255,255,.85)}
+.kpi.hero .v{font-size:54px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin-bottom:16px}
+.grid.wide{grid-template-columns:repeat(auto-fit,minmax(480px,1fr))}
+.card{background:var(--surface);border-radius:24px;padding:20px 22px;box-shadow:var(--shadow);min-width:0}
+.card h3{font-size:20px;margin-bottom:2px}
+.card .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.empty{color:var(--muted);padding:16px 0}
+/* bar lists */
+.bl{display:grid;gap:9px}
+.br{display:grid;grid-template-columns:minmax(90px,42%) 1fr auto;gap:10px;align-items:center;font-size:14px}
+.br .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.br .t{height:12px;background:var(--soft);border-radius:99px;overflow:hidden}
+.br .t i{display:block;height:100%;background:var(--brand);border-radius:99px}
+.br.b .t i{background:var(--blue)}
+.br .c{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px;white-space:nowrap}
+.br .c b{color:var(--ink)}
+/* column charts */
+.cols{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:6px}
+.col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+.col i{display:block;background:#ffcfb0;border-radius:5px 5px 0 0;min-height:2px;position:relative}
+.col i u{position:absolute;left:0;right:0;bottom:0;background:var(--brand);border-radius:5px 5px 0 0;text-decoration:none}
+.col.one i{background:var(--brand)}
+.axis{display:flex;gap:3px;margin-top:6px;font-size:11px;color:var(--muted)}
+.axis span{flex:1;text-align:center;min-width:0;overflow:visible;white-space:nowrap}
+.legend{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.legend s{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;text-decoration:none}
+/* stat rows */
+.rows{display:grid;gap:0}
+.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row span:first-child{color:var(--muted)}
+.row b{font-variant-numeric:tabular-nums}
+.split{display:flex;height:16px;border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.split i{display:block;height:100%}
+.sl{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.sl b{color:var(--ink)}
+/* birds */
+.birds{display:grid;gap:10px}
+.bird{display:flex;align-items:center;gap:12px}
+.bird .th{flex:none;width:52px;height:52px;border-radius:14px;background:var(--soft);display:grid;place-items:center;overflow:hidden}
+.bird .th img{width:92%;height:92%;object-fit:contain}
+.bird .bn{flex:1;min-width:0;font-weight:700;line-height:1.2}
+.bird .bn small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
+.bird .pc{font-family:var(--display);font-weight:800;font-size:22px}
+.bird .pc.lo{color:var(--bad)}.bird .pc.hi{color:var(--good)}
+/* table */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:6px 10px 8px}
+td{padding:9px 10px;border-top:1px solid var(--line);white-space:nowrap}
+.pill{display:inline-block;border-radius:99px;padding:2px 9px;font-size:12px;font-weight:700;background:var(--soft)}
+.pill.ok{background:#dff4e8;color:#0b7a46}.pill.no{background:#fde5e1;color:#b13324}
+.note{color:var(--muted);font-size:12.5px;margin-top:22px;text-align:center}
+@media (max-width:560px){.grid,.grid.wide{grid-template-columns:1fr}.kpi.hero .v{font-size:46px}.insights ul{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="login">
+  <form class="lcard" id="form" autocomplete="off">
+    <img src="../assets/logo-160.png" alt="">
+    <h1>Admin</h1>
+    <p>Enter the password to see how Birdbrain is being played.</p>
+    <input id="pw" type="password" inputmode="numeric" placeholder="Password" aria-label="Password" autofocus>
+    <button class="btn" id="go" type="submit">Open dashboard</button>
+    <div class="err" id="err" role="alert"></div>
+  </form>
+</div>
+
+<!-- DASHBOARD -->
+<div class="wrap hidden" id="dash">
+  <header class="top">
+    <div class="brand"><img src="../assets/logo-160.png" alt=""> Birdbrain <small>Admin</small></div>
+    <div class="tools"><span id="updated"></span><button class="btn ghost sm" id="refresh">Refresh</button><button class="btn ghost sm" id="logout">Log out</button></div>
+  </header>
+  <div id="body"></div>
+  <p class="note">Anonymous play data: a random player id, what was played and the country. No names, no IP addresses. Times are in IST.</p>
+</div>
+
+<script>
+(() => {
+"use strict";
+const API = location.hostname === 'localhost' ? 'http://localhost:8787' : 'https://birdbrain-stats.birdbrain-stats.workers.dev';
+const RAW = 'https://raw.githubusercontent.com/alchaincyf/huashu-bird-sticker/main/';
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const nf = n => Math.round(n || 0).toLocaleString('en-IN');
+const pc = x => (x == null ? '–' : Math.round(x * 100) + '%');
+const LV = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+const CN = (() => { try { const r = new Intl.DisplayNames(['en'], { type: 'region' }); return c => (c && c.length === 2 && c !== '??' ? r.of(c) : 'Unknown'); } catch (e) { return c => c || 'Unknown'; } })();
+let pw = '';
+
+/* ---------- login ---------- */
+async function load(password) {
+  const r = await fetch(API + '/admin/stats', { method: 'POST', body: JSON.stringify({ password }), headers: { 'Content-Type': 'text/plain' } });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Could not load stats');
+  return j;
+}
+async function enter(password) {
+  $('#go').disabled = true; $('#err').textContent = '';
+  try {
+    const d = await load(password); pw = password;
+    try { sessionStorage.setItem('bb.admin', password); } catch (e) {}
+    $('#login').classList.add('hidden'); $('#dash').classList.remove('hidden');
+    render(d);
+  } catch (e) {
+    $('#err').textContent = /fetch/i.test(e.message) ? 'Could not reach the stats server.' : e.message;
+    try { sessionStorage.removeItem('bb.admin'); } catch (x) {}
+    $('#login').classList.remove('hidden'); $('#dash').classList.add('hidden');
+  } finally { $('#go').disabled = false; }
+}
+$('#form').addEventListener('submit', e => { e.preventDefault(); const v = $('#pw').value.trim(); if (v) enter(v); });
+$('#logout').onclick = () => { pw = ''; try { sessionStorage.removeItem('bb.admin'); } catch (e) {} $('#pw').value = ''; $('#dash').classList.add('hidden'); $('#login').classList.remove('hidden'); };
+$('#refresh').onclick = async () => { $('#refresh').disabled = true; try { render(await load(pw)); } catch (e) { alert(e.message); } $('#refresh').disabled = false; };
+try { const saved = sessionStorage.getItem('bb.admin'); if (saved) enter(saved); } catch (e) {}
+
+/* ---------- bird names + pictures (loaded only after login) ---------- */
+let birdMap = null;
+function loadBirds() {
+  if (birdMap) return Promise.resolve(birdMap);
+  return new Promise(res => {
+    const s = document.createElement('script'); s.src = '../data/birds-data.js';
+    s.onload = () => { const D = window.BIRD_DATA, m = {}; for (const b of D.birds) { const f = D.fams[b.f]; m[b.i] = { name: b.n[0], sci: b.s, url: RAW + `stickers/${f.o}/${f.l}/${b.i}.webp` }; } birdMap = m; res(m); };
+    s.onerror = () => res({});
+    document.head.appendChild(s);
+  });
+}
+
+/* ---------- small chart helpers ---------- */
+const barList = (rows, { max, cls = '', fmt = r => `<b>${nf(r.n)}</b>` } = {}) => {
+  if (!rows.length) return '<div class="empty">No data yet.</div>';
+  const m = max || Math.max(...rows.map(r => r.n), 1);
+  return `<div class="bl">${rows.map(r => `<div class="br ${cls}"><span class="n" title="${esc(r.label)}">${esc(r.label)}</span><span class="t"><i style="width:${Math.max(r.n / m * 100, 2)}%"></i></span><span class="c">${fmt(r)}</span></div>`).join('')}</div>`;
+};
+const istDate = off => new Date(Date.now() + 19800e3 - off * 864e5).toISOString().slice(0, 10);
+const hourLabel = h => (h % 12 || 12) + (h < 12 ? 'a' : 'p');
+
+/* ---------- render ---------- */
+async function render(d) {
+  const t = d.totals || {}, started = t.started || 0, played = t.played || 0, fin = t.finished || 0;
+  $('#updated').textContent = 'Updated ' + new Date(d.generated).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }) + ' IST';
+  if (!started) { $('#body').innerHTML = '<div class="card" style="text-align:center;padding:50px 20px"><h3>No games yet</h3><p class="sub">Play a game on the live site and refresh this page.</p></div>'; return; }
+
+  const shareTotal = (d.shares || []).reduce((a, r) => a + r.n, 0), wa = ((d.shares || []).find(r => r.kind === 'whatsapp') || {}).n || 0;
+  const players = t.players || 0, retPct = players ? d.returning / players : 0;
+  const hints = t.answers ? (t.hints || 0) / Math.max(played, 1) : 0;
+  const mmss = s => (s == null ? '–' : Math.floor(s / 60) + 'm ' + String(Math.round(s % 60)).padStart(2, '0') + 's');
+
+  // ---- auto insights ----
+  const ins = [];
+  const topDeck = (d.decks || [])[0]; if (topDeck) ins.push(`The most played deck is <b>${esc(topDeck.title)}</b>, with <b>${pc(topDeck.n / started)}</b> of all games.`);
+  const lv = Object.fromEntries((d.levels || []).map(l => [l.level, l]));
+  const lvTop = [...(d.levels || [])].sort((a, b) => b.n - a.n)[0]; if (lvTop) ins.push(`<b>${pc(lvTop.n / started)}</b> of games are played on <b>${LV[lvTop.level]}</b>. Players get <b>${pc(lvTop.acc)}</b> right there.`);
+  ins.push(`<b>${pc(started ? fin / started : 0)}</b> of games are played to the end. Players answer <b>${pc(t.avg_acc)}</b> of birds correctly on average.`);
+  if (players > 1) ins.push(`<b>${pc(retPct)}</b> of players came back for another game (${(started / players).toFixed(1)} games per player).`);
+  const hr = [...(d.hourly || [])].sort((a, b) => b.n - a.n)[0]; if (hr) ins.push(`The busiest hour is <b>${(hr.h % 12 || 12) + (hr.h < 12 ? ' AM' : ' PM')} IST</b>.`);
+  const ct = (d.countries || [])[0]; if (ct) ins.push(`Most players are from <b>${esc(CN(ct.country))}</b> (${pc(ct.n / started)} of games).`);
+  if (d.hardest && d.hardest[0]) { const h = d.hardest[0]; ins.push(`The hardest bird so far is <b>_HARD_</b>: only <b>${pc(h.ok / h.seen)}</b> of players get it right.`); }
+  if (shareTotal) ins.push(`Players shared a result <b>${nf(shareTotal)}</b> times (${nf(wa)} on WhatsApp), about <b>${pc(shareTotal / Math.max(fin, 1))}</b> of finished games.`);
+  const modes = []; if (t.shadow) modes.push(`${pc(t.shadow / started)} use shadow mode`); if (t.timed) modes.push(`${pc(t.timed / started)} use the timer`); if (t.custom) modes.push(`${pc(t.custom / started)} build a custom deck`);
+  if (modes.length) ins.push('Of all games, ' + modes.join(', ') + '.');
+
+  // ---- daily + hourly charts ----
+  const dayMap = Object.fromEntries((d.daily || []).map(r => [r.d, r]));
+  const days = Array.from({ length: 30 }, (_, i) => istDate(29 - i));
+  const dmax = Math.max(...days.map(k => (dayMap[k] || {}).n || 0), 1);
+  const dcols = days.map(k => { const r = dayMap[k] || { n: 0, f: 0 }; return `<div class="col" title="${k}: ${r.n} started, ${r.f || 0} finished"><i style="height:${r.n / dmax * 100}%"><u style="height:${r.n ? (r.f || 0) / r.n * 100 : 0}%"></u></i></div>`; }).join('');
+  const daxis = days.map((k, i) => `<span>${i % 5 === 0 ? k.slice(8) + '/' + k.slice(5, 7) : ''}</span>`).join('');
+  const hMap = Object.fromEntries((d.hourly || []).map(r => [r.h, r.n])), hmax = Math.max(...Object.values(hMap), 1);
+  const hcols = Array.from({ length: 24 }, (_, h) => `<div class="col one" title="${hourLabel(h)}: ${hMap[h] || 0} games"><i style="height:${(hMap[h] || 0) / hmax * 100}%"></i></div>`).join('');
+  const haxis = Array.from({ length: 24 }, (_, h) => `<span>${h % 3 === 0 ? hourLabel(h) : ''}</span>`).join('');
+  const amap = Object.fromEntries((d.accuracy || []).map(r => [r.b, r.n])), amax = Math.max(...Object.values(amap), 1);
+  const acols = Array.from({ length: 10 }, (_, b) => `<div class="col one" title="${b * 10}–${b * 10 + 10}% correct: ${amap[b] || 0} games"><i style="height:${(amap[b] || 0) / amax * 100}%"></i></div>`).join('');
+  const aaxis = Array.from({ length: 10 }, (_, b) => `<span>${b * 10}</span>`).join('');
+
+  // ---- device split ----
+  const dev = d.devices || [], devTot = dev.reduce((a, r) => a + r.n, 0) || 1;
+  const devColors = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
+  const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devColors[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><b>${esc(r.device)}</b> ${pc(r.n / devTot)}</span>`).join('')}</div>`;
+
+  const roundsLbl = r => (r.rounds === 0 ? 'Endless' : r.rounds + ' birds'), timerLbl = r => (r.timer === 0 ? 'No timer' : r.timer + ' sec timer');
+
+  $('#body').innerHTML = `
+    <section class="insights"><h2>What stands out</h2><ul>${ins.map(i => `<li>${i}</li>`).join('')}</ul></section>
+    <section class="kpis">
+      <div class="kpi hero"><div class="l">Games played</div><div class="v">${nf(started)}</div><div class="s">Today ${nf(d.periods.d1)} · 7 days ${nf(d.periods.d7)} · 30 days ${nf(d.periods.d30)}</div></div>
+      <div class="kpi"><div class="l">Finished games</div><div class="v">${nf(fin)}</div><div class="s">${pc(fin / started)} of games played to the end</div></div>
+      <div class="kpi"><div class="l">Players</div><div class="v">${nf(players)}</div><div class="s">${pc(retPct)} played more than once</div></div>
+      <div class="kpi"><div class="l">Average accuracy</div><div class="v">${pc(t.avg_acc)}</div><div class="s">of birds named correctly</div></div>
+      <div class="kpi"><div class="l">Average score</div><div class="v">${nf(t.avg_score)}</div><div class="s">Best ever ${nf(t.best_score)}</div></div>
+      <div class="kpi"><div class="l">Time per game</div><div class="v">${mmss(t.avg_secs)}</div><div class="s">${(t.avg_streak || 0).toFixed(1)} best streak on average</div></div>
+      <div class="kpi"><div class="l">Results shared</div><div class="v">${nf(shareTotal)}</div><div class="s">${nf(wa)} WhatsApp · ${nf(shareTotal - wa)} copied</div></div>
+      <div class="kpi"><div class="l">Hints per game</div><div class="v">${hints.toFixed(1)}</div><div class="s">${nf(t.answers)} birds answered in total</div></div>
+    </section>
+
+    <section class="grid wide">
+      <div class="card"><h3>Games per day</h3><div class="sub">Last 30 days (IST)</div>
+        <div class="legend"><span><s style="background:#ffcfb0"></s>Started</span><span><s style="background:var(--brand)"></s>Finished</span></div>
+        <div class="cols">${dcols}</div><div class="axis">${daxis}</div></div>
+      <div class="card"><h3>When people play</h3><div class="sub">Games by hour of day (IST), all time</div>
+        <div class="cols">${hcols}</div><div class="axis">${haxis}</div></div>
+    </section>
+
+    <section class="grid">
+      <div class="card"><h3>Popular decks</h3><div class="sub">Games started, with the average accuracy</div>
+        ${barList((d.decks || []).map(r => ({ label: r.title, n: r.n, acc: r.acc })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.acc)}` })}</div>
+      <div class="card"><h3>Difficulty</h3><div class="sub">Games and accuracy by level</div>
+        ${barList(['easy', 'medium', 'hard'].filter(k => lv[k]).map(k => ({ label: LV[k], n: lv[k].n, acc: lv[k].acc })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.acc)} correct` })}
+        <h3 style="margin-top:22px;font-size:17px">How people set up a game</h3><div class="rows" style="margin-top:8px">
+          ${(d.rounds || []).map(r => `<div class="row"><span>${roundsLbl(r)}</span><b>${pc(r.n / started)}</b></div>`).join('')}
+          ${(d.timers || []).map(r => `<div class="row"><span>${timerLbl(r)}</span><b>${pc(r.n / started)}</b></div>`).join('')}
+          <div class="row"><span>Shadow mode on</span><b>${pc((t.shadow || 0) / started)}</b></div>
+          <div class="row"><span>Custom (built) deck</span><b>${pc((t.custom || 0) / started)}</b></div></div></div>
+      <div class="card"><h3>Where players are</h3><div class="sub">Games by country</div>
+        ${barList((d.countries || []).map(r => ({ label: CN(r.country), n: r.n })), { cls: 'b', fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.n / started)}` })}
+        <h3 style="margin-top:22px;font-size:17px">Device</h3>${devHtml}</div>
+    </section>
+
+    <section class="grid">
+      <div class="card"><h3>Hardest birds</h3><div class="sub">Lowest share answered correctly (at least 5 answers)</div><div class="birds" id="hardest"></div></div>
+      <div class="card"><h3>Easiest birds</h3><div class="sub">Highest share answered correctly (at least 5 answers)</div><div class="birds" id="easiest"></div></div>
+      <div class="card"><h3>How well players do</h3><div class="sub">Games by % of birds answered correctly (games with 3+ answers)</div>
+        <div class="cols">${acols}</div><div class="axis">${aaxis}</div>
+        ${(d.customLabels || []).length ? `<h3 style="margin-top:22px;font-size:17px">Popular custom decks</h3><div style="margin-top:10px">${barList(d.customLabels.map(r => ({ label: r.label, n: r.n })), { cls: 'b' })}</div>` : ''}</div>
+    </section>
+
+    <section class="card"><h3>Latest games</h3><div class="sub">The 15 most recent</div>
+      <div class="tw"><table><thead><tr><th>When (IST)</th><th>Deck</th><th>Level</th><th>Score</th><th>Correct</th><th>Result</th><th>Country</th><th>Device</th></tr></thead><tbody>
+      ${(d.recent || []).map(r => `<tr><td>${new Date(r.ts_start).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}</td><td>${esc(r.deck_title)}</td><td>${LV[r.level] || ''}${r.shadow ? ' · shadow' : ''}</td><td>${nf(r.score)}</td><td>${r.answered ? r.correct + '/' + r.answered : '–'}</td><td><span class="pill ${r.finished ? 'ok' : 'no'}">${r.finished ? 'finished' : 'left early'}</span></td><td>${esc(CN(r.country))}</td><td>${esc(r.device)}</td></tr>`).join('')}
+      </tbody></table></div></section>`;
+
+  // bird names + pictures arrive a moment later
+  const names = await loadBirds();
+  const birdRow = (r, cls) => { const b = names[r.bird] || { name: r.bird.replace(/_/g, ' '), sci: '' }; const p = r.ok / r.seen;
+    return `<div class="bird"><div class="th">${b.url ? `<img loading="lazy" src="${b.url}" alt="">` : ''}</div><div class="bn">${esc(b.name)}<small>${nf(r.seen)} answers</small></div><div class="pc ${cls}">${pc(p)}</div></div>`; };
+  const fill = (id, rows, cls) => { $('#' + id).innerHTML = rows.length ? rows.map(r => birdRow(r, cls)).join('') : '<div class="empty">Needs a few more games (a bird needs 5 answers to show up).</div>'; };
+  fill('hardest', d.hardest || [], 'lo'); fill('easiest', d.easiest || [], 'hi');
+  if (d.hardest && d.hardest[0]) { const b = names[d.hardest[0].bird]; const li = [...document.querySelectorAll('.insights li')].find(x => x.innerHTML.includes('_HARD_')); if (li) li.innerHTML = li.innerHTML.replace('_HARD_', esc(b ? b.name : d.hardest[0].bird)); }
+  else { const li = [...document.querySelectorAll('.insights li')].find(x => x.innerHTML.includes('_HARD_')); if (li) li.remove(); }
+}
+})();
+</script>
+</body>
+</html>
