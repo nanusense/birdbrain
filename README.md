@@ -33,6 +33,17 @@ The game name lives in `const BRAND` in `index.html`, plus the `<title>`, `og:` 
   python3 -I build_data.py upstream/data
   ```
 
+## Daily Birdbrain
+
+The same 10 birds for everyone each day (the day changes at midnight IST), one try per player, with a streak and a shareable result.
+
+- `data/daily.js` holds four frozen lists of bird ids (3 well-known, 4 Indian, 2 from the world, 1 tricky finish). Each day takes the next birds from each list, so nothing repeats until a list runs out. The lists are written once by `build_daily.py` with a fixed seed, so rebuilding the bird data never changes a day's birds.
+- The wrong answer choices come from a seeded random generator, so they are identical on every device.
+- Progress and the streak are saved in the player's browser only (`birdbrain.daily.v1`, `birdbrain.dstreak.v1`). Leaving mid-game keeps the answers already given.
+- See what is coming: `python3 build_daily.py --preview 14`. Change `START` or the lists, then run `python3 build_daily.py` (this rewrites `data/daily.js`; do it before launch, not after, or the day numbers shift).
+- On localhost, `?day=2026-11-20` previews another day.
+- Stats: daily games are recorded with deck `daily` (title "Daily #N"), so they show up in the admin decks table.
+
 ## India data (approximate)
 
 - "India" and the Indian sub-regions are matched from each bird's range text (India, Indian states, Himalayas, Nepal, "Pakistan to ...", and so on). It finds about 1,100 species, a bit fewer than the real checklist.

@@ -108,6 +108,7 @@ svg{display:block}
 .hero p.lead{font-size:19px;color:var(--muted);max-width:30em;margin:20px 0 28px}
 .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .pickhead{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.freehint{font-size:14px;color:var(--muted);margin:-4px 0 12px}
 .quick{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;max-width:38em}
 .qchip{display:inline-flex;align-items:center;gap:10px;padding:5px 18px 5px 5px;border-radius:99px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:15px;transition:.12s;text-align:left}
 .qchip:hover{box-shadow:inset 0 0 0 2px var(--ink);transform:translateY(-1px)}
@@ -326,6 +327,49 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .rbtns .full{grid-column:1/-1}
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
 
+/* ---------- Daily Birdbrain: its own colour (indigo) so it never looks like free play ---------- */
+.daily{position:relative;width:100%;max-width:38em;text-align:left;color:#fff;background:linear-gradient(135deg,#2c32bf,#5a5ff0);border-radius:28px;padding:22px 24px;margin:0 0 28px;box-shadow:0 22px 40px -18px rgba(50,55,200,.75);overflow:hidden}
+.daily::before{content:"";position:absolute;right:-50px;top:-60px;width:210px;height:210px;border-radius:50%;background:rgba(255,255,255,.1)}
+.daily>*{position:relative}
+.d-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.d-pill{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#fff;color:#2c32bf;border-radius:99px;padding:6px 13px}
+.d-date{font-weight:700;font-size:14px;opacity:.9}
+.daily h2{font-size:clamp(25px,3.4vw,32px);font-weight:800;line-height:1.06;max-width:15em}
+.d-tags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.d-tags span{font-size:13px;font-weight:700;background:rgba(255,255,255,.16);border-radius:99px;padding:5px 12px}
+.d-act{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.d-btn{background:#fff;color:#2c32bf;font-weight:800;font-size:17px;border-radius:16px;padding:14px 24px;box-shadow:0 10px 22px -10px rgba(0,0,0,.45);transition:transform .12s}
+.d-btn:hover{transform:translateY(-1px)}
+.d-streak{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:14px;background:rgba(255,255,255,.16);border-radius:99px;padding:7px 13px}
+.d-count{font-size:14px;font-weight:600;opacity:.92}
+.d-count b{font-variant-numeric:tabular-nums;font-weight:800}
+.d-done{display:flex;align-items:center;gap:16px;margin:2px 0 18px;flex-wrap:wrap}
+.d-score b{display:block;font-family:var(--display);font-size:40px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.d-score span{font-size:13.5px;font-weight:700;opacity:.9}
+.d-grid{display:flex;gap:5px;flex-wrap:wrap;max-width:260px}
+.d-grid i{width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.22)}
+.d-grid i.ok{background:#3ddc97}.d-grid i.no{background:#ff6b5e}
+.d-prog{display:flex;gap:4px;margin:2px 0 16px;max-width:300px}
+.d-prog i{flex:1;height:8px;border-radius:9px;background:rgba(255,255,255,.22)}
+.d-prog i.ok{background:#3ddc97}.d-prog i.no{background:#ff6b5e}
+.dbar{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#2c32bf,#5a5ff0);color:#fff;border-radius:16px;padding:8px 12px;margin-bottom:12px;font-size:13.5px;font-weight:600}
+.dbar .d-pill{padding:4px 10px;font-size:11.5px}
+.dbar span.t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rules{list-style:none;padding:0;margin:16px 0 20px;display:grid;gap:13px}
+.rules li{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;font-size:14.5px;color:var(--muted);line-height:1.4}
+.rules li b{display:block;color:var(--ink);font-size:15.5px}
+.rules .ri{width:36px;height:36px;border-radius:12px;background:#e9eaff;color:#2c32bf;display:grid;place-items:center;font-weight:800;font-size:15px}
+:root[data-theme="dark"] .rules .ri{background:#272b5c;color:#aab0ff}
+.d-sheet .d-pill{background:#e9eaff;color:#2c32bf;margin-bottom:12px}
+:root[data-theme="dark"] .d-sheet .d-pill{background:#272b5c;color:#aab0ff}
+.btn.dly{background:linear-gradient(135deg,#2c32bf,#5a5ff0);box-shadow:0 12px 26px -12px rgba(50,55,200,.8);width:100%}
+.rdaily{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:-8px 0 26px}
+.rdaily .rstat{background:linear-gradient(135deg,#2c32bf,#5a5ff0);color:#fff}
+.rdaily .rstat span{color:rgba(255,255,255,.85)}
+.rdaily .rstat b{font-variant-numeric:tabular-nums}
+.rnote{color:var(--muted);font-size:14px;margin:-12px 0 24px}
+@media (max-width:560px){.daily{padding:20px 18px;border-radius:24px}.d-btn{width:100%}.collage{height:190px!important}.hero p.lead{margin:14px 0 20px;font-size:17px}.hero h1{font-size:40px}}
+
 /* ---------- responsive ---------- */
 @media (max-width:860px){
   .hero{grid-template-columns:1fr;padding-top:10px;gap:10px}
@@ -386,7 +430,9 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
       <div class="eyebrow">11,011 birds · 1 sticker each</div>
       <h1>How well do you know your <em>birds?</em></h1>
       <p class="lead">Guess the bird from its picture. Pick what you want to play, from the birds you see every day to rare finds from around the world.</p>
-      <p class="pickhead">Pick your set</p>
+      <section class="daily" id="dailyCard" aria-label="Daily Birdbrain"></section>
+      <p class="pickhead">Free play · Pick your set</p>
+      <p class="freehint">Choose any deck and play as many games as you like. It's separate from the Daily challenge.</p>
       <div class="quick" id="quickDecks"></div>
       <div class="cta">
         <button class="btn ghost" id="surprise"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.500" cy="8.500" r="1" fill="currentColor"/><circle cx="15.500" cy="15.500" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="15.500" cy="8.500" r="1" fill="currentColor"/><circle cx="8.500" cy="15.500" r="1" fill="currentColor"/></svg> Surprise me</button>
@@ -432,6 +478,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 
 <!-- GAME -->
 <main id="game" class="game hidden" aria-live="polite">
+  <div class="dbar hidden" id="dailyBar"><span class="d-pill" id="dbPill">Daily</span><span class="t" id="dbText"></span></div>
   <div class="hud">
     <button class="iconbtn" id="quit" aria-label="Quit game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="segs" id="segs"></div>
@@ -451,6 +498,8 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div class="big" id="rScore">0</div>
   <div class="grade" id="rGrade"></div>
   <div class="rstats" id="rStats"></div>
+  <div class="rdaily hidden" id="rDaily"></div>
+  <p class="rnote hidden" id="rNote">Everyone got the same 10 birds today. Send your result to a friend and compare.</p>
   <div id="rMissed"></div>
   <div class="rbtns">
     <button class="btn full" id="shareCard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/></svg> Share my score card</button>
@@ -461,6 +510,23 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   </div>
 </main>
 
+<!-- DAILY INTRO -->
+<div class="sheet-wrap hidden" id="dailyWrap">
+  <div class="sharebox d-sheet" role="dialog" aria-modal="true" aria-labelledby="dyTitle">
+    <button class="s-x" id="dyClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <span class="d-pill" id="dyPill">Daily Birdbrain</span>
+    <h2 id="dyTitle">Today's 10 birds</h2>
+    <ul class="rules">
+      <li><span class="ri">=</span><div><b>The same for everyone</b>Everyone in the world gets these exact 10 birds today.</div></li>
+      <li><span class="ri">1</span><div><b>One try a day</b>You can play today's set once. If you close the page, your progress is saved and you carry on where you left off.</div></li>
+      <li><span class="ri">↗</span><div><b>Easy to hard</b>It starts with familiar birds and ends with a tricky one. The wrong answers are look-alike birds.</div></li>
+      <li><span class="ri">?</span><div><b>No timer, hints cost points</b>Take your time. Each hint takes 25 points off that bird.</div></li>
+      <li><span class="ri">◐</span><div><b>New birds at midnight IST</b>Come back every day to build a streak.</div></li>
+    </ul>
+    <button class="btn lg dly" id="dyStart">Start today's birds</button>
+    <p class="cardnote">Want to play something else? Pick any deck on the home page. Free play is separate and never uses up your daily try.</p>
+  </div>
+</div>
 <!-- DECK SHEET -->
 <div class="sheet-wrap hidden" id="sheetWrap">
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle" id="sheet">
@@ -517,6 +583,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 <canvas class="confetti hidden" id="confetti"></canvas>
 
 <script src="data/birds-data.js"></script>
+<script src="data/daily.js"></script>
 <script>
 (() => {
 "use strict";
@@ -731,6 +798,7 @@ function view(v) {
   VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
   $('#nav').classList.toggle('hidden', v === 'game');
   $('#reveal').classList.add('hidden');
+  if (v === 'home' && typeof renderDaily === 'function') renderDaily();
   window.scrollTo(0, 0);
 }
 
@@ -899,12 +967,12 @@ $('#bplay').onclick = () => {
 
 /* ---------- game ---------- */
 let G = null, timerId = null;
-function stopGame() { clearInterval(timerId); if (G && !G.sent && G.answered > 0) sendEnd(false); G = null; }
+function stopGame() { clearInterval(timerId); if (G && !G.sent && G.answered > 0 && !G.daily) sendEnd(false); G = null; } // a daily game isn't over when you leave: it can be resumed
 function sendEnd(finished) {
   G.sent = true;
   track('end', { ...G.meta, score: G.score, correct: G.right, answered: G.answered, bestStreak: G.bestStreak, hints: G.hintsTotal, secs: Math.round((Date.now() - G.t0) / 1000), finished: finished ? 1 : 0, answers: G.qlog });
 }
-addEventListener('pagehide', () => { if (G && !G.sent && G.answered > 0) sendEnd(false); }); // player closed the tab mid-game
+addEventListener('pagehide', () => { if (G && !G.sent && G.answered > 0 && !G.daily) sendEnd(false); }); // player closed the tab mid-game
 /* ---------- Hard mode helpers: suggestions from the deck being played, and forgiving answer matching ---------- */
 const grey = s => s.replace(/gray/g, 'grey');
 function buildIndex(pool) {
@@ -949,7 +1017,7 @@ function startGame(pool, deck, level) {
   const total = +S.rounds;
   const mode = S.level === 'hard' ? 'type' : 'choice', diff = S.level === 'easy' ? 'easy' : 'tricky';
   const q = shuffle(pool).slice(0, total || pool.length);
-  G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [] };
+  G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [], o: { level: S.level, timer: S.timer, shadow: S.shadow } };
   G.index = buildIndex(G.pool);
   G.t0 = Date.now(); G.qlog = []; G.hintsTotal = 0; G.sent = false;
   G.meta = { gid: rid(), pid: PID, src: SRC, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : (deck.full || deck.d), level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
@@ -959,7 +1027,8 @@ function startGame(pool, deck, level) {
   $('#lives').classList.toggle('hidden', !G.endless);
   $('#segs').classList.toggle('hidden', G.endless);
   if (!G.endless) $('#segs').innerHTML = q.map(() => '<i></i>').join('');
-  $('#tbarWrap').classList.toggle('hidden', S.timer === '0');
+  $('#tbarWrap').classList.toggle('hidden', G.o.timer === '0');
+  $('#dailyBar').classList.add('hidden');
   nextQ(true);
 }
 function preload() { for (let k = 1; k <= 2; k++) { const b = G.q[G.i + k]; if (b) { const im = new Image(); im.crossOrigin = 'anonymous'; im.src = b.url; } } }
@@ -969,8 +1038,9 @@ function nextQ(first) {
   const b = G.q[G.i];
   G.cur = b; G.hints = 0; G.done = false;
   $('#reveal').classList.add('hidden'); $('#game').style.paddingBottom = '';
-  const st = $('#stage'); st.classList.remove('revealed'); st.classList.toggle('shadow', !!S.shadow);
-  $('#qtag').textContent = `${G.deck.t} · ${{ easy: 'Easy', medium: 'Medium', hard: 'Hard' }[S.level] || 'Easy'}${S.shadow ? ' · Shadow' : ''}`;
+  const st = $('#stage'); st.classList.remove('revealed'); st.classList.toggle('shadow', !!G.o.shadow);
+  if (G.daily) { $('#qtag').textContent = `Daily #${G.daily.num} · Bird ${G.i + 1} of ${G.q.length}`; $('#dbText').textContent = `Bird ${G.i + 1} of ${G.q.length} · same birds for everyone · one try`; }
+  else $('#qtag').textContent = `${G.deck.t} · ${{ easy: 'Easy', medium: 'Medium', hard: 'Hard' }[G.o.level] || 'Easy'}${G.o.shadow ? ' · Shadow' : ''}`;
   const pic = $('#pic'), skel = $('#skel'); skel.style.display = ''; pic.style.opacity = 0; pic.dataset.tried = '';
   pic.onload = () => { skel.style.display = 'none'; pic.style.opacity = 1; };
   pic.onerror = () => { if (!pic.dataset.tried) { pic.dataset.tried = 1; pic.src = b.raw; } else skel.style.display = 'none'; };
@@ -999,7 +1069,7 @@ function distractors(b) {
 function renderAnswer() {
   const b = G.cur, A = $('#answer');
   if (G.mode === 'choice') {
-    G.opts = shuffle([b, ...distractors(b)]);
+    G.opts = G.daily ? dailyOpts(b, G.tiers[G.i], G.daily.num) : shuffle([b, ...distractors(b)]); // daily: the same choices for everyone
     A.innerHTML = `<div class="opts" id="opts">${G.opts.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span><span>${esc(nm(o))}</span></button>`).join('')}</div>`;
     $('#opts').onclick = e => { const o = e.target.closest('.opt'); if (o && !G.done) answer(G.opts[+o.dataset.i]); };
   } else {
@@ -1037,7 +1107,7 @@ function useHint() {
 }
 function startTimer(resumeMs) {
   clearInterval(timerId);
-  const T = +S.timer; if (!T) return;
+  const T = +G.o.timer; if (!T) return;
   const bar = $('#tbar'); bar.style.width = (resumeMs != null ? resumeMs / (T * 1000) * 100 : 100) + '%'; G.tEnd = Date.now() + (resumeMs != null ? resumeMs : T * 1000);
   timerId = setInterval(() => {
     const left = G.tEnd - Date.now(); bar.style.width = Math.max(left / (T * 1000) * 100, 0) + '%';
@@ -1056,11 +1126,12 @@ function answer(choice, typed, timeout) {
   if (correct) {
     G.streak++; G.right++; G.bestStreak = Math.max(G.bestStreak, G.streak);
     pts = Math.max((G.mode === 'type' ? 150 : 100) - 25 * G.hints, 25) + Math.min(G.streak - 1, 10) * 10;
-    if (+S.timer) pts += Math.round(Math.max(G.tEnd - Date.now(), 0) / (+S.timer * 1000) * 50);
-    if (S.shadow) pts = Math.round(pts * 1.5);
+    if (+G.o.timer) pts += Math.round(Math.max(G.tEnd - Date.now(), 0) / (+G.o.timer * 1000) * 50);
+    if (G.o.shadow) pts = Math.round(pts * 1.5);
     G.score += pts;
   } else { G.streak = 0; G.missed.push(b); if (G.endless) G.lives--; }
   G.log[G.i] = correct ? 1 : 0; G.qlog.push([b.i, correct ? 1 : 0]); G.hintsTotal += G.hints;
+  if (G.daily) dailySave(false); // today's progress is kept, so closing the page never lets anyone re-answer
   $('#stage').classList.add('revealed');
   if (G.mode === 'choice') $$('.opt').forEach(o => { o.disabled = true; const x = G.opts[+o.dataset.i]; if (x === b) o.classList.add('good'); else if (x === choice) o.classList.add('bad'); });
   else { const ti = $('#ti'); if (ti) { ti.disabled = true; ti.style.boxShadow = `inset 0 0 0 2.5px var(--${correct ? 'good' : 'bad'})`; } $('#giveup')?.remove(); }
@@ -1092,8 +1163,9 @@ function askQuit() {
   G.pausedLeft = G.tEnd ? Math.max(G.tEnd - Date.now(), 0) : null; // freeze the timer while the question is open
   clearInterval(timerId);
   const n = G.answered, endless = G.endless;
-  $('#qTitle').textContent = endless ? 'End your game?' : 'Leave this game?';
-  $('#qText').textContent = endless ? `You've named ${G.right} of ${n} bird${n === 1 ? '' : 's'} so far. End the game to see your results.`
+  $('#qTitle').textContent = G.daily ? "Leave today's birds?" : endless ? 'End your game?' : 'Leave this game?';
+  $('#qText').textContent = G.daily ? `You've answered ${n} of ${G.q.length}. Your progress is saved, so you can come back any time today to finish. Answers already given can't be changed.`
+    : endless ? `You've named ${G.right} of ${n} bird${n === 1 ? '' : 's'} so far. End the game to see your results.`
     : `You've answered ${n} of ${G.q.length} birds. If you leave now, this game won't be scored.`;
   $('#qLeave').textContent = endless ? 'See my results' : 'Leave game';
   $('#quitWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
@@ -1101,7 +1173,7 @@ function askQuit() {
 }
 function closeQuit(resume) {
   $('#quitWrap').classList.add('hidden'); document.body.style.overflow = '';
-  if (resume && G && !G.done && +S.timer && G.pausedLeft != null) startTimer(G.pausedLeft);
+  if (resume && G && !G.done && +G.o.timer && G.pausedLeft != null) startTimer(G.pausedLeft);
 }
 $('#quit').onclick = askQuit;
 $('#qKeep').onclick = () => closeQuit(true);
@@ -1118,6 +1190,11 @@ document.addEventListener('keydown', e => {
 /* ---------- results ---------- */
 const SITE = 'https://birdbrain.indianbirds.org/';
 function shareText(r = 'wa') {
+  if (G.daily) { // the result as coloured squares, like a puzzle result: easy to paste into any chat
+    const st = dailyStreak().cur, sq = G.log.map(x => x ? '🟩' : '🟥').join('');
+    return `${BRAND} Daily #${G.daily.num} 🐦\n${G.right}/${G.answered} · ${fmt(G.score)} points${st > 1 ? ` · 🔥 ${st}-day streak` : ''}\n${sq}\n\n`
+      + `Everyone gets the same 10 birds today, and you only get one try. Can you beat me?\n${SITE}?r=${r}#daily`;
+  }
   const link = SITE + '?r=' + r + (G.deck.id ? '#deck=' + G.deck.id : ''); // ?r= tells the stats where a visitor came from
   const lvl = { easy: 'Easy', medium: 'Medium', hard: 'Hard' }[S.level] || 'Easy';
   return `I scored ${fmt(G.score)} on "${G.deck.t}" (${lvl}) in ${BRAND}: ${G.right}/${G.answered} birds right! 🐦\n\n`
@@ -1129,14 +1206,18 @@ function finish(partial) {
   if (!G.sent) sendEnd(!partial);
   const n = G.answered, acc = n ? Math.round(G.right / n * 100) : 0;
   const grades = [[90, 'Master Ornithologist'], [70, 'Seasoned Birder'], [50, 'Keen Twitcher'], [30, 'Backyard Beginner'], [0, 'Still an egg']];
-  const isBest = G.score > best.score && G.score > 0;
+  const isBest = !G.daily && G.score > best.score && G.score > 0;
   if (isBest) best.score = G.score; store.save();
-  $('#rKick').textContent = isBest ? 'New personal best!' : G.deck.t;
+  if (G.daily && !G.revisit) dailyDone();
+  $('#rKick').textContent = G.daily ? `Daily Birdbrain #${G.daily.num} · ${G.daily.label}` : isBest ? 'New personal best!' : G.deck.t;
+  $('#again').classList.toggle('hidden', !!G.daily); $('#rNote').classList.toggle('hidden', !G.daily); $('#rDaily').classList.toggle('hidden', !G.daily);
+  $('#otherDeck').textContent = G.daily ? 'Play free games' : 'Other decks'; $('#otherDeck').classList.toggle('full', !!G.daily);
+  if (G.daily) renderDailyResult();
   $('#rScore').textContent = fmt(G.score);
   $('#rGrade').textContent = G.endless ? (G.right >= 25 ? 'Endless legend' : G.right >= 10 ? 'Going strong' : 'Warming up') : grades.find(g => acc >= g[0])[1];
   $('#rStats').innerHTML = [[`${G.right}/${n}`, 'Correct'], [acc + '%', 'Accuracy'], [G.bestStreak, 'Best streak']].map(([a, b]) => `<div class="rstat"><b>${a}</b><span>${b}</span></div>`).join('');
   $('#rMissed').innerHTML = G.missed.length ? `<h3>Birds to get to know</h3><p class="tip">Tap a bird to read more about it.</p><div class="missed">${G.missed.map(b => `<a class="mcard" style="--c:${G.deck.c}" ${b.g ? `href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener"` : ''}><div class="t">${img(b)}</div>${esc(nm(b))}</a>`).join('')}</div>` : '<h3 style="text-align:center;margin:0 0 24px">Flawless. Not one bird got past you.</h3>';
-  if (acc >= 70 && G.score > 0) confetti();
+  if (acc >= 70 && G.score > 0 && !G.revisit) confetti();
   G.cardPromise = makeCard().catch(() => null); // draw the share picture now, so sharing is instant when tapped
 }
 /* ---------- score card picture (drawn in the browser, nothing is uploaded) ---------- */
@@ -1171,9 +1252,10 @@ async function makeCard(withPictures = true) {
   // panel
   x.save(); x.shadowColor = 'rgba(0,0,0,.22)'; x.shadowBlur = 50; x.shadowOffsetY = 20; x.fillStyle = '#fff'; rrect(x, 60, 215, 960, 1025, 56); x.fill(); x.restore();
   // deck title (shrinks to fit)
-  let ts = 58; x.fillStyle = INK; do { x.font = `800 ${ts}px Gabarito, sans-serif`; ts -= 2; } while (x.measureText(G.deck.t).width > 860 && ts > 30);
-  x.fillText(G.deck.t, W / 2, 308);
-  x.fillStyle = '#6a707b'; x.font = '600 34px "Plus Jakarta Sans", sans-serif'; x.fillText(`${lvl} · ${n} bird${n === 1 ? '' : 's'}${G.meta.shadow ? ' · Shadow' : ''}`, W / 2, 360);
+  const title = G.daily ? `Daily Birdbrain #${G.daily.num}` : G.deck.t;
+  let ts = 58; x.fillStyle = INK; do { x.font = `800 ${ts}px Gabarito, sans-serif`; ts -= 2; } while (x.measureText(title).width > 860 && ts > 30);
+  x.fillText(title, W / 2, 308);
+  x.fillStyle = '#6a707b'; x.font = '600 34px "Plus Jakarta Sans", sans-serif'; x.fillText(G.daily ? `${G.daily.label} · the same 10 birds for everyone` : `${lvl} · ${n} bird${n === 1 ? '' : 's'}${G.meta.shadow ? ' · Shadow' : ''}`, W / 2, 360);
   // score
   x.fillStyle = '#6a707b'; x.font = '700 32px "Plus Jakarta Sans", sans-serif'; x.fillText('I SCORED', W / 2, 442);
   x.fillStyle = BRAND_C; x.font = '900 230px Gabarito, sans-serif'; x.fillText(fmt(G.score), W / 2, 636);
@@ -1229,7 +1311,7 @@ $('#shareCard').onclick = async () => {
   } catch (e) { alert('Sorry, the score card could not be made. Try the WhatsApp button instead.'); }
   finally { btn.disabled = false; btn.innerHTML = label; }
 };
-$('#again').onclick = () => startGame(G.pool, G.deck, S.level);
+$('#again').onclick = () => { if (!G.daily) startGame(G.pool, G.deck, S.level); };
 $('#otherDeck').onclick = () => { stopGame(); view('home'); };
 $('#shareWa').onclick = () => { track('share', { kind: 'whatsapp', deck: G.deck.id || 'custom' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText('wa')), '_blank', 'noopener'); };
 $('#copy').onclick = async () => {
@@ -1296,6 +1378,126 @@ $('#credit').addEventListener('click', async e => {
   openShare();
 });
 
+/* ---------- Daily Birdbrain: the same 10 birds for everyone, one try a day ---------- */
+const DY = window.DAILY, DAILY_C = '#8c95ff', IST = 19800000, DAY = 864e5;
+const byId = Object.fromEntries(D.birds.map(b => [b.i, b]));
+const dayOverride = location.hostname === 'localhost' ? new URLSearchParams(location.search).get('day') : null; // ?day=2026-11-20 previews another day (local testing only)
+const istDay = () => dayOverride ? Math.floor(Date.parse(dayOverride + 'T00:00:00Z') / DAY) : Math.floor((Date.now() + IST) / DAY); // the day changes at midnight IST for everyone
+const dayStr = n => new Date(n * DAY).toISOString().slice(0, 10);
+const START_N = DY ? Math.floor(Date.parse(DY.start + 'T00:00:00Z') / DAY) : 0;
+function dailyInfo() {
+  const n = istDay();
+  return { n, num: Math.max(n - START_N + 1, 1), str: dayStr(n), label: new Date(n * DAY).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }) };
+}
+// a small seeded random generator: the same seed gives the same numbers on every phone and computer
+const hash32 = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+const seeded = seed => () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const seededShuffle = (a, r) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = r() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+// today's 10 birds: the next few from each frozen list (3 well-known, 4 Indian, 2 from the world, 1 tricky finish)
+function dailyPick(num) {
+  const out = [];
+  'ABCD'.split('').forEach((t, k) => { const L = DY[t], p = DY.per[k]; for (let j = 0; j < p; j++) { const b = byId[L[((num - 1) * p + j) % L.length]]; if (b) out.push({ b, t }); } });
+  return out;
+}
+let DPOOLS = null;
+function dailyOpts(b, tier, num) {
+  if (!DPOOLS) { const ids = (...ts) => ts.flatMap(t => DY[t]).map(i => byId[i]).filter(Boolean), famous = ids('A', 'C'); DPOOLS = { A: famous, B: D.birds.filter(x => x.p.includes(0)), C: famous, D: ids('C', 'D') }; }
+  const r = seeded(hash32(`opts|${num}|${b.i}`)), bo = D.fams[b.f].o, same = [], order = [], rest = [], seen = new Set([norm(b.n[0])]), out = [];
+  for (const x of seededShuffle(DPOOLS[tier] || D.birds, r)) { if (x === b) continue; (x.f === b.f ? same : D.fams[x.f].o === bo ? order : rest).push(x); }
+  for (const x of [...same, ...order, ...rest]) { if (out.length >= 3) break; const k = norm(x.n[0]); if (!seen.has(k)) { seen.add(k); out.push(x); } }
+  return seededShuffle([b, ...out], r);
+}
+// saved on this device only: today's progress, and the streak
+const DKEY = 'birdbrain.daily.v1', SKEY = 'birdbrain.dstreak.v1', mem = {};
+const dget = k => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : (mem[k] || null); } catch (e) { return mem[k] || null; } };
+const dset = (k, v) => { mem[k] = v; try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+function dailyProg() { const p = dget(DKEY), t = dailyInfo(); return p && p.day === t.str ? p : null; }
+function dailyStreak() {
+  const s = dget(SKEY) || { cur: 0, best: 0, last: '' }, t = dailyInfo(), alive = s.last === t.str || s.last === dayStr(t.n - 1);
+  return { ...s, cur: alive ? s.cur : 0 };
+}
+function dailySave(done) {
+  dset(DKEY, { day: G.daily.str, num: G.daily.num, gid: G.meta.gid, log: G.log.slice(), score: G.score, bestStreak: G.bestStreak, streak: G.streak, hints: G.hintsTotal,
+    miss: G.missed.map(b => b.i), qlog: G.qlog.slice(), secs: Math.round((Date.now() - G.t0) / 1000), done: !!done });
+}
+function dailyDone() {
+  dailySave(true);
+  const s = dget(SKEY) || { cur: 0, best: 0, last: '', played: 0 };
+  if (s.last !== G.daily.str) { s.cur = s.last === dayStr(G.daily.n - 1) ? s.cur + 1 : 1; s.last = G.daily.str; s.best = Math.max(s.best || 0, s.cur); s.played = (s.played || 0) + 1; dset(SKEY, s); }
+}
+function startDaily() {
+  if (!DY) return; if (G) stopGame();
+  const t = dailyInfo(), pick = dailyPick(t.num); if (pick.length < 10) return;
+  let p = dailyProg();
+  if (!p) { p = { day: t.str, num: t.num, gid: rid(), log: [], score: 0, bestStreak: 0, streak: 0, hints: 0, miss: [], qlog: [], secs: 0, done: false }; dset(DKEY, p); }
+  const q = pick.map(x => x.b);
+  G = { daily: t, pool: D.birds, deck: { id: 'daily', t: 'Daily Birdbrain #' + t.num, c: DAILY_C }, q, tiers: pick.map(x => x.t), i: p.log.length, score: p.score, streak: p.streak, bestStreak: p.bestStreak,
+    right: p.log.filter(Boolean).length, lives: 3, missed: p.miss.map(i => byId[i]).filter(Boolean), hints: 0, done: false, answered: p.log.length, endless: false, mode: 'choice', diff: 'tricky', log: p.log.slice(),
+    o: { level: 'medium', timer: '0', shadow: false }, qlog: p.qlog.slice(), hintsTotal: p.hints, sent: false };
+  G.t0 = Date.now() - p.secs * 1000;
+  G.meta = { gid: p.gid, pid: PID, src: SRC, deck: 'daily', deckTitle: 'Daily #' + t.num, label: '', level: 'medium', rounds: q.length, timer: 0, shadow: 0, custom: 0 };
+  if (p.done) { G.sent = true; G.revisit = true; finish(false); return; } // already played today: just show the result again
+  if (!p.log.length) track('start', G.meta);
+  view('game');
+  $('#game').style.setProperty('--dc', DAILY_C);
+  $('#lives').classList.add('hidden'); $('#segs').classList.remove('hidden'); $('#tbarWrap').classList.add('hidden');
+  $('#segs').innerHTML = q.map(() => '<i></i>').join('');
+  $('#dailyBar').classList.remove('hidden'); $('#dbPill').textContent = 'Daily #' + t.num;
+  nextQ(true);
+}
+function openDailyIntro() {
+  const t = dailyInfo();
+  $('#dyPill').innerHTML = `${CAL} Daily Birdbrain #${t.num} · ${t.label}`;
+  $('#dailyWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+  setTimeout(() => $('#dyStart').focus({ preventScroll: true }), 30);
+}
+function closeDailyIntro() { $('#dailyWrap').classList.add('hidden'); document.body.style.overflow = ''; }
+$('#dyClose').onclick = closeDailyIntro;
+$('#dailyWrap').addEventListener('mousedown', e => { if (e.target === $('#dailyWrap')) closeDailyIntro(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#dailyWrap').classList.contains('hidden')) closeDailyIntro(); });
+$('#dyStart').onclick = () => { closeDailyIntro(); startDaily(); };
+$('#dailyCard').addEventListener('click', e => {
+  if (!e.target.closest('#dPlay')) return;
+  const p = dailyProg(); if (p && p.log.length) startDaily(); else openDailyIntro();
+});
+const FLAME = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-9z"/></svg>';
+const CAL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
+let dailyShown = null;
+function renderDaily() {
+  const el = $('#dailyCard'); if (!el) return;
+  if (!DY) { el.classList.add('hidden'); return; }
+  const t = dailyInfo(), p = dailyProg(), st = dailyStreak(), n = p ? p.log.length : 0, done = !!(p && p.done);
+  dailyShown = t.str;
+  const streak = st.cur > 0 ? `<span class="d-streak">${FLAME} ${st.cur}-day streak</span>` : '';
+  const top = `<div class="d-top"><span class="d-pill">${CAL} Daily challenge</span><span class="d-date">#${t.num} · ${t.label}</span></div>`;
+  const tags = '<div class="d-tags"><span>10 birds</span><span>One try a day</span><span>No timer</span><span>New birds at midnight IST</span></div>';
+  if (done) {
+    const right = p.log.filter(Boolean).length;
+    el.innerHTML = `${top}<h2>You've done today's birds</h2><div class="d-done" style="margin-top:14px"><div class="d-score"><b>${right}/${p.log.length}</b><span>${fmt(p.score)} points</span></div><div class="d-grid">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}</div></div>
+      <div class="d-act"><button class="d-btn" id="dPlay" type="button">See result &amp; share</button>${streak}</div>
+      <p class="d-count" style="margin-top:14px">Next birds in <b id="dCount">--:--:--</b></p>`;
+  } else if (n > 0) {
+    el.innerHTML = `${top}<h2>Pick up where you left off</h2><div class="d-prog" style="margin-top:14px">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
+      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Continue · ${n} of 10 done</button>${streak}</div>`;
+  } else {
+    el.innerHTML = `${top}<h2>Today's 10 birds. The same for everyone.</h2>${tags}
+      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Play today's birds</button>${streak || '<span class="d-count">Play every day to build a streak</span>'}</div>`;
+  }
+  tickDaily();
+}
+const hms = ms => { const s = Math.max(Math.floor(ms / 1000), 0); return [s / 3600 | 0, (s / 60 | 0) % 60, s % 60].map(v => String(v).padStart(2, '0')).join(':'); };
+function tickDaily() {
+  const t = hms((Math.floor((Date.now() + IST) / DAY) + 1) * DAY - IST - Date.now());
+  $$('#dCount,#rdTimer').forEach(e => { e.textContent = t; });
+  if (dailyShown && dailyShown !== dailyInfo().str && !$('#home').classList.contains('hidden')) renderDaily(); // the day changed while the page was open
+}
+setInterval(tickDaily, 1000);
+function renderDailyResult() {
+  const st = dailyStreak();
+  $('#rDaily').innerHTML = `<div class="rstat"><b>${st.cur > 0 ? FLAME.replace('width="15" height="15"', 'width="28" height="28" style="display:inline;vertical-align:-5px"') + ' ' + st.cur : '–'}</b><span>day streak</span></div><div class="rstat"><b id="rdTimer">--:--:--</b><span>until tomorrow's birds</span></div>`;
+  tickDaily();
+}
+
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
@@ -1304,7 +1506,8 @@ $('#themeBtn').onclick = () => {
 try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
 
 /* ---------- boot ---------- */
-store.load(); S.lang = 'en'; renderHome(); // names are English only for now
+store.load(); S.lang = 'en'; renderHome(); renderDaily(); // names are English only for now
+if (DY && /daily/.test(location.hash)) { const p = dailyProg(); if (!p || !p.done) openDailyIntro(); } // a shared "play today's birds" link
 const m = location.hash.match(/deck=([\w-]+)/);
 if (m && deckById[m[1]]) openSheet(deckById[m[1]]);
 })();
