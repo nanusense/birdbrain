@@ -132,7 +132,8 @@ svg{display:block}
 .build-cta .btn{background:var(--bg);color:var(--ink);box-shadow:none}
 .foot{padding:10px 0 60px;text-align:center;color:var(--muted);font-size:13px;line-height:1.8}
 .foot .made{font-size:15px;font-weight:600;color:var(--ink)}
-.foot .made a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
+.foot .made a,.foot .feedback a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
+.foot .feedback{font-size:14.5px;color:var(--ink)}
 
 /* ---------- sheet ---------- */
 .sheet-wrap{position:fixed;inset:0;z-index:60;background:rgba(10,12,16,.55);display:grid;place-items:center;padding:20px;animation:fade .18s}
@@ -572,7 +573,7 @@ function renderHome() {
   $('#worldDecks').innerHTML = DECKS.filter(d => d.sec === 'world').map(card).join('');
   const heroes = [['Indian Peafowl', C.saffron, 'a'], ['Himalayan Monal', C.sky, 'b'], ['Indian Roller', C.leaf, 'c']];
   $('#collage').innerHTML = heroes.map(([n, c, k]) => byEn[n] ? `<div class="cc ${k}" style="background:${c}">${img(byEn[n], '', false)}</div>` : '').join('');
-  $('#credit').innerHTML = `<span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">Support</a> such games</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
+  $('#credit').innerHTML = `<span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">Support</a> such games</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
 }
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-deck]'); if (d) openSheet(deckById[d.dataset.deck]);
