@@ -120,9 +120,9 @@ svg{display:block}
 .deck:hover{transform:translateY(-5px)}
 .deck:hover .dimg{transform:rotate(-4deg) scale(1.07)}
 .deck.feature{grid-column:span 2}
-.dimg{position:absolute;right:-4px;top:6px;width:74%;height:62%;object-fit:contain;transition:transform .3s;filter:drop-shadow(0 10px 10px rgba(0,0,0,.2));pointer-events:none}
-.deck.feature .dimg{width:50%;height:80%;right:10px;top:8px}
-.dcount{position:absolute;left:14px;top:14px;color:#14161a;background:rgba(255,255,255,.72);backdrop-filter:blur(6px);border-radius:99px;padding:4px 11px;font-size:12.5px;font-weight:700}
+.dimg{position:absolute;right:4%;top:6px;width:72%;height:62%;object-fit:contain;transition:transform .3s;filter:drop-shadow(0 10px 10px rgba(0,0,0,.2));pointer-events:none}
+.deck.feature .dimg{width:50%;height:80%;right:3%;top:8px}
+.dcount{position:absolute;z-index:2;left:14px;top:14px;color:#14161a;background:rgba(255,255,255,.72);backdrop-filter:blur(6px);border-radius:99px;padding:4px 11px;font-size:12.5px;font-weight:700}
 .dt{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.05;letter-spacing:-.02em;position:relative;max-width:11em}
 .dd{font-size:13.5px;margin-top:6px;opacity:.78;position:relative;max-width:20em;line-height:1.35}
 .deck.feature .dt{font-size:32px}
@@ -229,9 +229,9 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .score{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;min-width:64px;text-align:right}
 .streak{display:inline-flex;align-items:center;gap:4px;background:color-mix(in srgb,var(--brand) 14%,var(--surface));color:var(--brand);font-weight:800;font-size:14px;border-radius:99px;padding:4px 10px}
 .stage{position:relative;background:var(--dc,#ffb02e);border-radius:32px;aspect-ratio:1/.82;max-height:50vh;width:100%;display:grid;place-items:center;overflow:hidden}
-.stage img{width:80%;height:84%;object-fit:contain;transition:filter .5s,transform .45s;filter:drop-shadow(0 12px 14px rgba(0,0,0,.22))}
+.stage img{position:absolute;left:9%;top:7%;width:82%;height:86%;object-fit:contain;transition:filter .5s,transform .45s;filter:drop-shadow(0 12px 14px rgba(0,0,0,.22))}
 .stage.shadow:not(.revealed) img{filter:brightness(0);opacity:.9}
-.stage.revealed img{transform:scale(1.05) rotate(-2deg)}
+.stage.revealed img{transform:scale(1.03)}
 .skel{position:absolute;width:56px;height:56px;border-radius:50%;border:5px solid rgba(255,255,255,.5);border-top-color:#fff;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .tbar{position:absolute;left:0;right:0;top:0;height:7px;background:rgba(255,255,255,.35)}
@@ -282,8 +282,8 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .results .tip{text-align:left;color:var(--muted);font-size:14px;margin-bottom:12px}
 .missed{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:26px}
 .mcard{background:var(--surface);border-radius:18px;padding:8px;font-size:13px;font-weight:700;text-decoration:none;box-shadow:var(--shadow);text-align:center}
-.mcard .t{aspect-ratio:1;background:var(--c,#ffb02e);border-radius:12px;display:grid;place-items:center;margin-bottom:7px}
-.mcard img{width:90%;height:90%;object-fit:contain}
+.mcard .t{position:relative;aspect-ratio:1;background:var(--c,#ffb02e);border-radius:12px;margin-bottom:7px}
+.mcard img{position:absolute;left:5%;top:5%;width:90%;height:90%;object-fit:contain}
 .rbtns{display:grid;gap:10px;grid-template-columns:1fr 1fr}
 .rbtns .full{grid-column:1/-1}
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
@@ -308,7 +308,8 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   .deck.feature{grid-column:span 2;min-height:230px}
   .dt{font-size:19px}.deck.feature .dt{font-size:26px}
   .dd{display:none}.deck.feature .dd{display:block}
-  .dimg{width:80%;height:56%}
+  .dimg{width:70%;height:56%;top:40px;right:3%}
+  .deck.feature .dimg{width:52%;height:64%;top:8px}
   .build-cta{padding:24px}
   .opts{grid-template-columns:1fr}
   .opt{min-height:62px;padding:13px 14px}
