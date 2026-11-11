@@ -581,34 +581,47 @@ const MIG_FACT = ['Stays in or near the same area all year round.', null, 'Many 
 const LIFE_FACT = ['Spends much of its life in the air.', 'Spends most of its life on or near the water.', null];
 const STATUS_FACT = [null, null, 'Vulnerable: it faces a high risk of disappearing from the wild.',
   'Endangered: it faces a very high risk of disappearing from the wild.', 'Critically endangered: one of the most at-risk birds in the world.', 'Believed to be extinct, or no longer living in the wild.'];
-function factsFor(b) {
-  const top = [], rest = [], f = D.fams[b.f];
-  const n = famCount[b.f];
-  // the most interesting kinds first
-  if (b.w > 0 && famMassN[b.f] >= 5 && famMassN[b.f] / n >= 0.9 && famMax[b.f] > famMin[b.f]) {
-    if (b.w >= famMax[b.f]) top.push(`By average weight, the heaviest of the ${n} species in its family (${f.e}).`);
-    else if (b.w <= famMin[b.f]) top.push(`By average weight, the lightest of the ${n} species in its family (${f.e}).`);
+// only the clear-cut habitats: the source gives each bird one rough label, which is often wrong for forest, woodland, scrub and grassland birds (e.g. parakeets in cities)
+const HAB_FACT = { Wetland: 'wetlands', Riverine: 'rivers and streams', Coastal: 'coasts', Marine: 'the open sea', Desert: 'deserts', Rock: 'cliffs and rocky places' };
+// weighted shuffle: heavier items tend to come earlier, and two facts of the same kind rarely sit side by side
+function weightedOrder(items) {
+  const pool = items.map(x => ({ ...x })), out = [];
+  while (pool.length) {
+    const tot = pool.reduce((a, x) => a + x.w, 0); let r = Math.random() * tot, i = 0;
+    for (; i < pool.length - 1; i++) { r -= pool[i].w; if (r <= 0) break; }
+    const [pick] = pool.splice(i, 1); out.push(pick);
+    pool.forEach(x => { if (x.g === pick.g) x.w *= 0.2; });
   }
+  return out;
+}
+function factsFor(b) {
+  const top = [], rest = [], f = D.fams[b.f], n = famCount[b.f];
+  // rare, more interesting facts always come first
+  if (b.w > 0 && famMassN[b.f] >= 5 && famMassN[b.f] / n >= 0.9 && famMax[b.f] > famMin[b.f]) {
+    if (b.w >= famMax[b.f]) top.push({ t: `By average weight, the heaviest of the ${n} species in its family (${f.e}).`, w: 1, g: 'top' });
+    else if (b.w <= famMin[b.f]) top.push({ t: `By average weight, the lightest of the ${n} species in its family (${f.e}).`, w: 1, g: 'top' });
+  }
+  if (b.c >= 2 && STATUS_FACT[b.c]) top.push({ t: STATUS_FACT[b.c], w: 1, g: 'top' });
+  if (b.v) top.push({ t: 'A winter visitor to India: it breeds elsewhere and comes here for the cooler months.', w: 1, g: 'top' });
+  // everyday facts, each with a weight (blander facts get a lower chance of coming first)
   if (b.w > 0) {
+    rest.push({ t: massFact(b.w), w: 2, g: 'weight' });
     let lo = 0, hi = massSorted.length; while (lo < hi) { const m = (lo + hi) >> 1; if (massSorted[m] < b.w) lo = m + 1; else hi = m; }
     const p = lo / massSorted.length;
-    if (p >= 0.9) top.push(`Heavier than ${Math.min(99, Math.floor(p * 100))}% of the world's birds.`);
-    else if (p <= 0.1) top.push(`Lighter than ${Math.min(99, Math.floor((1 - p) * 100))}% of the world's birds.`);
+    if (p >= 0.9) rest.push({ t: `Heavier than ${Math.min(99, Math.floor(p * 100))}% of the world's birds.`, w: 1.5, g: 'weight' });
+    else if (p <= 0.1) rest.push({ t: `Lighter than ${Math.min(99, Math.floor((1 - p) * 100))}% of the world's birds.`, w: 1.5, g: 'weight' });
   }
-  if (b.c >= 2 && STATUS_FACT[b.c]) top.push(STATUS_FACT[b.c]);
-  if (b.v) top.push('A winter visitor to India: it breeds elsewhere and comes here for the cooler months.');
-  // everyday facts
-  if (b.w > 0) rest.push(massFact(b.w));
-  // wing shape only where it is a fair thing to say: long pointed wings for migrants, short rounded wings for forest and scrub birds (not penguins, ostriches or hummingbirds)
-  if (b.hw >= 50 && b.m === 2) rest.push('Its long, pointed wings help it cover long distances on migration.');
-  else if (b.hw > 0 && b.hw <= 12 && [0, 1, 2].includes(b.h) && b.ls !== 1) rest.push('Short, rounded wings are typical of birds that dart through dense cover.');
-  if (b.d >= 0 && DIET_FACT[D.diets[b.d]]) rest.push(DIET_FACT[D.diets[b.d]]);
-  if (b.m >= 0 && MIG_FACT[b.m]) rest.push(MIG_FACT[b.m]);
-  if (b.ls >= 0 && LIFE_FACT[b.ls]) rest.push(LIFE_FACT[b.ls]);
-  if (b.ss >= 6) rest.push(`Scientists recognise ${b.ss} different subspecies of this bird.`);
-  const mix = arr => arr.map((t, i) => [hash(b.i + i), t]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+  // wing shape only where it is a fair thing to say (not penguins, ostriches or hummingbirds)
+  if (b.hw >= 50 && b.m === 2) rest.push({ t: 'Its long, pointed wings help it cover long distances on migration.', w: 3, g: 'wing' });
+  else if (b.hw > 0 && b.hw <= 12 && [0, 1, 2].includes(b.h) && b.ls !== 1) rest.push({ t: 'Short, rounded wings are typical of birds that dart through dense cover.', w: 3, g: 'wing' });
+  if (b.d >= 0 && DIET_FACT[D.diets[b.d]]) rest.push({ t: DIET_FACT[D.diets[b.d]], w: D.diets[b.d] === 'Omnivore' ? 1 : 3, g: 'diet' });
+  if (b.m >= 0 && MIG_FACT[b.m]) rest.push({ t: MIG_FACT[b.m], w: b.m === 2 ? 3 : 1, g: 'mig' });
+  if (b.ls >= 0 && LIFE_FACT[b.ls]) rest.push({ t: LIFE_FACT[b.ls], w: 2.5, g: 'life' });
+  if (b.ss >= 6) rest.push({ t: `Scientists recognise ${b.ss} different subspecies of this bird.`, w: 3, g: 'sub' });
+  if (b.h >= 0 && HAB_FACT[D.habitats[b.h]]) rest.push({ t: `Mostly found in ${HAB_FACT[D.habitats[b.h]]}.`, w: 1.5, g: 'hab' });
+  if (b.r.length >= 3) rest.push({ t: `Found across ${b.r.length} different regions of the world.`, w: 2, g: 'reg' });
   const last = n > 1 ? `One of ${n} species in the "${f.e}" family.` : `The only species in the "${f.e}" family.`;
-  return [...mix(top), ...mix(rest), last];
+  return [...weightedOrder(top).map(x => x.t), ...weightedOrder(rest).map(x => x.t), last];
 }
 const famsOfOrder = o => D.fams.map((f, i) => f.o === o ? i : -1).filter(i => i >= 0);
 const regionIdx = n => D.regions.findIndex(r => r[0] === n);
