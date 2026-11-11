@@ -883,6 +883,44 @@ function sendEnd(finished) {
   track('end', { ...G.meta, score: G.score, correct: G.right, answered: G.answered, bestStreak: G.bestStreak, hints: G.hintsTotal, secs: Math.round((Date.now() - G.t0) / 1000), finished: finished ? 1 : 0, answers: G.qlog });
 }
 addEventListener('pagehide', () => { if (G && !G.sent && G.answered > 0) sendEnd(false); }); // player closed the tab mid-game
+/* ---------- Hard mode helpers: suggestions from the deck being played, and forgiving answer matching ---------- */
+const grey = s => s.replace(/gray/g, 'grey');
+function buildIndex(pool) {
+  const out = [];
+  for (const b of pool) {
+    const name = nm(b);
+    out.push({ k: grey(norm(name)), n: name, w: name.toLowerCase().split(/[\s-]+/).map(w => grey(norm(w))) });
+    (b.alt || []).forEach(a => out.push({ k: grey(norm(a)), n: name, w: a.toLowerCase().split(/[\s-]+/).map(w => grey(norm(w))) })); // e.g. "Rock Dove" finds Rock Pigeon
+  }
+  return out;
+}
+function suggest(typed) {
+  const t = grey(norm(typed)), res = [], seen = new Set();
+  for (const e of G.index) {
+    const rank = e.k.startsWith(t) ? 0 : e.w.some(w => w.startsWith(t)) ? 1 : e.k.includes(t) ? 2 : -1; // a later word counts too: "robin" finds Oriental Magpie-Robin
+    if (rank < 0 || seen.has(e.n)) continue; seen.add(e.n); res.push([rank, e.n]);
+  }
+  return res.sort((a, c) => a[0] - c[0] || a[1].length - c[1].length).slice(0, 8).map(x => x[1]);
+}
+function lev(a, b) {
+  if (a === b) return 0; if (!a.length) return b.length; if (!b.length) return a.length;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) { const cur = [i]; for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); prev = cur; }
+  return prev[b.length];
+}
+let ALL_NAMES = null;
+function matchAnswer(typed, b) {
+  const t = grey(norm(typed)); if (!t) return null;
+  const names = [nm(b), b.n[0], b.s, ...(b.alt || [])].map(n => grey(norm(n)));
+  if (names.includes(t)) return 'exact';
+  // a different real bird typed exactly? then it is simply wrong, however close the spelling
+  if (!ALL_NAMES) ALL_NAMES = new Set(D.birds.flatMap(x => [grey(norm(x.n[0])), grey(norm(x.s))]));
+  if (ALL_NAMES.has(t)) return null;
+  // a small typo (longer names allow two)
+  if (names.some(a => lev(a, t) <= (a.length <= 5 ? 0 : a.length <= 9 ? 1 : 2))) return 'close';
+  // the full name is required: a short form like "koel" or "peafowl" does not count in Hard mode
+  return null;
+}
 function startGame(pool, deck, level) {
   if (pool.length < 4) return;
   S.level = level || S.level; store.save();
@@ -890,7 +928,7 @@ function startGame(pool, deck, level) {
   const mode = S.level === 'hard' ? 'type' : 'choice', diff = S.level === 'easy' ? 'easy' : 'tricky';
   const q = shuffle(pool).slice(0, total || pool.length);
   G = { pool: pool.slice(), deck, q, i: 0, score: 0, streak: 0, bestStreak: 0, right: 0, lives: 3, missed: [], hints: 0, done: false, answered: 0, endless: !total, mode, diff, log: [] };
-  const li = langIdx(); G.index = D.birds.map(b => [norm(nm(b)), nm(b)]);
+  G.index = buildIndex(G.pool);
   G.t0 = Date.now(); G.qlog = []; G.hintsTotal = 0; G.sent = false;
   G.meta = { gid: rid(), pid: PID, deck: deck.id || 'custom', deckTitle: deck.t, label: deck.id ? '' : deck.d, level: S.level, rounds: total, timer: +S.timer, shadow: S.shadow ? 1 : 0, custom: deck.id ? 0 : 1 };
   track('start', G.meta);
@@ -946,18 +984,17 @@ function renderAnswer() {
     A.innerHTML = `<div class="typebox"><form id="tf" autocomplete="off"><input id="ti" type="text" placeholder="Type the bird's name" aria-label="Your answer" autocapitalize="off" autocorrect="off" spellcheck="false"><button class="btn" type="submit">Guess</button></form><div class="sugg hidden" id="ts"></div></div><button class="skip" id="giveup">I don't know</button>`;
     const ti = $('#ti'), ts = $('#ts'); let cur = [], act = -1;
     ti.addEventListener('input', () => {
-      const t = norm(ti.value); if (t.length < 2) { ts.classList.add('hidden'); return; }
-      const seen = new Set(); cur = [];
-      for (const [k, n] of G.index) { if (k.includes(t) && !seen.has(n)) { seen.add(n); cur.push([k, n]); if (cur.length > 80) break; } }
-      cur.sort((a, c) => (a[0].startsWith(t) ? 0 : 1) - (c[0].startsWith(t) ? 0 : 1) || a[1].length - c[1].length);
-      cur = cur.slice(0, 6).map(x => x[1]); act = -1;
-      ts.innerHTML = cur.map(n => `<button type="button">${esc(n)}</button>`).join(''); ts.classList.toggle('hidden', !cur.length);
+      const t = norm(ti.value); if (t.length < (G.pool.length > 600 ? 2 : 1)) { ts.classList.add('hidden'); return; }
+      cur = suggest(ti.value).slice(0, innerWidth <= 560 ? 5 : 8); act = -1; // phones: fewer, so the keyboard doesn't hide the best ones
+      ts.innerHTML = cur.length ? cur.map(n => `<button type="button">${esc(n)}</button>`).join('') : '<button type="button" disabled>No bird in this deck starts like that</button>';
+      ts.classList.remove('hidden');
     });
     ti.addEventListener('keydown', e => {
-      const bs = $$('button', ts);
+      const bs = $$('button:not([disabled])', ts);
       if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && bs.length) { e.preventDefault(); act = (act + (e.key === 'ArrowDown' ? 1 : -1) + bs.length) % bs.length; bs.forEach((x, k) => x.classList.toggle('act', k === act)); ti.value = cur[act]; }
+      else if (e.key === 'Tab' && bs.length && !ts.classList.contains('hidden')) { e.preventDefault(); ti.value = cur[Math.max(act, 0)]; ts.classList.add('hidden'); } // Tab fills in the top suggestion
     });
-    ts.addEventListener('mousedown', e => { const x = e.target.closest('button'); if (x) { e.preventDefault(); ti.value = x.textContent; ts.classList.add('hidden'); ti.focus(); } });
+    ts.addEventListener('pointerdown', e => { const x = e.target.closest('button:not([disabled])'); if (x) { e.preventDefault(); ti.value = x.textContent; ts.classList.add('hidden'); ti.focus(); } });
     $('#tf').onsubmit = e => { e.preventDefault(); if (G.done || !ti.value.trim()) return; ts.classList.add('hidden'); answer(null, ti.value); };
     $('#giveup').onclick = () => { if (!G.done) answer(null, ''); };
     setTimeout(() => ti.focus({ preventScroll: true }), 50);
@@ -992,7 +1029,7 @@ function answer(choice, typed, timeout) {
   const b = G.cur; G.answered++;
   let correct = false;
   if (G.mode === 'choice') correct = choice === b;
-  else if (typed) { const t = norm(typed); correct = t === norm(nm(b)) || t === norm(b.n[0]) || t === norm(b.s) || (b.alt && b.alt.some(a => t === norm(a))); }
+  else if (typed) { G.matchKind = matchAnswer(typed, b); correct = !!G.matchKind; }
   let pts = 0;
   if (correct) {
     G.streak++; G.right++; G.bestStreak = Math.max(G.bestStreak, G.streak);
@@ -1013,7 +1050,7 @@ function answer(choice, typed, timeout) {
   const en = b.n[0], mine = nm(b);
   const funList = factsFor(b); let funI = 0;
   const R = $('#reveal'); R.className = 'reveal' + (correct ? '' : ' bad');
-  R.innerHTML = `<div class="in"><div class="res">${correct ? CHECK + ` Correct +${pts}` : timeout ? CROSS + ' Time\'s up' : (G.mode === 'type' && !typed) ? CROSS + ' Skipped' : CROSS + ' Not quite'}</div>
+  R.innerHTML = `<div class="in"><div class="res">${correct ? CHECK + ` Correct +${pts}` + (G.mode === 'type' && G.matchKind && G.matchKind !== 'exact' ? ' · close enough' : '') : timeout ? CROSS + ' Time\'s up' : (G.mode === 'type' && !typed) ? CROSS + ' Skipped' : CROSS + ' Not quite'}</div>
     <h2>${esc(mine)}</h2>
     <div class="alt">${mine !== en ? esc(en) + ' · ' : ''}<i>${esc(b.s)}</i></div>
     <div class="facts">${facts}</div>
