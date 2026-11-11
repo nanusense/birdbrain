@@ -37,7 +37,7 @@ The game name lives in `const BRAND` in `index.html`, plus the `<title>`, `og:` 
 
 - "India" and the Indian sub-regions are matched from each bird's range text (India, Indian states, Himalayas, Nepal, "Pakistan to ...", and so on). It finds about 1,100 species, a bit fewer than the real checklist.
 - "Winter visitors" = birds whose wintering range mentions India but whose breeding range does not, and that migrate.
-- Hindi names are hand-written in `build_data.py` (`HINDI`) for 63 well-known birds. That list also defines the "Everyday Indian birds" deck. Worth a review by a Hindi speaker.
+- The "Everyday Indian birds" deck is a hand-picked list of 63 well-known birds (`EVERYDAY` in `build_data.py`).
 
 ## Credit
 

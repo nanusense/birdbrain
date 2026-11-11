@@ -60,43 +60,24 @@ PLACES = [
     ("Arctic", r"Arctic"), ("Antarctica", r"Antarctic"),
 ]
 
-# Everyday / iconic Indian birds, with Hindi names (English name as in AviList -> (Devanagari, Latin spelling))
-HINDI = {
- "Indian Peafowl": ("मोर", "Mor"), "Rose-ringed Parakeet": ("तोता", "Tota"), "House Crow": ("कौआ", "Kauwa"),
- "Common Myna": ("मैना", "Maina"), "Red-vented Bulbul": ("बुलबुल", "Bulbul"), "Asian Koel": ("कोयल", "Koyal"),
- "Indian Roller": ("नीलकंठ", "Neelkanth"), "White-throated Kingfisher": ("किलकिला", "Kilkila"),
- "Common Kingfisher": ("छोटा किलकिला", "Chhota Kilkila"), "Pied Kingfisher": ("कबरा किलकिला", "Kabra Kilkila"),
- "Common Hoopoe": ("हुदहुद", "Hudhud"), "Black Kite": ("चील", "Cheel"), "Brahminy Kite": ("ब्राह्मणी चील", "Brahmani Cheel"),
- "Spotted Owlet": ("खूसट", "Khoosat"), "Indian Eagle-Owl": ("उल्लू", "Ullu"), "Indian Pond Heron": ("अंधा बगुला", "Andha Bagula"),
- "Western Cattle Egret": ("गाय बगुला", "Gai Bagula"), "Little Egret": ("छोटा बगुला", "Chhota Bagula"), "Great Egret": ("बड़ा बगुला", "Bada Bagula"),
- "Sarus Crane": ("सारस", "Saras"), "Demoiselle Crane": ("कुरजा", "Kurja"), "Greater Flamingo": ("राजहंस", "Rajhans"),
- "Painted Stork": ("जांघिल", "Janghil"), "Asian Openbill": ("घोंघिल", "Ghonghil"), "Greater Adjutant": ("हरगिला", "Hargila"),
- "Eurasian Spoonbill": ("चमचा", "Chamcha"), "Oriental Darter": ("सर्पग्रीवा", "Sarpgreeva"), "Little Cormorant": ("छोटा पनकौआ", "Chhota Pankauwa"),
- "Little Grebe": ("पनडुब्बी", "Pandubbi"), "Purple Swamphen": ("कालिम", "Kalim"), "Black-winged Stilt": ("गजपाँव", "Gajpaon"),
- "Bronze-winged Jacana": ("जलपीपी", "Jalpipi"), "Red-wattled Lapwing": ("टिटिहरी", "Titihari"),
- "Oriental Magpie-Robin": ("दहियर", "Dahiyar"), "House Sparrow": ("गौरैया", "Gauraiya"), "Rock Dove": ("कबूतर", "Kabootar"),
- "Spotted Dove": ("फाख्ता", "Fakhta"), "Black Drongo": ("कोतवाल", "Kotwal"), "Great Hornbill": ("धनेश", "Dhanesh"),
- "Greater Coucal": ("महोख", "Mahokha"), "Common Tailorbird": ("दर्जी चिड़िया", "Darzi Chidiya"), "Purple Sunbird": ("शकरखोरा", "Shakarkhora"),
- "Jungle Babbler": ("सात भाई", "Saat Bhai"), "Great Indian Bustard": ("गोडावण", "Godawan"), "Indian Pitta": ("नवरंग", "Navrang"),
- "Grey Francolin": ("तीतर", "Teetar"), "Black Francolin": ("काला तीतर", "Kala Teetar"), "Common Quail": ("बटेर", "Bater"),
- "Red Junglefowl": ("जंगली मुर्गा", "Jungli Murga"), "Common Hawk-Cuckoo": ("पपीहा", "Papiha"), "Eurasian Golden Oriole": ("पीलक", "Peelak"),
- "Shikra": ("शिकरा", "Shikra"), "Peregrine Falcon": ("शाहीन", "Shaheen"), "Indian Vulture": ("गिद्ध", "Gidh"),
- "Barn Swallow": ("अबाबील", "Ababeel"), "Baya Weaver": ("बया", "Baya"), "Scaly-breasted Munia": ("मुनिया", "Munia"),
- "Red Avadavat": ("लाल मुनिया", "Lal Munia"), "Rosy Starling": ("गुलाबी मैना", "Gulabi Maina"), "White Wagtail": ("खंजन", "Khanjan"),
- "Asian Green Bee-eater": ("हरा पतेना", "Hara Patena"), "Coppersmith Barbet": ("छोटा बसंता", "Chhota Basanta"), "Himalayan Monal": ("मोनाल", "Monal"),
+# "Everyday Indian birds" deck: well-known birds a casual observer in India would recognise (English names as in AviList)
+EVERYDAY = {
+    "Indian Peafowl", "Rose-ringed Parakeet", "House Crow", "Common Myna", "Red-vented Bulbul", "Asian Koel",
+    "Indian Roller", "White-throated Kingfisher", "Common Kingfisher", "Pied Kingfisher", "Common Hoopoe",
+    "Black Kite", "Brahminy Kite", "Spotted Owlet", "Indian Eagle-Owl", "Indian Pond Heron", "Western Cattle Egret",
+    "Little Egret", "Great Egret", "Sarus Crane", "Demoiselle Crane", "Greater Flamingo", "Painted Stork",
+    "Asian Openbill", "Greater Adjutant", "Eurasian Spoonbill", "Oriental Darter", "Little Cormorant",
+    "Little Grebe", "Purple Swamphen", "Black-winged Stilt", "Bronze-winged Jacana", "Red-wattled Lapwing",
+    "Oriental Magpie-Robin", "House Sparrow", "Rock Dove", "Spotted Dove", "Black Drongo", "Great Hornbill",
+    "Greater Coucal", "Common Tailorbird", "Purple Sunbird", "Jungle Babbler", "Great Indian Bustard",
+    "Indian Pitta", "Grey Francolin", "Black Francolin", "Common Quail", "Red Junglefowl", "Common Hawk-Cuckoo",
+    "Eurasian Golden Oriole", "Shikra", "Peregrine Falcon", "Indian Vulture", "Barn Swallow", "Baya Weaver",
+    "Scaly-breasted Munia", "Red Avadavat", "Rosy Starling", "White Wagtail", "Asian Green Bee-eater",
+    "Coppersmith Barbet", "Himalayan Monal",
 }
-# a few more everyday birds without a Hindi name on file (still part of the "everyday" deck)
-EVERYDAY_EXTRA = ["Common Iora", "Indian Robin", "Ashy Prinia", "Red-whiskered Bulbul", "White-cheeked Bulbul", "Rufous Treepie", "Large-billed Crow",
-    "Indian Grey Hornbill", "Plum-headed Parakeet", "Alexandrine Parakeet", "Eurasian Collared Dove", "Laughing Dove", "Yellow-footed Green Pigeon",
-    "Asian Paradise Flycatcher", "Indian Paradise Flycatcher", "Common Woodshrike", "Oriental White-eye", "Indian White-eye", "Brown-headed Barbet",
-    "Lesser Flamingo", "Bar-headed Goose", "Ruddy Shelduck", "Northern Pintail", "Indian Spot-billed Duck", "Cotton Pygmy Goose", "Garganey",
-    "White-breasted Waterhen", "Common Moorhen", "Eurasian Coot", "Black-headed Ibis", "Glossy Ibis", "Grey Heron", "Purple Heron", "Pheasant-tailed Jacana",
-    "Common Sandpiper", "Green Sandpiper", "Black-rumped Flameback", "Brown-capped Pygmy Woodpecker", "Common Flameback", "Indian Cormorant", "Great Cormorant",
-    "Osprey", "Booted Eagle", "Crested Serpent Eagle", "Short-toed Snake Eagle", "Egyptian Vulture", "Eurasian Eagle-Owl", "Brown Fish Owl", "Collared Scops Owl",
-    "Indian Scops Owl", "Jungle Owlet", "Barn Owl", "Western Barn Owl"]
 PLACES = [(n, re.compile(rx)) for n, rx in PLACES]
 IND_STRICT_RX = re.compile(IND_STRICT)
-EVERYDAY = set(HINDI)  # the "everyday Indian birds" deck = the birds we have Hindi names for
+enseen = set()
 enseen = set()
 
 HAB = ["Forest", "Woodland", "Shrubland", "Grassland", "Wetland", "Riverine", "Coastal", "Marine", "Desert", "Rock", "Human Modified"]
@@ -148,8 +129,6 @@ for s in species:
         "x": (rng.get("text") or "")[:180],
     }
     b["n"][0] = b["n"][0] or s["names"]["en"]
-    if en_name in HINDI:
-        b["hi"] = list(HINDI[en_name])
     if en_name in EVERYDAY: enseen.add(en_name)
     birds.append(b)
 
@@ -172,5 +151,5 @@ with open(out, "w", encoding="utf-8") as f:
 print("birds", len(birds), "families", len(fams), "size MB", round(os.path.getsize(out) / 1e6, 2))
 print({n: placecount[n] for n, _ in PLACES})
 print("everyday matched", len(enseen), "missing:", sorted(EVERYDAY - enseen))
-print("winter visitors", sum(b["v"] for b in birds), "hindi", sum(1 for b in birds if "hi" in b))
+print("winter visitors", sum(b["v"] for b in birds))
 print("region coverage", sum(1 for b in birds if b["r"]), "habitat", sum(1 for b in birds if b["h"] >= 0))
