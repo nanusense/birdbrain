@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Birdbrain · The Bird Guessing Game</title>
 <meta name="description" content="Think you know your birds? Guess from 11,000 species, from garden favourites to rare finds. Pick a region, go Easy to Hard, challenge friends. Free to play.">
-<meta name="theme-color" content="#ff6b1a">
+<meta name="theme-color" content="#f6f5f1">
 <link rel="canonical" href="https://birdbrain.indianbirds.org/">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
@@ -1833,8 +1833,15 @@ document.addEventListener('click', e => { if (e.target.closest('#installLink')) 
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
   r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('birdbrain.theme', r.dataset.theme); } catch (e) {}
+  syncBarColor();
 };
+// the phone browser tints its top/bottom bars with this colour: keep it the page colour (orange clashed with the Play button)
+function syncBarColor() {
+  const c = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+  const m = document.querySelector('meta[name="theme-color"]'); if (m && c) m.content = c;
+}
 try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+syncBarColor();
 
 /* ---------- boot ---------- */
 store.load(); S.lang = 'en'; renderHome(); renderDaily(); renderGroups(); // names are English only for now
