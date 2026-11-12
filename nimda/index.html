@@ -120,6 +120,19 @@ td .mini{display:inline-block;vertical-align:middle;height:8px;border-radius:99p
 td .ago{color:var(--muted);font-size:12.5px;margin-left:6px}
 td .lbl{display:inline-block;max-width:300px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
 .note{color:var(--muted);font-size:12.5px;margin-top:26px;text-align:center}
+/* date bar: all time, or one day picked on a calendar */
+.daybar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--surface);border-radius:20px;padding:10px 12px;box-shadow:var(--shadow);margin-bottom:6px}
+.vseg{display:inline-flex;background:var(--soft);border-radius:14px;padding:3px}
+.vseg button{padding:8px 16px;border-radius:11px;font-weight:700;font-size:14px;color:var(--muted)}
+.vseg button.on{background:var(--ink);color:#fff}
+.picker{display:inline-flex;align-items:center;gap:6px}
+.picker input[type=date]{border:0;border-radius:12px;background:var(--soft);padding:9px 12px;font-size:15px;font-weight:600;color-scheme:light}
+.picker input[type=date].on{background:var(--ink);color:#fff;color-scheme:dark}
+.picker button{width:36px;height:36px;border-radius:11px;background:var(--soft);font-size:20px;line-height:1;font-weight:700}
+.picker button:disabled{opacity:.35;cursor:not-allowed}
+.daybar .hint{color:var(--muted);font-size:13px}
+.kp4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))!important;margin-top:0!important}
+.sec-s a{color:var(--brand);font-weight:600}
 @media (max-width:860px){.hero{grid-template-columns:1fr 1fr}.kpi.big{grid-column:1/-1}}
 @media (max-width:560px){.grid{grid-template-columns:1fr}.periods{grid-template-columns:1fr}.insights ul{grid-template-columns:1fr}.kpi.big .v{font-size:52px}}
 </style>
@@ -142,6 +155,11 @@ td .lbl{display:inline-block;max-width:300px;overflow:hidden;text-overflow:ellip
     <div class="brand"><img class="wm" src="../assets/wordmark.png" alt="Birdbrain"> <small>Admin</small></div>
     <div class="tools"><span id="updated"></span><button class="btn ghost sm" id="refresh">Refresh</button><button class="btn ghost sm" id="logout">Log out</button></div>
   </header>
+  <div class="daybar" id="daybar">
+    <div class="vseg" role="group" aria-label="What to show"><button id="vAll" class="on">All time</button><button id="vToday">Today</button></div>
+    <div class="picker"><button id="dPrev" aria-label="Previous day" disabled>‹</button><input type="date" id="dPick" aria-label="Pick a date"><button id="dNext" aria-label="Next day" disabled>›</button></div>
+    <span class="hint" id="dHint">Pick a date to see only that day (IST).</span>
+  </div>
   <div id="body"></div>
   <p class="note">Anonymous play data: a random player id, what was played and the country. No names, no IP addresses. Times are in IST.</p>
 </div>
@@ -163,8 +181,8 @@ const CN = (() => { try { const r = new Intl.DisplayNames(['en'], { type: 'regio
 let pw = '';
 
 /* ---------- login ---------- */
-async function load(password) {
-  const r = await fetch(API + '/admin/stats', { method: 'POST', body: JSON.stringify({ password }), headers: { 'Content-Type': 'text/plain' } });
+async function load(password, date) {
+  const r = await fetch(API + '/admin/stats', { method: 'POST', body: JSON.stringify(date ? { password, date } : { password }), headers: { 'Content-Type': 'text/plain' } });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(j.error || 'Could not load stats');
   return j;
@@ -175,7 +193,7 @@ async function enter(password) {
     const d = await load(password); pw = password;
     try { sessionStorage.setItem('bb.admin', password); } catch (e) {}
     $('#login').classList.add('hidden'); $('#dash').classList.remove('hidden');
-    render(d);
+    view = 'all'; syncBar(); render(d);
   } catch (e) {
     $('#err').textContent = /fetch/i.test(e.message) ? 'Could not reach the stats server.' : e.message;
     try { sessionStorage.removeItem('bb.admin'); } catch (x) {}
@@ -184,7 +202,32 @@ async function enter(password) {
 }
 $('#form').addEventListener('submit', e => { e.preventDefault(); const v = $('#pw').value.trim(); if (v) enter(v); });
 $('#logout').onclick = () => { pw = ''; try { sessionStorage.removeItem('bb.admin'); } catch (e) {} $('#pw').value = ''; $('#dash').classList.add('hidden'); $('#login').classList.remove('hidden'); };
-$('#refresh').onclick = async () => { $('#refresh').disabled = true; try { render(await load(pw)); } catch (e) { alert(e.message); } $('#refresh').disabled = false; };
+$('#refresh').onclick = async () => { $('#refresh').disabled = true; await show(view); $('#refresh').disabled = false; };
+
+/* ---------- all time, or one day on the calendar ---------- */
+let view = 'all', firstDay = '';           // 'all' or a date like 2026-11-12 (IST)
+const shiftDay = (ds, n) => new Date(Date.parse(ds + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+function syncBar() {
+  const today = istDate(0), pick = $('#dPick');
+  $('#vAll').classList.toggle('on', view === 'all'); $('#vToday').classList.toggle('on', view === today);
+  pick.max = today; if (firstDay) pick.min = firstDay;
+  pick.value = view === 'all' ? '' : view; pick.classList.toggle('on', view !== 'all' && view !== today);
+  $('#dPrev').disabled = view === 'all' || (!!firstDay && view <= firstDay); $('#dNext').disabled = view === 'all' || view >= today;
+  $('#dHint').textContent = view === 'all' ? 'Pick a date to see only that day (IST).' : view === today ? 'Showing today so far (IST).' : 'Showing one day only (IST).';
+}
+async function show(v) {
+  try {
+    const d = await load(pw, v === 'all' ? undefined : v);
+    view = v; syncBar();
+    if (v === 'all') await render(d); else await renderDay(d);
+  } catch (e) { alert(e.message); syncBar(); }
+}
+$('#vAll').onclick = () => show('all');
+$('#vToday').onclick = () => show(istDate(0));
+$('#dPick').onchange = e => { const v = e.target.value; if (/^\d{4}-\d{2}-\d{2}$/.test(v)) show(v); else syncBar(); };
+$('#dPrev').onclick = () => show(shiftDay(view, -1));
+$('#dNext').onclick = () => show(shiftDay(view, 1));
+document.addEventListener('click', e => { if (e.target.id === 'backAll') { e.preventDefault(); show('all'); } });
 try { const saved = sessionStorage.getItem('bb.admin'); if (saved) enter(saved); } catch (e) {}
 
 /* ---------- bird names + pictures (loaded only after login) ---------- */
@@ -214,6 +257,7 @@ const ago = ts => { const m = Math.max(0, Math.round((Date.now() - ts) / 60000))
 /* ---------- render ---------- */
 async function render(d) {
   const a = d.allTime || {}, e = d.earlier || {}, t = d.totals || {}, p = d.periods || {};
+  if (a.first_day) { firstDay = a.first_day; syncBar(); }
   $('#updated').textContent = 'Updated ' + new Date(d.generated).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }) + ' IST';
   const earlierG = e.earlier_games || 0, earlierP = e.earlier_players || 0;
   const totalGames = (a.started || 0) + earlierG, tracked = t.games || 0, players = (t.players || 0) + earlierP;
@@ -285,7 +329,7 @@ async function render(d) {
   const dcAxis = dcRecent.map(r => `<span>#${dcNum(r)}</span>`).join('');
   const dcTable = dcRows.map(r => `<tr><td><b>${esc(r.title)}</b><span class="ago">${new Date(r.first + 19800e3).toISOString().slice(0, 10)}</span></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.started)}</td><td class="num">${nf(r.finished || 0)}</td><td class="num">${pc(r.started ? (r.finished || 0) / r.started : 0)}</td><td class="num">${r.avg_score == null ? '–' : nf(Math.round(r.avg_score))}</td><td class="num">${r.avg_correct == null ? '–' : r.avg_correct.toFixed(1) + '/10'}</td></tr>`).join('');
   const dailySection = `
-    <h2 class="sec-t">Daily challenge</h2><p class="sec-s">Everyone gets the same 10 birds each day (the day changes at midnight IST). Counted from games played in Daily mode.</p>
+    <h2 class="sec-t">Daily challenge</h2><p class="sec-s">Everyone gets the same 10 birds each day (the day changes at midnight IST). Counted from games played in Daily mode, all days together. Pick a date above to see one day only.</p>
     <section class="periods" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:0;margin-bottom:16px">
       <div class="kpi"><div class="l">Played today</div><div class="v">${nf(todayRow ? todayRow.players : 0)}</div><div class="s">${todayRow ? `${nf(todayRow.finished || 0)} finished · ${esc(todayRow.title)}` : 'No one yet today'}</div></div>
       <div class="kpi"><div class="l">Daily games, all time</div><div class="v">${nf(dcT.started || 0)}</div><div class="s">${nf(dcT.finished || 0)} finished · ${pc(dcT.started ? (dcT.finished || 0) / dcT.started : 0)}</div></div>
@@ -367,6 +411,81 @@ async function render(d) {
   fill('hardest', d.hardest || [], 'lo'); fill('easiest', d.easiest || [], 'hi');
   const li = [...document.querySelectorAll('.insights li')].find(x => x.innerHTML.includes('_HARD_'));
   if (li) { if (d.hardest && d.hardest[0]) { const b = names[d.hardest[0].bird]; li.innerHTML = li.innerHTML.replace('_HARD_', esc(b ? b.name : d.hardest[0].bird)); } else li.remove(); }
+}
+
+/* ---------- one single day ---------- */
+async function renderDay(d) {
+  const t = d.totals || {}, prev = d.prev || {}, games = t.games || 0, players = t.players || 0, fin = t.finished || 0;
+  $('#updated').textContent = 'Updated ' + new Date(d.generated).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }) + ' IST';
+  const nice = new Date(d.date + 'T00:00:00Z').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const head = `<h2 class="sec-t" style="margin-top:14px">${nice}</h2><p class="sec-s">Stats for this day only, midnight to midnight IST${d.date === istDate(0) ? ' (today, so far)' : ''}. <a href="#" id="backAll">Back to all time</a></p>`;
+  if (!games) { $('#body').innerHTML = head + '<div class="card" style="text-align:center;padding:44px 20px"><h3>No games on this day</h3><p class="sub">Pick another date on the calendar.</p></div>'; return; }
+
+  const diff = prev.games ? (games - prev.games) / prev.games : null, newP = d.newPlayers || 0;
+  const shares = (d.shares || []).reduce((x, r) => x + r.n, 0), dShares = (d.shares || []).reduce((x, r) => x + (r.daily || 0), 0);
+  const dRows = d.dailyRows || [], dPlayers = dRows.reduce((x, r) => x + r.players, 0), dFin = dRows.reduce((x, r) => x + (r.finished || 0), 0), dStarted = dRows.reduce((x, r) => x + r.started, 0);
+  const decks = d.decks || [], topDeck = decks[0];
+  const viaShare = (d.sources || []).filter(s => SHARELINK.has(s.s)).reduce((x, s) => x + s.n, 0);
+
+  const ins = [];
+  ins.push(`<b>${nf(games)}</b> games by <b>${nf(players)}</b> players: <b>${nf(newP)}</b> new, <b>${nf(Math.max(players - newP, 0))}</b> seen before.`);
+  if (prev.games != null) ins.push(`The day before had <b>${nf(prev.games)}</b> games${diff == null ? '' : `, so this day is <b>${diff >= 0 ? 'up' : 'down'} ${Math.abs(Math.round(diff * 100))}%</b>`}.`);
+  if (dRows.length) ins.push(`<b>${nf(dPlayers)}</b> players tried the Daily challenge (<b>${nf(dFin)}</b> of <b>${nf(dStarted)}</b> games finished).`);
+  if (topDeck) ins.push(`<b>${esc(topDeck.deck === 'daily' ? 'The Daily challenge' : topDeck.title)}</b> was the most played set (${pc(topDeck.n / games)} of games).`);
+  ins.push(`<b>${pc(fin / games)}</b> of games were played to the end; <b>${pc(viaShare / games)}</b> started from a shared link.`);
+
+  const hMap = Object.fromEntries((d.hourly || []).map(r => [r.h, r.n])), hmax = Math.max(...Object.values(hMap), 1);
+  const hcols = Array.from({ length: 24 }, (_, h) => `<div class="col one" title="${hourLabel(h)}: ${hMap[h] || 0} games"><i style="height:${(hMap[h] || 0) / hmax * 100}%"></i></div>`).join('');
+  const haxis = Array.from({ length: 24 }, (_, h) => `<span>${h % 3 === 0 ? hourLabel(h) : ''}</span>`).join('');
+  const endParts = [['Finished', fin, 'var(--good)'], ['Left early', t.left_early || 0, '#f2b134'], ['Left before answering', t.no_answer || 0, 'var(--bad)']];
+  const endHtml = `<div class="split">${endParts.map(([, n, c]) => `<i style="width:${n / games * 100}%;background:${c}"></i>`).join('')}</div><div class="sl">${endParts.map(([l, n, c]) => `<span><s style="background:${c}"></s><b>${pc(n / games)}</b> ${l}</span>`).join('')}</div>`;
+  const dev = d.devices || [], devTot = dev.reduce((x, r) => x + r.n, 0) || 1, devC = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
+  const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devC[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><s style="background:${devC[r.device] || '#999'}"></s><b>${pc(r.n / devTot)}</b> ${esc(r.device)}</span>`).join('')}</div>`;
+  const levels = ['easy', 'medium', 'hard'].map(k => (d.levels || []).find(l => l.level === k)).filter(Boolean);
+  const shareNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score' };
+  const dmax = Math.max(...decks.map(r => r.n), 1);
+  const deckRows = decks.map(r => `<tr><td>${esc(r.deck === 'daily' ? 'Daily challenge' : r.title)}</td><td class="num"><span class="mini" style="width:${Math.max(r.n / dmax * 60, 3)}px"></span>${nf(r.n)}</td><td class="num">${pc(r.n / games)}</td><td class="num">${pc(r.f / r.n)}</td><td class="num">${pc(r.acc)}</td></tr>`).join('');
+  const dailyRowsHtml = dRows.map(r => `<tr><td><b>${esc(r.title)}</b></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.started)}</td><td class="num">${nf(r.finished || 0)}</td><td class="num">${pc(r.started ? (r.finished || 0) / r.started : 0)}</td><td class="num">${r.avg_score == null ? '–' : nf(Math.round(r.avg_score))}</td><td class="num">${r.avg_correct == null ? '–' : r.avg_correct.toFixed(1) + '/10'}</td><td class="num">${r.top == null ? '–' : nf(r.top)}</td></tr>`).join('');
+  const recentRows = (d.recent || []).map(r => {
+    const result = r.finished ? '<span class="pill ok">finished</span>' : r.answered ? '<span class="pill mid">left early</span>' : '<span class="pill no">left before answering</span>';
+    const deckCell = r.custom ? `<span class="lbl" title="${esc(r.custom_label || '')}"><b>Custom:</b> ${esc(r.custom_label || 'every bird')}</span>` : esc(r.deck_title);
+    return `<tr><td>${new Date(r.ts_start).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' })}</td><td>${deckCell}</td><td>${LV[r.level] || ''}${r.shadow ? ' · shadow' : ''}</td><td class="num">${nf(r.score)}</td><td class="num">${r.answered ? r.correct + '/' + r.answered : '–'}</td><td>${result}</td><td>${esc(srcName(r.src).replace(/ \(typed.*\)/, ''))}</td><td>${esc(CN(r.country))}</td><td>${esc(r.device)}</td></tr>`;
+  }).join('');
+
+  $('#body').innerHTML = `${head}
+    <section class="periods kp4">
+      <div class="kpi big"><div class="l">Games</div><div class="v">${nf(games)}</div><div class="s">${diff == null ? 'No games the day before' : `${diff >= 0 ? '▲' : '▼'} ${Math.abs(Math.round(diff * 100))}% vs the day before (${nf(prev.games)})`}</div></div>
+      <div class="kpi"><div class="l">Players</div><div class="v">${nf(players)}</div><div class="s">${nf(newP)} new · ${nf(Math.max(players - newP, 0))} seen before</div></div>
+      <div class="kpi"><div class="l">Played to the end</div><div class="v">${pc(fin / games)}</div><div class="s">${nf(fin)} of ${nf(games)} games</div></div>
+      <div class="kpi"><div class="l">Average accuracy</div><div class="v">${pc(t.avg_acc)}</div><div class="s">${nf(shares)} results shared</div></div>
+    </section>
+    <section class="insights"><h2>That day in short</h2><ul>${ins.map(i => `<li>${i}</li>`).join('')}</ul></section>
+
+    <h2 class="sec-t">Daily challenge</h2><p class="sec-s">Games played in Daily mode on this day${dRows.length ? ` · ${nf(dShares)} Daily results shared` : ''}</p>
+    <section class="card"><div class="tw"><table style="min-width:620px"><thead><tr><th>Day</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Rate</th><th class="num">Avg score</th><th class="num">Avg right</th><th class="num">Top score</th></tr></thead><tbody>${dailyRowsHtml || '<tr><td colspan="8" class="empty">No Daily games on this day.</td></tr>'}</tbody></table></div></section>
+
+    <h2 class="sec-t">What was played</h2><p class="sec-s">Sets, difficulty and how games ended</p>
+    <section class="card"><h3>Sets</h3><div class="sub">Games per set on this day. Finished = played to the end.</div>
+      <div class="tw"><table><thead><tr><th>Set</th><th class="num">Games</th><th class="num">Share</th><th class="num">Finished</th><th class="num">Accuracy</th></tr></thead><tbody>${deckRows}</tbody></table></div></section>
+    <section class="grid" style="margin-top:16px">
+      <div class="card"><h3>Difficulty</h3><div class="sub">Share of games, how many finish, and accuracy</div>
+        <div class="rows">${levels.map(l => `<div class="row"><span>${LV[l.level]}</span><span><b>${pc(l.n / games)}</b> · ${pc(l.f / l.n)} finish · ${pc(l.acc)} right</span></div>`).join('') || '<div class="empty">No data.</div>'}</div></div>
+      <div class="card"><h3>How games ended</h3><div class="sub">Of all games on this day</div>${endHtml}</div>
+      <div class="card"><h3>What people build</h3><div class="sub">Custom decks built on this day (${nf(t.custom)} games)</div>${barList((d.customDecks || []).map(r => ({ label: r.label, n: r.n })), { cls: 'b' })}</div>
+    </section>
+
+    <h2 class="sec-t">Who played, and how they arrived</h2><p class="sec-s">Time of day, country, device, sharing</p>
+    <section class="grid">
+      <div class="card"><h3>When people played</h3><div class="sub">Games by hour (IST)</div><div class="cols" style="height:110px">${hcols}</div><div class="axis">${haxis}</div></div>
+      <div class="card"><h3>Device</h3><div class="sub">Phone or computer</div>${devHtml}
+        <h3 style="margin-top:22px;font-size:17px">Countries</h3><div class="sub">Games by country</div>${barList((d.countries || []).map(r => ({ label: CN(r.country), n: r.n })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.n / games)}` })}</div>
+      <div class="card"><h3>How players arrived</h3><div class="sub">Games by where the visit came from</div>${barList((d.sources || []).map(r => ({ label: srcName(r.s).replace(/ \(typed.*\)/, ''), n: r.n })), { fmt: r => `<b>${nf(r.n)}</b> · ${pc(r.n / games)}` })}</div>
+      <div class="card"><h3>Sharing</h3><div class="sub">${nf(shares)} results shared on this day</div>${barList((d.shares || []).map(r => ({ label: shareNames[r.kind] || r.kind, n: r.n })), { cls: 'b' })}</div>
+    </section>
+
+    <h2 class="sec-t">Games that day</h2><p class="sec-s">Newest first, up to 60 (IST)${games > 60 ? ` · showing the latest 60 of ${nf(games)}` : ''}</p>
+    <section class="card"><div class="tw"><table style="min-width:760px"><thead><tr><th>Time</th><th>Deck</th><th>Level</th><th class="num">Score</th><th class="num">Correct</th><th>Result</th><th>Came from</th><th>Country</th><th>Device</th></tr></thead><tbody>${recentRows}</tbody></table></div></section>
+    <p class="note">Bird-by-bird accuracy is only kept as all-time totals, so it appears in the all-time view.</p>`;
 }
 })();
 </script>
