@@ -1222,7 +1222,7 @@ function finish(partial) {
   if (G.daily) { renderDailyResult(); fillRank($('#rRank'), G.daily.num, G.meta.gid, G.score, true); }
   $('#rScore').textContent = fmt(G.score);
   $('#rGrade').textContent = G.endless ? (G.right >= 25 ? 'Endless legend' : G.right >= 10 ? 'Going strong' : 'Warming up') : grades.find(g => acc >= g[0])[1];
-  $('#rStats').innerHTML = [[`${G.right}/${n}`, 'Correct'], [acc + '%', 'Accuracy'], [G.bestStreak, 'Best streak']].map(([a, b]) => `<div class="rstat"><b>${a}</b><span>${b}</span></div>`).join('');
+  $('#rStats').innerHTML = [[`${G.right}/${n}`, 'Correct'], [acc + '%', 'Accuracy'], [G.bestStreak, 'Most in a row']].map(([a, b]) => `<div class="rstat"><b>${a}</b><span>${b}</span></div>`).join('');
   $('#rMissed').innerHTML = G.missed.length ? `<h3>Birds to get to know</h3><p class="tip">Tap a bird to read more about it.</p><div class="missed">${G.missed.map(b => `<a class="mcard" style="--c:${G.deck.c}" ${b.g ? `href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener"` : ''}><div class="t">${img(b)}</div>${esc(nm(b))}</a>`).join('')}</div>` : '<h3 style="text-align:center;margin:0 0 24px">Flawless. Not one bird got past you.</h3>';
   if (acc >= 70 && G.score > 0 && !G.revisit) confetti();
   G.cardPromise = makeCard().catch(() => null); // draw the share picture now, so sharing is instant when tapped
@@ -1269,7 +1269,7 @@ async function makeCard(withPictures = true) {
   // grade
   x.fillStyle = INK; x.font = '800 58px Gabarito, sans-serif'; x.fillText($('#rGrade').textContent, W / 2, 726);
   // stat chips
-  const chips = [`${G.right}/${n} correct`, `${acc}% accuracy`, `${G.bestStreak} best streak`];
+  const chips = [`${G.right}/${n} correct`, `${acc}% accuracy`, `${G.bestStreak} in a row`];
   x.font = '700 30px "Plus Jakarta Sans", sans-serif';
   const cw = chips.map(t => x.measureText(t).width + 56), gap = 16, total = cw.reduce((a, b) => a + b, 0) + gap * 2; let cx = (W - total) / 2;
   chips.forEach((t, i) => { x.fillStyle = '#f1efe9'; rrect(x, cx, 765, cw[i], 66, 33); x.fill(); x.fillStyle = INK; x.fillText(t, cx + cw[i] / 2, 808); cx += cw[i] + gap; });
