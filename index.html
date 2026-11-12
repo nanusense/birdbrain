@@ -101,6 +101,12 @@ svg{display:block}
 /* ---------- home hero ---------- */
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:28px 0 46px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.eyebrow{flex-wrap:wrap;row-gap:10px;column-gap:12px}
+.played{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;color:var(--muted)}
+.played[hidden]{display:none}
+.played b{font:800 20px/1 var(--display);letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums;min-width:2ch}
+.pdot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 var(--good);animation:ppulse 2.2s ease-out infinite}
+@keyframes ppulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--good) 55%,transparent)}70%,100%{box-shadow:0 0 0 9px transparent}}
 .flag{display:inline-flex;width:22px;height:14px;border-radius:3px;overflow:hidden;flex-direction:column;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
 .flag i{flex:1}.flag i:nth-child(1){background:#ff9933}.flag i:nth-child(2){background:#fff}.flag i:nth-child(3){background:#138808}
 .hero h1{font-size:clamp(42px,6.4vw,84px);font-weight:800}
@@ -477,7 +483,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 <main id="home" class="wrap">
   <section class="hero">
     <div>
-      <div class="eyebrow">11,011 birds · 1 sticker each</div>
+      <div class="eyebrow"><span>11,011 birds</span><span class="played" id="playedCount" hidden><i class="pdot" aria-hidden="true"></i><b id="playedN">0</b><span>games played so far</span></span></div>
       <h1>How well do you know your <em>birds?</em></h1>
       <p class="lead">Guess the bird from its picture. Pick what you want to play, from the birds you see every day to rare finds from around the world.</p>
       <section class="daily" id="dailyCard" aria-label="Daily Birdbrain"></section>
@@ -667,6 +673,22 @@ const BRAND = 'Birdbrain';
 
 /* ---------- anonymous play stats: no names, no IPs, just a random id and what was played ---------- */
 const STATS_URL = location.hostname === 'localhost' ? 'http://localhost:8787' : 'https://birdbrain-stats.birdbrain-stats.workers.dev';
+// "N games played so far" on the home screen: quietly skipped if the number is missing or small
+(function () {
+  const MIN_SHOWN = 500;
+  fetch(STATS_URL + '/count').then(r => r.ok ? r.json() : null).then(d => {
+    if (!d || !(d.games >= MIN_SHOWN)) return;
+    const n = d.games, el = $('#playedN'), fmt = v => Math.round(v).toLocaleString('en-IN');
+    $('#playedCount').hidden = false;
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) { el.textContent = fmt(n); return; }
+    const t0 = performance.now(), dur = 1500;       // count up from 0, slowing down towards the end
+    (function tick(t) {
+      const k = Math.min(1, (t - t0) / dur);
+      el.textContent = fmt(n * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(tick);
+    })(t0);
+  }).catch(() => {});
+})();
 const STATS_ON = location.hostname === 'birdbrain.indianbirds.org' || (() => { try { return localStorage.getItem('birdbrain.track') === '1'; } catch (e) { return false; } })();
 const rid = () => { const a = new Uint8Array(12); crypto.getRandomValues(a); return Array.from(a, b => (b % 36).toString(36)).join(''); };
 let PID; try { PID = localStorage.getItem('birdbrain.pid'); if (!PID || !/^[a-z0-9]{8,24}$/.test(PID)) { PID = rid(); localStorage.setItem('birdbrain.pid', PID); } } catch (e) { PID = rid(); }
