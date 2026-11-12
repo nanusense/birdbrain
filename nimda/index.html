@@ -161,7 +161,7 @@ td .lbl{display:inline-block;max-width:300px;overflow:hidden;text-overflow:ellip
     <span class="hint" id="dHint">Pick a date to see only that day (IST).</span>
   </div>
   <div id="body"></div>
-  <p class="note">Anonymous play data: a random player id, what was played and the country. No names, no IP addresses. Times are in IST.</p>
+  <p class="note">Anonymous play data: a random player id, what was played and the country. No IP addresses. The only names stored are the nicknames players type for group challenge leaderboards (never shown here). Times are in IST.</p>
 </div>
 
 <script>
@@ -174,8 +174,8 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&a
 const nf = n => Math.round(n || 0).toLocaleString('en-IN');
 const pc = x => (x == null || isNaN(x) ? '–' : Math.round(x * 100) + '%');
 const LV = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
-const SRCNAME = { direct: 'Direct (typed or bookmarked link)', 'whatsapp-share': 'WhatsApp challenge link', 'score-card': 'Score card share', 'copied-link': 'Copied link', 'site-share': 'Footer share button', 'facebook-share': 'Facebook share', 'x-share': 'X share', 'linkedin-share': 'LinkedIn share', 'telegram-share': 'Telegram share', 'email-share': 'Email share', 'phone-share': "Phone's share sheet" };
-const SHARELINK = new Set(['whatsapp-share', 'score-card', 'copied-link', 'site-share', 'facebook-share', 'x-share', 'linkedin-share', 'telegram-share', 'email-share', 'phone-share']);
+const SRCNAME = { direct: 'Direct (typed or bookmarked link)', 'whatsapp-share': 'WhatsApp challenge link', 'score-card': 'Score card share', 'copied-link': 'Copied link', 'group-invite': 'Group challenge link', 'home-screen': 'Opened from the home screen', 'site-share': 'Footer share button', 'facebook-share': 'Facebook share', 'x-share': 'X share', 'linkedin-share': 'LinkedIn share', 'telegram-share': 'Telegram share', 'email-share': 'Email share', 'phone-share': "Phone's share sheet" };
+const SHARELINK = new Set(['whatsapp-share', 'score-card', 'copied-link', 'group-invite', 'site-share', 'facebook-share', 'x-share', 'linkedin-share', 'telegram-share', 'email-share', 'phone-share']);
 const srcName = s => SRCNAME[s] || s;
 const CN = (() => { try { const r = new Intl.DisplayNames(['en'], { type: 'region' }); return c => (c && c.length === 2 && c !== '??' ? r.of(c) : 'Unknown'); } catch (e) { return c => c || 'Unknown'; } })();
 let pw = '';
@@ -311,7 +311,7 @@ async function render(d) {
   // ---- audience ----
   const dev = d.devices || [], devTot = dev.reduce((x, r) => x + r.n, 0) || 1, devC = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
   const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devC[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><s style="background:${devC[r.device] || '#999'}"></s><b>${pc(r.n / devTot)}</b> ${esc(r.device)}</span>`).join('')}</div>`;
-  const sharesNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score' };
+  const sharesNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score', invite: 'Group invite' };
 
   // ---- latest games ----
   const recentRows = (d.recent || []).map(r => {
@@ -340,6 +340,20 @@ async function render(d) {
     <section class="card" style="margin-top:16px"><h3>Day by day</h3><div class="sub">Players = different devices. Score and correct are for finished games.</div>
         <div class="tw"><table style="min-width:520px"><thead><tr><th>Day</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Rate</th><th class="num">Avg score</th><th class="num">Avg right</th></tr></thead><tbody>${dcTable || '<tr><td colspan="7" class="empty">No Daily games yet.</td></tr>'}</tbody></table></div></section>`;
 
+  // ---- group challenges ----
+  const gp = d.groups || {}, gT = gp.totals || {}, deckName = id => { const w = { world: 'The whole world' }; const t = w[id] || id.replace(/-/g, ' '); return t.charAt(0).toUpperCase() + t.slice(1); };
+  const gRows = (gp.top || []).map(r => { const [id, lc] = String(r.code).split('.'); return `<tr><td><b>${esc(deckName(id))}</b> · ${LV[{ e: 'easy', m: 'medium', h: 'hard' }[lc]] || ''}<span class="ago">${esc(r.code)}</span></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.top)}</td><td>${timeIST(r.first)}</td></tr>`; }).join('');
+  const groupSection = `
+    <h2 class="sec-t">Group challenges</h2><p class="sec-s">Friends play the same birds from a shared link and compare scores. Counted from finished group games (results posted to a leaderboard).</p>
+    <section class="periods" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:0;margin-bottom:16px">
+      <div class="kpi"><div class="l">Challenges</div><div class="v">${nf(gT.groups || 0)}</div><div class="s">with at least one result</div></div>
+      <div class="kpi"><div class="l">Players joined</div><div class="v">${nf(gT.players || 0)}</div><div class="s">${gT.groups ? (gT.players / gT.groups).toFixed(1) : '0'} per challenge</div></div>
+      <div class="kpi"><div class="l">Active groups</div><div class="v">${nf(gT.active || 0)}</div><div class="s">3 or more players</div></div>
+      <div class="kpi"><div class="l">Invites shared</div><div class="v">${nf(sk('invite'))}</div><div class="s">WhatsApp and copied links</div></div>
+    </section>
+    <section class="card"><h3>Busiest challenges</h3><div class="sub">Most players first. Names are not stored, only the set, level and a random code.</div>
+      <div class="tw"><table style="min-width:520px"><thead><tr><th>Challenge</th><th class="num">Players</th><th class="num">Top score</th><th>Started (IST)</th></tr></thead><tbody>${gRows || '<tr><td colspan="4" class="empty">No group challenges yet.</td></tr>'}</tbody></table></div></section>`;
+
   $('#body').innerHTML = `
     <section class="hero">
       <div class="kpi big"><div class="l">Games played, all time</div><div class="v">${nf(totalGames)}</div><div class="s">${earlierG ? `Includes about ${nf(earlierG)} games from before tracking began (estimate)` : 'Counted permanently'}${a.first_day ? ` · tracked since ${a.first_day}` : ''}</div></div>
@@ -358,6 +372,8 @@ async function render(d) {
     <section class="card"><div class="tw"><table style="min-width:760px"><thead><tr><th>When</th><th>Deck</th><th>Level</th><th class="num">Score</th><th class="num">Correct</th><th>Result</th><th>Came from</th><th>Country</th><th>Device</th></tr></thead><tbody>${recentRows || '<tr><td colspan="9" class="empty">No games yet.</td></tr>'}</tbody></table></div></section>
 
     ${dailySection}
+
+    ${groupSection}
 
     <h2 class="sec-t">Is it growing?</h2><p class="sec-s">Games and new players, last 30 days</p>
     <section class="grid">
@@ -442,7 +458,7 @@ async function renderDay(d) {
   const dev = d.devices || [], devTot = dev.reduce((x, r) => x + r.n, 0) || 1, devC = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
   const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devC[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><s style="background:${devC[r.device] || '#999'}"></s><b>${pc(r.n / devTot)}</b> ${esc(r.device)}</span>`).join('')}</div>`;
   const levels = ['easy', 'medium', 'hard'].map(k => (d.levels || []).find(l => l.level === k)).filter(Boolean);
-  const shareNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score' };
+  const shareNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score', invite: 'Group invite' };
   const dmax = Math.max(...decks.map(r => r.n), 1);
   const deckRows = decks.map(r => `<tr><td>${esc(r.deck === 'daily' ? 'Daily challenge' : r.title)}</td><td class="num"><span class="mini" style="width:${Math.max(r.n / dmax * 60, 3)}px"></span>${nf(r.n)}</td><td class="num">${pc(r.n / games)}</td><td class="num">${pc(r.f / r.n)}</td><td class="num">${pc(r.acc)}</td></tr>`).join('');
   const dailyRowsHtml = dRows.map(r => `<tr><td><b>${esc(r.title)}</b></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.started)}</td><td class="num">${nf(r.finished || 0)}</td><td class="num">${pc(r.started ? (r.finished || 0) / r.started : 0)}</td><td class="num">${r.avg_score == null ? '–' : nf(Math.round(r.avg_score))}</td><td class="num">${r.avg_correct == null ? '–' : r.avg_correct.toFixed(1) + '/10'}</td><td class="num">${r.top == null ? '–' : nf(r.top)}</td></tr>`).join('');
@@ -463,6 +479,9 @@ async function renderDay(d) {
 
     <h2 class="sec-t">Daily challenge</h2><p class="sec-s">Games played in Daily mode on this day${dRows.length ? ` · ${nf(dShares)} Daily results shared` : ''}</p>
     <section class="card"><div class="tw"><table style="min-width:620px"><thead><tr><th>Day</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Rate</th><th class="num">Avg score</th><th class="num">Avg right</th><th class="num">Top score</th></tr></thead><tbody>${dailyRowsHtml || '<tr><td colspan="8" class="empty">No Daily games on this day.</td></tr>'}</tbody></table></div></section>
+
+    <h2 class="sec-t">Group challenges</h2>
+    <section class="card"><h3>${nf((d.groups || {}).players || 0)} group result${((d.groups || {}).players || 0) === 1 ? '' : 's'}</h3><div class="sub">Posted on this day, across ${nf((d.groups || {}).groups || 0)} challenge${((d.groups || {}).groups || 0) === 1 ? '' : 's'}.</div></section>
 
     <h2 class="sec-t">What was played</h2><p class="sec-s">Sets, difficulty and how games ended</p>
     <section class="card"><h3>Sets</h3><div class="sub">Games per set on this day. Finished = played to the end.</div>

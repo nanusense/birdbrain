@@ -337,6 +337,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .daily h2{font-size:clamp(25px,3.4vw,32px);font-weight:800;line-height:1.06;max-width:15em}
 .d-tags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
 .d-tags span{font-size:13px;font-weight:700;background:rgba(255,255,255,.16);border-radius:99px;padding:5px 12px}
+.d-tags span.d-theme{background:#ffd84d;color:#3a2f00}
 .d-act{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .d-btn{background:#fff;color:#2c32bf;font-weight:800;font-size:17px;border-radius:16px;padding:14px 24px;box-shadow:0 10px 22px -10px rgba(0,0,0,.45);transition:transform .12s}
 .d-btn:hover{transform:translateY(-1px)}
@@ -373,6 +374,48 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .d-rank{margin-top:12px;font-size:14.5px;font-weight:700}
 .d-rank span{display:block;font-weight:600;opacity:.85;font-size:13.5px;margin-top:2px}
 .rnote{color:var(--muted);font-size:14px;margin:-12px 0 24px}
+/* ---------- Group challenges (teal, so they never look like the Daily or free play) ---------- */
+.gcard{max-width:38em;background:var(--surface);border-radius:24px;padding:18px 20px;box-shadow:inset 0 0 0 1.5px var(--line);margin:0 0 26px}
+.gc-t{display:flex;gap:14px;align-items:flex-start}
+.gc-ic{flex:none;width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#0e7f70,#1fb89c);color:#fff;display:grid;place-items:center}
+.gc-t h3{font-size:20px;font-weight:800;margin-bottom:3px}
+.gc-t p{color:var(--muted);font-size:14.5px;line-height:1.4}
+.gc-act{margin-top:14px}
+.btn.grpb{background:linear-gradient(135deg,#0e7f70,#1fb89c);box-shadow:0 10px 22px -10px rgba(14,127,112,.8)}
+.btn.grpb:hover{background:linear-gradient(135deg,#0b6e61,#19a58b)}
+.gc-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.gc-list:empty{display:none}
+.gc-list button{background:var(--soft);border-radius:99px;padding:7px 13px;font-size:13.5px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc-list button span{color:var(--muted);font-weight:600}
+.icard{background:var(--surface);border-radius:22px;padding:16px;box-shadow:var(--shadow);margin:0 0 22px;text-align:left}
+.ic-t{display:flex;gap:12px;align-items:flex-start}
+.ic-t img{flex:none;width:46px;height:46px;border-radius:13px}
+.ic-t b{display:block;font-family:var(--display);font-size:19px;font-weight:800;line-height:1.15}
+.ic-t span{display:block;color:var(--muted);font-size:14px;margin-top:3px;line-height:1.4}
+.ic-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.ic-how{margin-top:10px;font-size:13.5px;color:var(--ink);background:var(--soft);padding:10px 12px;border-radius:12px;line-height:1.45}
+.dbar.grp{background:linear-gradient(135deg,#0e7f70,#1fb89c)}
+.dbar.grp .d-pill{color:#0e7f70}
+.g-sheet .g-pill{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#d9f4ee;color:#0e7f70;border-radius:99px;padding:6px 13px;margin-bottom:12px}
+:root[data-theme="dark"] .g-sheet .g-pill{background:#12332e;color:#7fe3cf}
+.g-sheet .lbl{margin-top:14px}
+.g-in,.g-sheet select{width:100%;border:0;border-radius:14px;background:var(--soft);padding:13px 14px;font-size:16px;color:var(--ink)}
+.g-sheet .btn.lg{width:100%;margin-top:18px}
+.g-sum{background:var(--soft);border-radius:16px;padding:12px 14px;margin:12px 0 4px;font-weight:700}
+.g-sum small{display:block;color:var(--muted);font-weight:600;font-size:13px;margin-top:2px}
+.gboard{background:var(--surface);border-radius:22px;padding:16px;box-shadow:var(--shadow);margin:-8px 0 22px;text-align:left}
+.g-sheet .gboard{box-shadow:none;padding:0;margin:8px 0 0}
+.gboard h3{font-size:20px;font-weight:800;margin:0}
+.gsub{color:var(--muted);font-size:13.5px;margin:2px 0 10px}
+.lb{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.lb li{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-radius:14px;background:var(--soft)}
+.lb li.me{background:#d9f4ee;box-shadow:inset 0 0 0 2px #1fb89c}
+:root[data-theme="dark"] .lb li.me{background:#12332e}
+.lb .rk{font-family:var(--display);font-weight:800;color:var(--muted);font-size:17px}
+.lb .nk{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb .sc{font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+.lb .sc small{display:block;color:var(--muted);font-weight:600;font-size:12px}
+.gbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 @media (max-width:560px){.daily{padding:20px 18px;border-radius:24px}.d-btn{width:100%}.collage{height:190px!important}.hero p.lead{margin:14px 0 20px;font-size:17px}.hero h1{font-size:40px}}
 
 /* ---------- responsive ---------- */
@@ -443,6 +486,12 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
         <button class="btn ghost" id="surprise"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.500" cy="8.500" r="1" fill="currentColor"/><circle cx="15.500" cy="15.500" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="15.500" cy="8.500" r="1" fill="currentColor"/><circle cx="8.500" cy="15.500" r="1" fill="currentColor"/></svg> Surprise me</button>
         <button class="linkbtn" id="pickDeck">See all decks ↓</button>
       </div>
+      <section class="gcard" id="groupCard" style="margin-top:26px">
+        <div class="gc-t"><span class="gc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.500" cy="9" r="2.5"/><path d="M17 14.200c2.400.3 4 2.200 4 4.800"/></svg></span>
+          <div><h3>Play with your group</h3><p>Pick a set, send the link, and see who does best. Everyone in your group plays the same 10 birds.</p></div></div>
+        <div class="gc-act"><button class="btn grpb" id="gcStart">Start a group challenge</button></div>
+        <div class="gc-list" id="gcList"></div>
+      </section>
     </div>
     <div class="collage" id="collage" aria-hidden="true"></div>
   </section>
@@ -505,6 +554,8 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div class="rstats" id="rStats"></div>
   <div class="rdaily hidden" id="rDaily"></div>
   <div class="rankcard hidden" id="rRank"></div>
+  <div class="gboard hidden" id="rGroup"></div>
+  <div id="rInstall"></div>
   <p class="rnote hidden" id="rNote">Everyone got the same 10 birds today. Send your result to a friend and compare.</p>
   <div id="rMissed"></div>
   <div class="rbtns">
@@ -516,12 +567,20 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   </div>
 </main>
 
+<!-- GROUP CHALLENGE: create, join and leaderboard share this one dialog -->
+<div class="sheet-wrap hidden" id="grpWrap">
+  <div class="sharebox g-sheet" role="dialog" aria-modal="true" aria-label="Group challenge">
+    <button class="s-x" id="grpClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div id="grpBody"></div>
+  </div>
+</div>
 <!-- DAILY INTRO -->
 <div class="sheet-wrap hidden" id="dailyWrap">
   <div class="sharebox d-sheet" role="dialog" aria-modal="true" aria-labelledby="dyTitle">
     <button class="s-x" id="dyClose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <span class="d-pill" id="dyPill">Daily Birdbrain</span>
     <h2 id="dyTitle">Today's 10 birds</h2>
+    <p class="cardnote hidden" id="dyTheme" style="text-align:left;font-weight:700;color:var(--ink);margin-top:8px"></p>
     <ul class="rules">
       <li><span class="ri">=</span><div><b>The same for everyone</b>Everyone in the world gets these exact 10 birds today.</div></li>
       <li><span class="ri">1</span><div><b>One try a day</b>You can play today's set once. If you close the page, your progress is saved and you carry on where you left off.</div></li>
@@ -614,7 +673,9 @@ const SRC = (() => {
   try {
     const v0 = sessionStorage.getItem('birdbrain.src'); if (v0) return v0;
     const tag = new URLSearchParams(location.search).get('r');
-    let r = { wa: 'whatsapp-share', card: 'score-card', cp: 'copied-link', site: 'site-share', fb: 'facebook-share', x: 'x-share', li: 'linkedin-share', tg: 'telegram-share', em: 'email-share', nat: 'phone-share' }[tag] || '';
+    const standaloneNow = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    let r = { wa: 'whatsapp-share', card: 'score-card', cp: 'copied-link', gr: 'group-invite', site: 'site-share', fb: 'facebook-share', x: 'x-share', li: 'linkedin-share', tg: 'telegram-share', em: 'email-share', nat: 'phone-share' }[tag] || '';
+    if (!r && standaloneNow) r = 'home-screen';
     if (!r && document.referrer) { const h = new URL(document.referrer).hostname.replace(/^www\./, ''); if (h && h !== location.hostname) r = h; }
     r = (r || 'direct').toLowerCase().replace(/[^a-z0-9.-]/g, '').slice(0, 40) || 'direct';
     sessionStorage.setItem('birdbrain.src', r); return r;
@@ -804,7 +865,7 @@ function view(v) {
   VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
   $('#nav').classList.toggle('hidden', v === 'game');
   $('#reveal').classList.add('hidden');
-  if (v === 'home' && typeof renderDaily === 'function') renderDaily();
+  if (v === 'home' && typeof renderDaily === 'function') { renderDaily(); renderGroups(); }
   window.scrollTo(0, 0);
 }
 
@@ -817,7 +878,7 @@ function renderHome() {
   $('#worldDecks').innerHTML = DECKS.filter(d => d.sec === 'world').map(card).join('');
   const heroes = [['Indian Peafowl', C.saffron, 'a'], ['Himalayan Monal', C.sky, 'b'], ['Indian Roller', C.leaf, 'c']];
   $('#collage').innerHTML = heroes.map(([n, c, k]) => byEn[n] ? `<div class="cc ${k}" style="background:${c}">${img(byEn[n], '', false)}</div>` : '').join('');
-  $('#credit').innerHTML = `<button class="btn sm sharebtn" id="shareSite"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.600 13.500l6.800 4M15.400 6.500l-6.800 4"/></svg> Share Birdbrain</button><br><span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · Help <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">support</a> such games.</span><br><span class="more">For more games and apps built by me, check <a href="https://apps.snanu.com" target="_blank" rel="noopener">this link</a>.</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
+  $('#credit').innerHTML = `<button class="btn sm sharebtn" id="shareSite"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.600 13.500l6.800 4M15.400 6.500l-6.800 4"/></svg> Share Birdbrain</button><br><button class="linkbtn" id="installLink"style="margin:0 0 6px">Add Birdbrain to your home screen</button><br><span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · Help <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">support</a> such games.</span><br><span class="more">For more games and apps built by me, check <a href="https://apps.snanu.com" target="_blank" rel="noopener">this link</a>.</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
 }
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-deck]'); if (d) openSheet(deckById[d.dataset.deck]);
@@ -973,12 +1034,12 @@ $('#bplay').onclick = () => {
 
 /* ---------- game ---------- */
 let G = null, timerId = null;
-function stopGame() { clearInterval(timerId); if (G && !G.sent && G.answered > 0 && !G.daily) sendEnd(false); G = null; } // a daily game isn't over when you leave: it can be resumed
+function stopGame() { clearInterval(timerId); if (G && !G.sent && G.answered > 0 && !G.fixed) sendEnd(false); G = null; } // a daily or group game isn't over when you leave: it can be resumed
 function sendEnd(finished) {
   G.sent = true;
   track('end', { ...G.meta, score: G.score, correct: G.right, answered: G.answered, bestStreak: G.bestStreak, hints: G.hintsTotal, secs: Math.round((Date.now() - G.t0) / 1000), finished: finished ? 1 : 0, answers: G.qlog });
 }
-addEventListener('pagehide', () => { if (G && !G.sent && G.answered > 0 && !G.daily) sendEnd(false); }); // player closed the tab mid-game
+addEventListener('pagehide', () => { if (G && !G.sent && G.answered > 0 && !G.fixed) sendEnd(false); }); // player closed the tab mid-game
 /* ---------- Hard mode helpers: suggestions from the deck being played, and forgiving answer matching ---------- */
 const grey = s => s.replace(/gray/g, 'grey');
 function buildIndex(pool) {
@@ -1045,7 +1106,8 @@ function nextQ(first) {
   G.cur = b; G.hints = 0; G.done = false;
   $('#reveal').classList.add('hidden'); $('#game').style.paddingBottom = '';
   const st = $('#stage'); st.classList.remove('revealed'); st.classList.toggle('shadow', !!G.o.shadow);
-  if (G.daily) { $('#qtag').textContent = `Daily #${G.daily.num} · Bird ${G.i + 1} of ${G.q.length}`; $('#dbText').textContent = `Bird ${G.i + 1} of ${G.q.length} · same birds for everyone · one try`; }
+  if (G.daily) { $('#qtag').textContent = `Daily #${G.daily.num}${G.daily.theme ? ' · ' + G.daily.theme.title : ''} · Bird ${G.i + 1} of ${G.q.length}`; $('#dbText').textContent = `Bird ${G.i + 1} of ${G.q.length} · ${G.daily.theme ? G.daily.theme.title : 'same birds for everyone'} · one try`; }
+  else if (G.group) { $('#qtag').textContent = `${G.group.name || 'Group challenge'} · Bird ${G.i + 1} of ${G.q.length}`; $('#dbText').textContent = `Bird ${G.i + 1} of ${G.q.length} · the same birds for your whole group · one try`; }
   else $('#qtag').textContent = `${G.deck.t} · ${{ easy: 'Easy', medium: 'Medium', hard: 'Hard' }[G.o.level] || 'Easy'}${G.o.shadow ? ' · Shadow' : ''}`;
   const pic = $('#pic'), skel = $('#skel'); skel.style.display = ''; pic.style.opacity = 0; pic.dataset.tried = '';
   pic.onload = () => { skel.style.display = 'none'; pic.style.opacity = 1; };
@@ -1075,7 +1137,7 @@ function distractors(b) {
 function renderAnswer() {
   const b = G.cur, A = $('#answer');
   if (G.mode === 'choice') {
-    G.opts = G.daily ? dailyOpts(b, G.tiers[G.i], G.daily.num) : shuffle([b, ...distractors(b)]); // daily: the same choices for everyone
+    G.opts = G.optsFn ? G.optsFn(b) : shuffle([b, ...distractors(b)]); // daily and group games: the same choices for everyone
     A.innerHTML = `<div class="opts" id="opts">${G.opts.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span><span>${esc(nm(o))}</span></button>`).join('')}</div>`;
     $('#opts').onclick = e => { const o = e.target.closest('.opt'); if (o && !G.done) answer(G.opts[+o.dataset.i]); };
   } else {
@@ -1137,7 +1199,7 @@ function answer(choice, typed, timeout) {
     G.score += pts;
   } else { G.streak = 0; G.missed.push(b); if (G.endless) G.lives--; }
   G.log[G.i] = correct ? 1 : 0; G.qlog.push([b.i, correct ? 1 : 0]); G.hintsTotal += G.hints;
-  if (G.daily) dailySave(false); // today's progress is kept, so closing the page never lets anyone re-answer
+  if (G.fixed) G.save(false); // progress is kept, so closing the page never lets anyone re-answer
   $('#stage').classList.add('revealed');
   if (G.mode === 'choice') $$('.opt').forEach(o => { o.disabled = true; const x = G.opts[+o.dataset.i]; if (x === b) o.classList.add('good'); else if (x === choice) o.classList.add('bad'); });
   else { const ti = $('#ti'); if (ti) { ti.disabled = true; ti.style.boxShadow = `inset 0 0 0 2.5px var(--${correct ? 'good' : 'bad'})`; } $('#giveup')?.remove(); }
@@ -1169,8 +1231,9 @@ function askQuit() {
   G.pausedLeft = G.tEnd ? Math.max(G.tEnd - Date.now(), 0) : null; // freeze the timer while the question is open
   clearInterval(timerId);
   const n = G.answered, endless = G.endless;
-  $('#qTitle').textContent = G.daily ? "Leave today's birds?" : endless ? 'End your game?' : 'Leave this game?';
+  $('#qTitle').textContent = G.daily ? "Leave today's birds?" : G.group ? 'Leave this challenge?' : endless ? 'End your game?' : 'Leave this game?';
   $('#qText').textContent = G.daily ? `You've answered ${n} of ${G.q.length}. Your progress is saved, so you can come back any time today to finish. Answers already given can't be changed.`
+    : G.group ? `You've answered ${n} of ${G.q.length}. Your progress is saved, so you can come back to finish. Answers already given can't be changed.`
     : endless ? `You've named ${G.right} of ${n} bird${n === 1 ? '' : 's'} so far. End the game to see your results.`
     : `You've answered ${n} of ${G.q.length} birds. If you leave now, this game won't be scored.`;
   $('#qLeave').textContent = endless ? 'See my results' : 'Leave game';
@@ -1196,9 +1259,10 @@ document.addEventListener('keydown', e => {
 /* ---------- results ---------- */
 const SITE = 'https://birdbrain.indianbirds.org/';
 function shareText(r = 'wa') {
+  if (G.group) return groupShareText(r, true);
   if (G.daily) { // the result as coloured squares, like a puzzle result: easy to paste into any chat
     const st = dailyStreak().cur, sq = G.log.map(x => x ? '🟩' : '🟥').join('');
-    return `${BRAND} Daily #${G.daily.num} 🐦\n${G.right}/${G.answered} · ${fmt(G.score)} points${st > 1 ? ` · 🔥 ${st}-day streak` : ''}\n${sq}\n\n`
+    return `${BRAND} Daily #${G.daily.num}${G.daily.theme ? ' · ' + G.daily.theme.title : ''} 🐦\n${G.right}/${G.answered} · ${fmt(G.score)} points${st > 1 ? ` · 🔥 ${st}-day streak` : ''}\n${sq}\n\n`
       + `Everyone gets the same 10 birds today, and you only get one try. Can you beat me?\n${SITE}?r=${r}#daily`;
   }
   const link = SITE + '?r=' + r + (G.deck.id ? '#deck=' + G.deck.id : ''); // ?r= tells the stats where a visitor came from
@@ -1212,13 +1276,17 @@ function finish(partial) {
   if (!G.sent) sendEnd(!partial);
   const n = G.answered, acc = n ? Math.round(G.right / n * 100) : 0;
   const grades = [[90, 'Master Ornithologist'], [70, 'Seasoned Birder'], [50, 'Keen Twitcher'], [30, 'Backyard Beginner'], [0, 'Still an egg']];
-  const isBest = !G.daily && G.score > best.score && G.score > 0;
+  const isBest = !G.fixed && G.score > best.score && G.score > 0;
   if (isBest) best.score = G.score; store.save();
   if (G.daily && !G.revisit) dailyDone();
-  $('#rKick').textContent = G.daily ? `Daily Birdbrain #${G.daily.num} · ${G.daily.label}` : isBest ? 'New personal best!' : G.deck.t;
-  $('#again').classList.toggle('hidden', !!G.daily); $('#rNote').classList.toggle('hidden', !G.daily); $('#rDaily').classList.toggle('hidden', !G.daily);
-  $('#otherDeck').textContent = G.daily ? 'Play free games' : 'Other decks'; $('#otherDeck').classList.toggle('full', !!G.daily);
+  if (G.group && !G.revisit) G.save(true);
+  $('#rKick').textContent = G.daily ? `Daily Birdbrain #${G.daily.num} · ${G.daily.label}${G.daily.theme ? ' · ' + G.daily.theme.title : ''}` : G.group ? `Group challenge${G.group.name ? ' · ' + G.group.name : ''}` : isBest ? 'New personal best!' : G.deck.t;
+  $('#again').classList.toggle('hidden', !!G.fixed); $('#rNote').classList.toggle('hidden', !G.daily); $('#rDaily').classList.toggle('hidden', !G.daily);
+  $('#otherDeck').textContent = G.fixed ? 'Play free games' : 'Other decks'; $('#otherDeck').classList.toggle('full', !!G.fixed);
+  $('#rGroup').classList.toggle('hidden', !G.group);
   $('#rRank').classList.add('hidden');
+  if (G.group) groupResult();
+  $('#rInstall').innerHTML = G.daily && installOffer() ? installCard() : '';
   if (G.daily) { renderDailyResult(); fillRank($('#rRank'), G.daily.num, G.meta.gid, G.score, true); }
   $('#rScore').textContent = fmt(G.score);
   $('#rGrade').textContent = G.endless ? (G.right >= 25 ? 'Endless legend' : G.right >= 10 ? 'Going strong' : 'Warming up') : grades.find(g => acc >= g[0])[1];
@@ -1259,10 +1327,10 @@ async function makeCard(withPictures = true) {
   // panel
   x.save(); x.shadowColor = 'rgba(0,0,0,.22)'; x.shadowBlur = 50; x.shadowOffsetY = 20; x.fillStyle = '#fff'; rrect(x, 60, 215, 960, 1025, 56); x.fill(); x.restore();
   // deck title (shrinks to fit)
-  const title = G.daily ? `Daily Birdbrain #${G.daily.num}` : G.deck.t;
+  const title = G.daily ? `Daily Birdbrain #${G.daily.num}` : G.group ? (G.group.name || 'Group challenge') : G.deck.t;
   let ts = 58; x.fillStyle = INK; do { x.font = `800 ${ts}px Gabarito, sans-serif`; ts -= 2; } while (x.measureText(title).width > 860 && ts > 30);
   x.fillText(title, W / 2, 308);
-  x.fillStyle = '#6a707b'; x.font = '600 34px "Plus Jakarta Sans", sans-serif'; x.fillText(G.daily ? `${G.daily.label} · the same 10 birds for everyone` : `${lvl} · ${n} bird${n === 1 ? '' : 's'}${G.meta.shadow ? ' · Shadow' : ''}`, W / 2, 360);
+  x.fillStyle = '#6a707b'; x.font = '600 34px "Plus Jakarta Sans", sans-serif'; x.fillText(G.daily ? (G.daily.theme ? `${G.daily.label} · ${G.daily.theme.title}` : `${G.daily.label} · the same 10 birds for everyone`) : G.group ? `${G.group.deck.t} · ${lvl} · the same 10 birds for the group` : `${lvl} · ${n} bird${n === 1 ? '' : 's'}${G.meta.shadow ? ' · Shadow' : ''}`, W / 2, 360);
   // score
   x.fillStyle = '#6a707b'; x.font = '700 32px "Plus Jakarta Sans", sans-serif'; x.fillText('I SCORED', W / 2, 442);
   x.fillStyle = BRAND_C; x.font = '900 230px Gabarito, sans-serif'; x.fillText(fmt(G.score), W / 2, 636);
@@ -1318,7 +1386,7 @@ $('#shareCard').onclick = async () => {
   } catch (e) { alert('Sorry, the score card could not be made. Try the WhatsApp button instead.'); }
   finally { btn.disabled = false; btn.innerHTML = label; }
 };
-$('#again').onclick = () => { if (!G.daily) startGame(G.pool, G.deck, S.level); };
+$('#again').onclick = () => { if (!G.fixed) startGame(G.pool, G.deck, S.level); };
 $('#otherDeck').onclick = () => { stopGame(); view('home'); };
 $('#shareWa').onclick = () => { track('share', { kind: 'whatsapp', deck: G.deck.id || 'custom' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText('wa')), '_blank', 'noopener'); };
 $('#copy').onclick = async () => {
@@ -1392,27 +1460,41 @@ const dayOverride = location.hostname === 'localhost' ? new URLSearchParams(loca
 const istDay = () => dayOverride ? Math.floor(Date.parse(dayOverride + 'T00:00:00Z') / DAY) : Math.floor((Date.now() + IST) / DAY); // the day changes at midnight IST for everyone
 const dayStr = n => new Date(n * DAY).toISOString().slice(0, 10);
 const START_N = DY ? Math.floor(Date.parse(DY.start + 'T00:00:00Z') / DAY) : 0;
+// every Sunday is a themed Daily: all 10 birds from one group (owls, parrots, the Himalayas...)
+function themeFor(n) {
+  if (!DY || !DY.themes || !DY.sundays || new Date(n * DAY).getUTCDay() !== 0) return null;
+  const firstSun = START_N + (7 - new Date(START_N * DAY).getUTCDay()) % 7, s = Math.round((n - firstSun) / 7);
+  if (s < 0) return null;
+  const id = DY.sundays[s % DY.sundays.length], T = DY.themes[id]; if (!T || !T.days.length) return null;
+  return { id, title: T.title, what: T.what, ids: T.days[Math.floor(s / DY.sundays.length) % T.days.length], poolIds: T.days.flat() };
+}
 function dailyInfo() {
   const n = istDay();
-  return { n, num: Math.max(n - START_N + 1, 1), str: dayStr(n), label: new Date(n * DAY).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }) };
+  return { n, theme: themeFor(n), num: Math.max(n - START_N + 1, 1), str: dayStr(n), label: new Date(n * DAY).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }) };
 }
 // a small seeded random generator: the same seed gives the same numbers on every phone and computer
 const hash32 = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
 const seeded = seed => () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 const seededShuffle = (a, r) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = r() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
 // today's 10 birds: the next few from each frozen list (3 well-known, 4 Indian, 2 from the world, 1 tricky finish)
-function dailyPick(num) {
-  const out = [];
+function dailyPick(t) {
+  const num = t.num, out = [];
+  if (t.theme) return t.theme.ids.map(i => byId[i]).filter(Boolean).map(b => ({ b, t: 'T' })); // Sunday special: the whole 10 come from the theme
   'ABCD'.split('').forEach((t, k) => { const L = DY[t], p = DY.per[k]; for (let j = 0; j < p; j++) { const b = byId[L[((num - 1) * p + j) % L.length]]; if (b) out.push({ b, t }); } });
   return out;
 }
 let DPOOLS = null;
-function dailyOpts(b, tier, num) {
-  if (!DPOOLS) { const ids = (...ts) => ts.flatMap(t => DY[t]).map(i => byId[i]).filter(Boolean), famous = ids('A', 'C'); DPOOLS = { A: famous, B: D.birds.filter(x => x.p.includes(0)), C: famous, D: ids('C', 'D') }; }
-  const r = seeded(hash32(`opts|${num}|${b.i}`)), bo = D.fams[b.f].o, same = [], order = [], rest = [], seen = new Set([norm(b.n[0])]), out = [];
-  for (const x of seededShuffle(DPOOLS[tier] || D.birds, r)) { if (x === b) continue; (x.f === b.f ? same : D.fams[x.f].o === bo ? order : rest).push(x); }
+// the answer choices for a bird, worked out from a seed so every player of the same daily / group game sees the same ones
+function fixedOpts(b, pool, key, tricky) {
+  const r = seeded(hash32(`opts|${key}|${b.i}`)), bo = D.fams[b.f].o, same = [], order = [], rest = [], seen = new Set([norm(b.n[0])]), out = [];
+  for (const x of seededShuffle(pool, r)) { if (x === b) continue; if (!tricky) rest.push(x); else (x.f === b.f ? same : D.fams[x.f].o === bo ? order : rest).push(x); }
   for (const x of [...same, ...order, ...rest]) { if (out.length >= 3) break; const k = norm(x.n[0]); if (!seen.has(k)) { seen.add(k); out.push(x); } }
   return seededShuffle([b, ...out], r);
+}
+function dailyOpts(b, tier, num, theme) {
+  if (!DPOOLS) { const ids = (...ts) => ts.flatMap(t => DY[t]).map(i => byId[i]).filter(Boolean), famous = ids('A', 'C'); DPOOLS = { A: famous, B: D.birds.filter(x => x.p.includes(0)), C: famous, D: ids('C', 'D') }; }
+  const pool = tier === 'T' && theme ? theme.poolIds.map(i => byId[i]).filter(Boolean) : (DPOOLS[tier] || D.birds);
+  return fixedOpts(b, pool, String(num), true);
 }
 // saved on this device only: today's progress, and the streak
 const DKEY = 'birdbrain.daily.v1', SKEY = 'birdbrain.dstreak.v1', mem = {};
@@ -1434,13 +1516,14 @@ function dailyDone() {
 }
 function startDaily() {
   if (!DY) return; if (G) stopGame();
-  const t = dailyInfo(), pick = dailyPick(t.num); if (pick.length < 10) return;
+  const t = dailyInfo(), pick = dailyPick(t); if (pick.length < 10) return;
   let p = dailyProg();
   if (!p) { p = { day: t.str, num: t.num, gid: rid(), log: [], score: 0, bestStreak: 0, streak: 0, hints: 0, miss: [], qlog: [], secs: 0, done: false }; dset(DKEY, p); }
   const q = pick.map(x => x.b);
-  G = { daily: t, pool: D.birds, deck: { id: 'daily', t: 'Daily Birdbrain #' + t.num, c: DAILY_C }, q, tiers: pick.map(x => x.t), i: p.log.length, score: p.score, streak: p.streak, bestStreak: p.bestStreak,
+  G = { fixed: true, daily: t, pool: D.birds, deck: { id: 'daily', t: 'Daily Birdbrain #' + t.num, c: DAILY_C }, q, tiers: pick.map(x => x.t), i: p.log.length, score: p.score, streak: p.streak, bestStreak: p.bestStreak,
     right: p.log.filter(Boolean).length, lives: 3, missed: p.miss.map(i => byId[i]).filter(Boolean), hints: 0, done: false, answered: p.log.length, endless: false, mode: 'choice', diff: 'tricky', log: p.log.slice(),
     o: { level: 'medium', timer: '0', shadow: false }, qlog: p.qlog.slice(), hintsTotal: p.hints, sent: false };
+  G.optsFn = b => dailyOpts(b, G.tiers[G.i], G.daily.num, G.daily.theme); G.save = dailySave;
   G.t0 = Date.now() - p.secs * 1000;
   G.meta = { gid: p.gid, pid: PID, src: SRC, deck: 'daily', deckTitle: 'Daily #' + t.num, label: '', level: 'medium', rounds: q.length, timer: 0, shadow: 0, custom: 0 };
   if (p.done) { G.sent = true; G.revisit = true; finish(false); return; } // already played today: just show the result again
@@ -1449,12 +1532,14 @@ function startDaily() {
   $('#game').style.setProperty('--dc', DAILY_C);
   $('#lives').classList.add('hidden'); $('#segs').classList.remove('hidden'); $('#tbarWrap').classList.add('hidden');
   $('#segs').innerHTML = q.map(() => '<i></i>').join('');
-  $('#dailyBar').classList.remove('hidden'); $('#dbPill').textContent = 'Daily #' + t.num;
+  $('#dailyBar').classList.remove('hidden', 'grp'); $('#dbPill').textContent = 'Daily #' + t.num;
   nextQ(true);
 }
 function openDailyIntro() {
   const t = dailyInfo();
   $('#dyPill').innerHTML = `${CAL} Daily Birdbrain #${t.num} · ${t.label}`;
+  $('#dyTitle').textContent = t.theme ? `${t.theme.title}: today's 10 birds` : "Today's 10 birds";
+  $('#dyTheme').textContent = t.theme ? `Today is a Sunday special. The 10 birds are ${t.theme.what}.` : ''; $('#dyTheme').classList.toggle('hidden', !t.theme);
   $('#dailyWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden';
   setTimeout(() => $('#dyStart').focus({ preventScroll: true }), 30);
 }
@@ -1476,11 +1561,12 @@ function renderDaily() {
   const t = dailyInfo(), p = dailyProg(), st = dailyStreak(), n = p ? p.log.length : 0, done = !!(p && p.done);
   dailyShown = t.str;
   const streak = st.cur > 0 ? `<span class="d-streak">${FLAME} ${st.cur}-day streak</span>` : '';
-  const top = `<div class="d-top"><span class="d-pill">${CAL} Daily challenge</span><span class="d-date">#${t.num} · ${t.label}</span></div>`;
-  const tags = '<div class="d-tags"><span>10 birds</span><span>One try a day</span><span>No timer</span><span>New birds at midnight IST</span></div>';
+  const th = t.theme;
+  const top = `<div class="d-top"><span class="d-pill">${CAL} ${th ? 'Sunday special' : 'Daily challenge'}</span><span class="d-date">#${t.num} · ${t.label}</span></div>`;
+  const tags = `<div class="d-tags">${th ? `<span class="d-theme">${esc(th.title)}</span>` : ''}<span>10 birds</span><span>One try a day</span><span>No timer</span><span>New birds at midnight IST</span></div>`;
   if (done) {
     const right = p.log.filter(Boolean).length;
-    el.innerHTML = `${top}<h2>You've done today's birds</h2><div class="d-done" style="margin-top:14px"><div class="d-score"><b>${right}/${p.log.length}</b><span>${fmt(p.score)} points</span></div><div class="d-grid">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}</div></div>
+    el.innerHTML = `${top}<h2>${th ? esc(th.title) + ': you\'ve done it' : 'You\'ve done today\'s birds'}</h2><div class="d-done" style="margin-top:14px"><div class="d-score"><b>${right}/${p.log.length}</b><span>${fmt(p.score)} points</span></div><div class="d-grid">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}</div></div>
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">See result &amp; share</button>${streak}</div>
       <p class="d-rank hidden" id="dRank"></p>
       <p class="d-count" style="margin-top:14px">Next birds in <b id="dCount">--:--:--</b></p>`;
@@ -1489,7 +1575,7 @@ function renderDaily() {
     el.innerHTML = `${top}<h2>Pick up where you left off</h2><div class="d-prog" style="margin-top:14px">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">Continue · ${n} of 10 done</button>${streak}</div>`;
   } else {
-    el.innerHTML = `${top}<h2>Today's 10 birds. The same for everyone.</h2>${tags}
+    el.innerHTML = `${top}<h2>${th ? `${esc(th.title)}: today's 10 birds are ${esc(th.what)}.` : 'Today\'s 10 birds. The same for everyone.'}</h2>${tags}
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">Play today's birds</button>${streak || '<span class="d-count">Play every day to build a streak</span>'}</div>`;
   }
   tickDaily();
@@ -1537,6 +1623,186 @@ function renderDailyResult() {
   tickDaily();
 }
 
+/* ---------- Group challenges: friends play the same birds from a link and compare scores ---------- */
+const GROUP_C = '#6fd6c4', GKEY = 'birdbrain.groups.v1', NKEY = 'birdbrain.nick', GCODE = /^[a-z0-9-]{1,30}\.[emh]\.[a-z0-9]{4,12}$/;
+const LV_CHAR = { easy: 'e', medium: 'm', hard: 'h' }, CHAR_LV = { e: 'easy', m: 'medium', h: 'hard' }, LVN = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+const gAll = () => dget(GKEY) || {};
+function gPut(code, patch) {
+  const all = gAll(), old = all[code] || {}; all[code] = { ...old, ...patch, ts: old.ts || Date.now() };
+  const keys = Object.keys(all); if (keys.length > 20) keys.sort((a, c) => (all[a].ts || 0) - (all[c].ts || 0)).slice(0, keys.length - 20).forEach(k => delete all[k]);
+  dset(GKEY, all); return all[code];
+}
+const nickGet = () => { try { return localStorage.getItem(NKEY) || mem[NKEY] || ''; } catch (e) { return mem[NKEY] || ''; } };
+const nickSet = v => { mem[NKEY] = v; try { localStorage.setItem(NKEY, v); } catch (e) {} };
+function parseGroup(code) {
+  if (!GCODE.test(code || '')) return null;
+  const [id, lc, seed] = code.split('.'), deck = deckById[id];
+  return deck && CHAR_LV[lc] && deck.pool.length >= 10 ? { code, deck, level: CHAR_LV[lc], seed } : null;
+}
+const groupLink = (code, name) => `${SITE}?r=gr#g=${code}${name ? '&n=' + encodeURIComponent(name) : ''}`;
+// the same 10 birds for everyone with the link: picked from the code with a seeded shuffle
+function groupBirds(g) { return seededShuffle(g.deck.pool.slice().sort((a, b) => a.i < b.i ? -1 : 1), seeded(hash32('birds|' + g.code))).slice(0, 10); }
+function groupShareText(r, withScore) {
+  const gr = G && G.group ? G.group : null, code = gr ? gr.code : r.code, name = gr ? gr.name : r.name, g = parseGroup(code);
+  const lead = withScore ? `I scored ${fmt(G.score)} (${G.right}/${G.answered}) in our ${BRAND} group challenge${name ? ` "${name}"` : ''}. Can you beat me?` : `Join our ${BRAND} group challenge${name ? ` "${name}"` : ''} and see who knows their birds best.`;
+  return `🐦 ${lead}\n${g.deck.t} · ${LVN[g.level]} · everyone gets the same 10 birds. No sign-in needed:\n${groupLink(code, name)}`;
+}
+async function fetchBoard(code) {
+  if (!STATS_ON) return null;
+  try {
+    const r = await fetch(`${STATS_URL}/g/board?code=${encodeURIComponent(code)}&pid=${PID}`);
+    return r.ok ? await r.json() : null;
+  } catch (e) { return null; }
+}
+async function postGroupScore() {
+  const gr = G.group, rec = gAll()[gr.code] || {}; if (rec.posted) return true; if (!STATS_ON) return false;
+  try {
+    const r = await fetch(`${STATS_URL}/g/score`, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ code: gr.code, pid: PID, nick: rec.nick || gr.nick || 'Player', score: G.score, correct: G.right, answered: G.answered, secs: Math.round((Date.now() - G.t0) / 1000) }) });
+    if (r.ok || r.status === 409) { gPut(gr.code, { posted: true }); return r.ok; }
+  } catch (e) {}
+  return false;
+}
+async function drawBoard(el, code) {
+  if (!el) return;
+  const g = parseGroup(code), rec = gAll()[code] || {};
+  const head = `<h3>${esc(rec.name || 'Group leaderboard')}</h3><div class="gsub">${esc(g.deck.t)} · ${LVN[g.level]} · 10 birds</div>`;
+  const v = await fetchBoard(code); if (!el.isConnected) return;
+  if (!v) { el.innerHTML = head + `<div class="gsub">The leaderboard couldn't be loaded just now.</div><div class="gbtns"><button class="btn ghost sm" data-gr="${code}">Try again</button></div>`; return; }
+  const medal = i => ['🥇', '🥈', '🥉'][i] || i + 1;
+  const rows = (v.rows || []).map((r, i) => `<li class="${r.me ? 'me' : ''}"><span class="rk">${medal(i)}</span><span class="nk">${esc(r.nick)}${r.me ? ' (you)' : ''}</span><span class="sc">${fmt(r.score)}<small>${r.correct}/${r.answered}</small></span></li>`).join('');
+  el.innerHTML = head + (rows ? `<ol class="lb">${rows}</ol>` : '<div class="gsub">No results yet. Be the first!</div>')
+    + `<div class="gsub" style="margin-top:10px">${fmt(v.total)} player${v.total === 1 ? '' : 's'} so far. This list updates by itself.</div>
+       <div class="gbtns"><button class="btn sm grpb" data-ginv="${code}">Invite friends on WhatsApp</button><button class="btn ghost sm" data-gcopy="${code}">Copy link</button></div>`;
+}
+function groupResult() {
+  const gr = G.group, el = $('#rGroup'); el.classList.remove('hidden');
+  el.innerHTML = `<h3>${esc(gr.name || 'Group leaderboard')}</h3><div class="gsub">Adding your score…</div>`;
+  postGroupScore().then(() => { if (G && G.group && G.group.code === gr.code) drawBoard(el, gr.code); });
+}
+setInterval(() => { // keep an open leaderboard fresh
+  if (document.hidden) return;
+  if (G && G.group && !$('#results').classList.contains('hidden')) drawBoard($('#rGroup'), G.group.code);
+  else if (grpOpen && grpOpen.startsWith('board:') && !$('#grpWrap').classList.contains('hidden')) drawBoard($('#grpBody .gboard'), grpOpen.slice(6));
+}, 20000);
+
+function startGroup(code) {
+  const g = parseGroup(code), rec = gAll()[code]; if (!g || !rec) return;
+  if (G) stopGame();
+  const q = groupBirds(g), p = rec.p || { gid: rid(), log: [], score: 0, bestStreak: 0, streak: 0, hints: 0, miss: [], qlog: [], secs: 0, done: false };
+  if (!rec.p) gPut(code, { p });
+  const tricky = g.level !== 'easy';
+  G = { fixed: true, group: { code, name: rec.name || '', deck: g.deck, level: g.level, nick: rec.nick }, pool: g.deck.pool, deck: { id: 'group', t: rec.name || 'Group challenge', c: GROUP_C }, q, i: p.log.length, score: p.score, streak: p.streak, bestStreak: p.bestStreak,
+    right: p.log.filter(Boolean).length, lives: 3, missed: p.miss.map(i => byId[i]).filter(Boolean), hints: 0, done: false, answered: p.log.length, endless: false, mode: g.level === 'hard' ? 'type' : 'choice', diff: tricky ? 'tricky' : 'easy', log: p.log.slice(),
+    o: { level: g.level, timer: '0', shadow: false }, qlog: p.qlog.slice(), hintsTotal: p.hints, sent: false };
+  if (g.level === 'hard') G.index = buildIndex(G.pool); // only Hard mode types the name
+  G.optsFn = b => fixedOpts(b, G.pool, 'g|' + code, tricky);
+  G.save = done => gPut(code, { p: { gid: p.gid, log: G.log.slice(), score: G.score, bestStreak: G.bestStreak, streak: G.streak, hints: G.hintsTotal, miss: G.missed.map(b => b.i), qlog: G.qlog.slice(), secs: Math.round((Date.now() - G.t0) / 1000), done: !!done } });
+  G.t0 = Date.now() - p.secs * 1000;
+  G.meta = { gid: p.gid, pid: PID, src: SRC, deck: 'group', deckTitle: 'Group challenge', label: '', level: g.level, rounds: q.length, timer: 0, shadow: 0, custom: 0 };
+  if (p.done) { G.sent = true; G.revisit = true; finish(false); return; } // already played: show the result and the leaderboard
+  if (!p.log.length) track('start', G.meta);
+  view('game');
+  $('#game').style.setProperty('--dc', GROUP_C);
+  $('#lives').classList.add('hidden'); $('#segs').classList.remove('hidden'); $('#tbarWrap').classList.add('hidden');
+  $('#segs').innerHTML = q.map(() => '<i></i>').join('');
+  $('#dailyBar').classList.remove('hidden'); $('#dailyBar').classList.add('grp'); $('#dbPill').textContent = 'Group';
+  nextQ(true);
+}
+
+/* the one dialog: create a challenge, join one from a link, or look at a leaderboard */
+let grpOpen = null; // 'create' | 'join:code' | 'board:code'
+function openGrp(html, state) { $('#grpBody').innerHTML = html; grpOpen = state; $('#grpWrap').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+function closeGrp() { $('#grpWrap').classList.add('hidden'); document.body.style.overflow = ''; grpOpen = null; }
+$('#grpClose').onclick = closeGrp;
+$('#grpWrap').addEventListener('mousedown', e => { if (e.target === $('#grpWrap')) closeGrp(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#grpWrap').classList.contains('hidden')) closeGrp(); });
+const GICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.500" cy="9" r="2.5"/></svg>';
+function showCreate() {
+  const opt = d => `<option value="${d.id}">${esc(d.t)} (${fmt(d.pool.length)} birds)</option>`;
+  openGrp(`<span class="g-pill">${GICON} Group challenge</span><h2 style="font-size:26px;font-weight:800;padding-right:44px">Challenge your group</h2>
+    <p class="cardnote" style="text-align:left;font-size:14.5px;margin-top:8px">You pick the birds and send a link. Everyone who opens it plays the same 10 birds, and you all see one leaderboard.</p>
+    <span class="lbl">Group name (optional)</span><input class="g-in" id="gcName" maxlength="30" placeholder="e.g. Family WhatsApp" autocomplete="off">
+    <span class="lbl">Which birds?</span><select id="gcDeck"><optgroup label="Birds of India">${DECKS.filter(d => d.sec === 'india').map(opt).join('')}</optgroup><optgroup label="Around the world">${DECKS.filter(d => d.sec === 'world').map(opt).join('')}</optgroup></select>
+    <span class="lbl">How hard?</span><div class="seg" id="gcLevel"><button data-v="easy" aria-pressed="false">Easy</button><button data-v="medium" aria-pressed="true">Medium</button><button data-v="hard" aria-pressed="false">Hard</button></div>
+    <span class="lbl">Your nickname</span><input class="g-in" id="gcNick" maxlength="20" placeholder="Shown on the leaderboard" autocomplete="off" value="${esc(nickGet())}">
+    <button class="btn lg grpb" id="gcGo">Create and play</button>
+    <p class="cardnote">Your nickname is shown to everyone who opens the link. One try each, so scores are fair.</p>`, 'create');
+  $('#gcLevel').onclick = e => { const b = e.target.closest('button'); if (b) $$('#gcLevel button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); };
+  $('#gcGo').onclick = () => {
+    const nick = $('#gcNick').value.replace(/\s+/g, ' ').trim(); if (!nick) { $('#gcNick').focus(); $('#gcNick').placeholder = 'Please type a nickname'; return; }
+    const lv = $('#gcLevel [aria-pressed="true"]').dataset.v, code = `${$('#gcDeck').value}.${LV_CHAR[lv]}.${rid().slice(0, 6)}`, name = $('#gcName').value.replace(/\s+/g, ' ').trim().slice(0, 30);
+    nickSet(nick); gPut(code, { name, nick, ts: Date.now() }); closeGrp(); startGroup(code);
+  };
+  setTimeout(() => $('#gcName').focus({ preventScroll: true }), 40);
+}
+async function showJoin(code, name) {
+  const g = parseGroup(code);
+  if (!g) { openGrp(`<h2 style="font-size:24px;font-weight:800;padding-right:44px">This link doesn't look right</h2><p class="cardnote" style="text-align:left">Ask your friend to send the group challenge link again.</p>`, 'join:bad'); return; }
+  const rec = gAll()[code]; name = name || (rec && rec.name) || '';
+  if (rec && rec.p && rec.p.done) return showBoard(code);
+  const resume = rec && rec.p && rec.p.log.length;
+  openGrp(`<span class="g-pill">${GICON} Group challenge</span><h2 style="font-size:26px;font-weight:800;padding-right:44px">${esc(name || 'Group challenge')}</h2>
+    <div class="g-sum">${esc(g.deck.t)} · ${LVN[g.level]} · 10 birds<small id="gjCount">Everyone with this link plays the same birds.</small></div>
+    <span class="lbl">Your nickname</span><input class="g-in" id="gjNick" maxlength="20" placeholder="Shown on the leaderboard" autocomplete="off" value="${esc((rec && rec.nick) || nickGet())}">
+    <button class="btn lg grpb" id="gjGo">${resume ? `Continue (${rec.p.log.length} of 10 done)` : 'Play this challenge'}</button>
+    <p class="cardnote">One try each. Your nickname is shown to everyone in this group. No sign-in needed.</p>`, 'join:' + code);
+  $('#gjGo').onclick = () => {
+    const nick = $('#gjNick').value.replace(/\s+/g, ' ').trim(); if (!nick) { $('#gjNick').focus(); $('#gjNick').placeholder = 'Please type a nickname'; return; }
+    nickSet(nick); gPut(code, { name, nick }); closeGrp(); startGroup(code);
+  };
+  fetchBoard(code).then(v => { const el = $('#gjCount'); if (v && el && v.total) el.textContent = `${fmt(v.total)} player${v.total === 1 ? ' has' : 's have'} played so far. Can you beat them?`; });
+}
+function showBoard(code) {
+  const g = parseGroup(code); if (!g) return;
+  openGrp(`<span class="g-pill">${GICON} Group challenge</span><div class="gboard"><div class="gsub">Loading…</div></div>`, 'board:' + code);
+  drawBoard($('#grpBody .gboard'), code);
+}
+function renderGroups() {
+  const el = $('#gcList'); if (!el) return;
+  const all = gAll(), codes = Object.keys(all).filter(c => parseGroup(c)).sort((a, b) => (all[b].ts || 0) - (all[a].ts || 0)).slice(0, 4);
+  el.innerHTML = codes.map(c => { const r = all[c], g = parseGroup(c), st = r.p && r.p.done ? `${fmt(r.p.score)} pts` : r.p && r.p.log.length ? 'in progress' : 'not played'; return `<button data-gopen="${c}">${esc(r.name || g.deck.t)} <span>· ${st}</span></button>`; }).join('');
+}
+$('#gcStart').onclick = showCreate;
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-gopen],[data-gr],[data-ginv],[data-gcopy]'); if (!t) return;
+  if (t.dataset.gopen) showJoin(t.dataset.gopen);
+  else if (t.dataset.gr) { const el = t.closest('.gboard'); if (el) drawBoard(el, t.dataset.gr); }
+  else if (t.dataset.ginv) { const c = t.dataset.ginv, r = gAll()[c] || {}; track('share', { kind: 'invite', deck: 'group' }); window.open('https://wa.me/?text=' + encodeURIComponent(groupShareText({ code: c, name: r.name || '' }, false)), '_blank', 'noopener'); }
+  else if (t.dataset.gcopy) { const c = t.dataset.gcopy, r = gAll()[c] || {}; track('share', { kind: 'copy', deck: 'group' }); navigator.clipboard.writeText(groupLink(c, r.name || '')).then(() => { t.textContent = 'Copied!'; setTimeout(() => { t.textContent = 'Copy link'; }, 1600); }).catch(() => prompt('Copy this link:', groupLink(c, r.name || ''))); }
+});
+
+/* ---------- Install to the home screen ---------- */
+const IKEY = 'birdbrain.install.v1';
+const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+let deferredInstall = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; }); // Chrome and Edge let us offer the real install button
+addEventListener('appinstalled', () => { dset(IKEY, { ...(dget(IKEY) || {}), installed: true }); $$('.icard').forEach(x => x.remove()); });
+function installOffer() { // after a player has finished the Daily on two different days, never when already installed, and not again for 2 weeks after "Not now"
+  if (isStandalone) return false;
+  const s = dget(IKEY) || {}; if (s.installed || (s.later && Date.now() - s.later < 14 * 864e5)) return false;
+  return ((dget(SKEY) || {}).played || 0) >= 2;
+}
+const installHow = () => isIOS ? 'On iPhone or iPad: tap the Share button in Safari, then choose "Add to Home Screen".'
+  : /Android/.test(navigator.userAgent) ? 'Open the browser menu (the three dots), then tap "Install app" or "Add to Home screen".'
+  : 'In Chrome or Edge, click the install icon at the right end of the address bar, or open the menu and choose "Install Birdbrain".';
+function installCard() {
+  return `<div class="icard"><div class="ic-t"><img src="assets/icon-192.png" alt=""><div><b>Never miss a day</b><span>Put Birdbrain on your home screen so today's birds are one tap away.</span></div></div>
+    <div class="ic-btns"><button class="btn sm" data-inst="add">Add to home screen</button><button class="linkbtn" data-inst="later" style="margin:0">Not now</button></div>
+    <div class="ic-how hidden" data-inst-how></div></div>`;
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-inst]'); if (!b) return;
+  const card = b.closest('.icard'), how = card && card.querySelector('[data-inst-how]');
+  const act = b.dataset.inst;
+  if (act === 'add') {
+    if (deferredInstall) { deferredInstall.prompt(); try { await deferredInstall.userChoice; } catch (err) {} deferredInstall = null; return; }
+    how.textContent = installHow(); how.classList.remove('hidden');
+  }
+  else if (act === 'later') { dset(IKEY, { ...(dget(IKEY) || {}), later: Date.now() }); card.remove(); if (grpOpen === 'install') closeGrp(); }
+});
+document.addEventListener('click', e => { if (e.target.closest('#installLink')) openGrp(`<h2 style="font-size:24px;font-weight:800;padding-right:44px;margin-bottom:12px">Daily birds, one tap away</h2>${installCard()}`, 'install'); });
+
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
@@ -1545,8 +1811,10 @@ $('#themeBtn').onclick = () => {
 try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
 
 /* ---------- boot ---------- */
-store.load(); S.lang = 'en'; renderHome(); renderDaily(); // names are English only for now
-if (DY && /daily/.test(location.hash)) { const p = dailyProg(); if (!p || !p.done) openDailyIntro(); } // a shared "play today's birds" link
+store.load(); S.lang = 'en'; renderHome(); renderDaily(); renderGroups(); // names are English only for now
+const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
+if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
+else if (DY && /daily/.test(location.hash)) { const p = dailyProg(); if (!p || !p.done) openDailyIntro(); } // a shared "play today's birds" link
 const m = location.hash.match(/deck=([\w-]+)/);
 if (m && deckById[m[1]]) openSheet(deckById[m[1]]);
 })();

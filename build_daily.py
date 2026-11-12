@@ -21,6 +21,7 @@ raw = (HERE / 'data' / 'birds-data.js').read_text(encoding='utf-8')
 D = json.loads(re.sub(r'^window\.BIRD_DATA=|;\s*$', '', raw))
 birds, fams, places = D['birds'], D['fams'], D['places']
 by_en = {b['n'][0]: b for b in birds}
+by_id0 = {b['i']: b for b in birds}
 INDIA = places.index('India')
 fam_l = lambda b: fams[b['f']]['l']
 
@@ -75,9 +76,32 @@ for name, lst in (('A', A), ('B', B), ('C', C), ('D', Dd)):
     rng.shuffle(ids)
     lists[name] = ids
 
-out = {'start': START, 'per': PER, **lists}
+# ---- Sunday specials: all 10 birds from one theme, easy to hard. Own random generator, so the lists above never change. ----
+def families(*names): return lambda b: fam_l(b) in names
+def place(idx): return lambda b: idx in b['p'] and b['c'] == 0 and b['w'] >= 15 and fam_l(b) not in HARD
+PLACES_ = {n: i for i, n in enumerate(places)}
+THEMES = [
+    ('owls', 'Owl Sunday', 'all owls', families('Strigidae', 'Tytonidae')),
+    ('parrots', 'Parrot Sunday', 'all parrots', lambda b: fams[b['f']]['o'] == 'Psittaciformes'),
+    ('prey', 'Birds of Prey Sunday', 'all birds of prey', families('Accipitridae', 'Falconidae', 'Pandionidae', 'Sagittariidae', 'Cathartidae')),
+    ('kingfishers', 'Kingfisher & Friends Sunday', 'kingfishers, bee-eaters and rollers', families('Alcedinidae', 'Halcyonidae', 'Cerylidae', 'Meropidae', 'Coraciidae')),
+    ('water', 'Wetland Sunday', 'all water birds: herons, storks, cranes and ducks', families('Ardeidae', 'Ciconiidae', 'Threskiornithidae', 'Gruidae', 'Anatidae', 'Pelecanidae', 'Phoenicopteridae')),
+    ('himalaya', 'Himalayan Sunday', 'all from the Himalayas', place(PLACES_['Himalayas'])),
+    ('ghats', 'Western Ghats Sunday', 'all from the Western Ghats and South India', place(PLACES_['Western Ghats & South India'])),
+    ('northeast', 'Northeast Sunday', 'all from Northeast India', place(PLACES_['Northeast India'])),
+]
+trng = random.Random(SEED + 7)
+themes, sundays, tinfo = {}, [], []
+for tid, title, what, pred in THEMES:
+    cand = sorted([b for b in birds if pred(b) and b['w'] >= 10], key=lambda b: (-known(b), b['i']))[:60]
+    ids = [b['i'] for b in cand]; trng.shuffle(ids)
+    days = [sorted(ids[k:k + 10], key=lambda i: -known(by_id0[i])) for k in range(0, len(ids) - 9, 10)]
+    themes[tid] = {'title': title, 'what': what, 'days': days}; sundays.append(tid); tinfo.append((tid, len(cand), len(days)))
+
+out = {'start': START, 'per': PER, **lists, 'themes': themes, 'sundays': sundays}
 (HERE / 'data' / 'daily.js').write_text('window.DAILY=' + json.dumps(out, separators=(',', ':')) + ';\n', encoding='utf-8')
 by_id = {b['i']: b for b in birds}
+print('themes (birds, chunks of 10):', tinfo)
 print('lists:', {k: len(v) for k, v in lists.items()}, '| days before any list repeats:', min(len(lists[k]) // p for k, p in zip('ABCD', PER)))
 if missing: print('not in data, skipped:', ', '.join(missing))
 
@@ -86,6 +110,13 @@ if '--preview' in sys.argv:
     d0 = datetime.date.fromisoformat(START)
     for day in range(n):
         names = []
+        dd = d0 + datetime.timedelta(days=day)
+        if dd.weekday() == 6 and 'themes' in out:  # Sunday special
+            first_sun = d0 + datetime.timedelta(days=(6 - d0.weekday()) % 7)
+            sidx = (dd - first_sun).days // 7
+            tid = sundays[sidx % len(sundays)]; T = themes[tid]
+            chunk = T['days'][(sidx // len(sundays)) % len(T['days'])]
+            print(f'#{day + 1} {dd} ★ {T["title"]}: ' + ' | '.join(by_id[i]['n'][0] for i in chunk)); continue
         for t, p in zip('ABCD', PER):
             L = lists[t]
             names += [by_id[L[(day * p + j) % len(L)]]['n'][0] for j in range(p)]
