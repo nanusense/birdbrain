@@ -108,6 +108,8 @@ svg{display:block}
 .hero p.lead{font-size:19px;color:var(--muted);max-width:30em;margin:20px 0 28px}
 .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .pickhead{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.bar .cnt{min-width:0}
+.bar .bsum{display:block;max-width:min(62vw,560px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-weight:600;margin-top:1px}
 .freehint{font-size:14px;color:var(--muted);margin:-4px 0 12px}
 .quick{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;max-width:38em}
 .qchip{display:inline-flex;align-items:center;gap:10px;padding:5px 18px 5px 5px;border-radius:99px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:15px;transition:.12s;text-align:left}
@@ -518,12 +520,12 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div class="b-head">
     <button class="back" id="backHome"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> All decks</button>
     <h1>Build your own deck</h1>
-    <p>Pick as many or as few as you like. Leave everything empty to play with every bird.</p>
+    <p>Pick what you like in each step. Choices in the same step add together (owls <b>or</b> parrots). Each extra step narrows the deck down. Leave everything empty to play with every bird.</p>
   </div>
   <div id="bsteps"></div>
   <div class="build-pad"></div>
   <div class="bar" id="bbar"><div class="wrap">
-    <div class="cnt"><span id="bcount">–</span><small>birds in this deck</small></div>
+    <div class="cnt"><span id="bcount">–</span><small>birds in this deck</small><small class="bsum" id="bsum"></small></div>
     <div class="sp"></div>
     <button class="btn ghost sm" id="bclear">Clear</button>
     <button class="btn" id="bplay">Play</button>
@@ -780,7 +782,7 @@ const img = (b, cls = '', lazy = true) => `<img class="${cls}" ${lazy ? 'loading
 
 /* ---------- filter engine ---------- */
 const GROUPS = [
-  { key: 'regions', vals: b => b.r }, { key: 'places', vals: b => b.p },
+  { key: 'where', vals: b => [...b.p, ...b.r.map(r => 1000 + r)] }, // one "where" choice: a place (0-999) or a continent / ocean (1000+), so picking several adds them together
   { key: 'habitats', vals: b => b.h >= 0 ? [b.h] : [] }, { key: 'diets', vals: b => b.d >= 0 ? [b.d] : [] },
   { key: 'sizes', vals: b => b.z >= 0 ? [b.z] : [] }, { key: 'iucn', vals: b => b.c >= 0 ? [b.c] : [] },
   { key: 'migs', vals: b => b.m >= 0 ? [b.m] : [] }, { key: 'fams', vals: b => [b.f] },
@@ -807,9 +809,9 @@ function facets(F) {
 }
 function mkF(spec) {
   const F = emptyF();
-  (spec.regions || []).forEach(n => { const i = regionIdx(n); if (i >= 0) F.regions.add(i); });
+  (spec.regions || []).forEach(n => { const i = regionIdx(n); if (i >= 0) F.where.add(1000 + i); });
   (spec.habitats || []).forEach(n => { const i = D.habitats.indexOf(n); if (i >= 0) F.habitats.add(i); });
-  (spec.places || []).forEach(n => { const i = D.places.indexOf(n); if (i >= 0) F.places.add(i); });
+  (spec.places || []).forEach(n => { const i = D.places.indexOf(n); if (i >= 0) F.where.add(i); });
   (spec.fams || []).forEach(l => { if (l in famByLatin) F.fams.add(famByLatin[l]); });
   (spec.orders || []).forEach(o => famsOfOrder(o).forEach(i => F.fams.add(i)));
   for (const k of ['sizes', 'iucn', 'k', 'v']) (spec[k] || []).forEach(v => F[k].add(v));
@@ -853,7 +855,7 @@ const deckById = Object.fromEntries(DECKS.map(d => [d.id, d]));
 const DEFAULTS = { level: 'easy', rounds: '10', timer: '0', shadow: false, lang: 'en' };
 let S = { ...DEFAULTS }, best = { score: 0 }, Fb = emptyF();
 const store = {
-  load() { try { const j = JSON.parse(localStorage.getItem('birdbrain.v1') || '{}'); if (j.S) S = { ...DEFAULTS, ...j.S }; if (j.best) best = j.best; if (j.Fb) for (const k in Fb) Fb[k] = new Set(j.Fb[k] || []); } catch (e) {} },
+  load() { try { const j = JSON.parse(localStorage.getItem('birdbrain.v1') || '{}'); if (j.S) S = { ...DEFAULTS, ...j.S }; if (j.best) best = j.best; if (j.Fb) { for (const k in Fb) Fb[k] = new Set(j.Fb[k] || []); (j.Fb.places || []).forEach(i => Fb.where.add(i)); (j.Fb.regions || []).forEach(i => Fb.where.add(1000 + i)); } } catch (e) {} }, // older saved choices kept places and continents apart
   save() { try { localStorage.setItem('birdbrain.v1', JSON.stringify({ S, best, Fb: Object.fromEntries(Object.entries(Fb).map(([k, v]) => [k, [...v]])) })); } catch (e) {} }
 };
 const langIdx = () => Math.max(0, D.langs.findIndex(l => l[0] === S.lang));
@@ -942,21 +944,22 @@ function buildBuilder() {
   const acc = (title, key, inner) => `<details class="acc" data-acc="${key}"><summary>${title}<span class="sel hidden"></span></summary><div class="chips">${inner}</div></details>`;
   $('#bsteps').innerHTML = `
   <section class="card"><h2><span class="step">1</span> Where do the birds live?</h2>
-    <p class="sub">Choose one or more places.</p>
+    <p class="sub">Pick one or more places. Birds from any of them are included.</p>
     <div class="gl"><span class="flag"><i></i><i></i><i></i></span> India and nearby</div>
-    <div class="chips">${indiaIdx.map(i => chip('places', i, D.places[i], 'big hot')).join('')}</div>
+    <div class="chips">${indiaIdx.map(i => chip('where', i, D.places[i], 'big hot')).join('')}</div>
     <div class="gl">Continents & oceans</div>
-    <div class="chips">${D.regions.map(([l], i) => chip('regions', i, l, 'big')).join('')}</div>
+    <div class="chips">${D.regions.map(([l], i) => chip('where', 1000 + i, l, 'big')).join('')}</div>
     <button class="linkbtn" id="morePlaces">Show more countries ▾</button>
-    <div class="fold" id="foldPlaces"><div class="chips">${otherPlaces.map(([l, i]) => chip('places', i, l)).join('')}</div></div>
+    <div class="fold" id="foldPlaces"><div class="chips">${otherPlaces.map(([l, i]) => chip('where', i, l)).join('')}</div></div>
   </section>
   <section class="card"><h2><span class="step">2</span> What kind of bird?</h2>
-    <p class="sub">Pick a popular group, or search for any bird family.</p>
+    <p class="sub">Pick one or more groups, or search for any bird family. Birds from any of them are included.</p>
     <div class="chips">${KINDS.map((k, i) => `<button class="chip big" data-kind="${i}" aria-pressed="false">${esc(k.t)}</button>`).join('')}</div>
     <div class="fsearch"><input id="famq" type="search" placeholder="Search a family, e.g. warblers, bulbuls, cuckoos" autocomplete="off" aria-label="Search bird families"><div class="sugg hidden" id="sugg"></div></div>
     <div class="chips" id="famchips" style="margin-top:10px"></div>
   </section>
-  <section class="card"><h2><span class="step">3</span> Fine-tune <small style="font-family:var(--body);font-size:14px;font-weight:500;color:var(--muted)">(optional)</small></h2>
+  <section class="card"><h2><span class="step">3</span> Narrow it down <small style="font-family:var(--body);font-size:14px;font-weight:500;color:var(--muted)">(optional)</small></h2>
+    <p class="sub">Open a topic and pick what you want. Each topic you use makes the deck smaller.</p>
     <div style="margin-top:8px">
     ${acc('Habitat', 'habitats', D.habitats.map((l, i) => chip('habitats', i, HAB_LABEL[l] || l)).join(''))}
     ${acc('Size', 'sizes', SIZES.map(([l, h], i) => chip('sizes', i, l, '', h)).join(''))}
@@ -1006,24 +1009,25 @@ function updateBuilder() {
   $$('#bsteps .acc').forEach(a => { const n = Fb[a.dataset.acc].size, s = $('.sel', a); s.textContent = n; s.classList.toggle('hidden', !n); });
   const n = bfacets.pool.length;
   $('#bcount').textContent = fmt(n);
+  $('#bsum').textContent = buildGroups().map(g => g.join(' or ')).join(' · ') || 'Every bird in the world'; // e.g. Himalayas or Nepal · Owls or Parrots · Forest
   $('#bplay').disabled = n < 4;
   $('#bclear').classList.toggle('hidden', !GROUPS.some(g => Fb[g.key].size));
   store.save();
 }
-function buildLabel() {
-  const parts = [];
-  for (const i of Fb.places) parts.push(D.places[i]);
-  for (const i of Fb.regions) parts.push(D.regions[i][0]);
-  KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).forEach(k => parts.push(k.t));
-  for (const i of Fb.habitats) parts.push(HAB_LABEL[D.habitats[i]] || D.habitats[i]);
-  for (const i of Fb.sizes) parts.push(SIZES[i][0] + ' birds');
-  for (const i of Fb.diets) parts.push(DIET_LABEL[D.diets[i]] || D.diets[i]);
-  for (const i of Fb.iucn) parts.push(STATUS[i]);
-  for (const i of Fb.migs) parts.push(MIG_LABEL[D.migrations[i]] || D.migrations[i]);
-  const inKind = new Set(KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).flatMap(k => k.idx));
-  [...Fb.fams].filter(i => !inKind.has(i)).forEach(i => parts.push(D.fams[i].e)); // families picked with the search box
-  return parts;
+// the choices as groups: things inside a group are "or", groups narrow each other down
+function buildGroups() {
+  const kinds = KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).map(k => k.t), inKind = new Set(KINDS.filter(k => k.idx.every(i => Fb.fams.has(i))).flatMap(k => k.idx));
+  return [
+    [...Fb.where].map(v => v >= 1000 ? D.regions[v - 1000][0] : D.places[v]),
+    [...kinds, ...[...Fb.fams].filter(i => !inKind.has(i)).map(i => D.fams[i].e)], // popular groups, then families picked with the search box
+    [...Fb.habitats].map(i => HAB_LABEL[D.habitats[i]] || D.habitats[i]),
+    [...Fb.sizes].map(i => SIZES[i][0] + ' birds'),
+    [...Fb.diets].map(i => DIET_LABEL[D.diets[i]] || D.diets[i]),
+    [...Fb.iucn].map(i => STATUS[i]),
+    [...Fb.migs].map(i => MIG_LABEL[D.migrations[i]] || D.migrations[i]),
+  ].filter(g => g.length);
 }
+const buildLabel = () => buildGroups().flat();
 function openBuilder() { if (!$('#bsteps').children.length) buildBuilder(); view('build'); updateBuilder(); }
 $('#bclear').onclick = () => { GROUPS.forEach(g => Fb[g.key].clear()); updateBuilder(); };
 $('#bplay').onclick = () => {
