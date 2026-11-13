@@ -72,7 +72,7 @@ a{color:inherit}
 svg{display:block}
 
 /* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:14px 24px;font-weight:700;font-size:16px;background:var(--brand);color:var(--on-brand);transition:transform .12s,background .15s,box-shadow .15s;box-shadow:0 8px 20px -8px rgba(255,107,26,.7)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:16px;padding:14px 24px;font-weight:700;font-size:16px;background:var(--brand);color:var(--on-brand);transition:transform .12s,background .15s,box-shadow .15s}
 .btn:hover{background:var(--brand-d);transform:translateY(-1px)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled]{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
@@ -80,7 +80,7 @@ svg{display:block}
 .btn.ghost:hover{background:var(--soft)}
 .btn.sm{padding:9px 16px;font-size:14px;border-radius:12px}
 .btn.lg{padding:18px 32px;font-size:18px;border-radius:18px}
-.btn.wa{background:#25d366;color:#06240f;box-shadow:0 8px 20px -8px rgba(37,211,102,.7)}
+.btn.wa{background:#25d366;color:#06240f}
 .btn.wa:hover{background:#20bd5b}
 .iconbtn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line)}
 .iconbtn:hover{background:var(--soft)}
@@ -112,7 +112,13 @@ svg{display:block}
 .hero h1{font-size:clamp(42px,6.4vw,84px);font-weight:800}
 .hero h1 em{font-style:normal;color:var(--brand)}
 .hero p.lead{font-size:19px;color:var(--muted);max-width:30em;margin:20px 0 28px}
-.cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;max-width:38em}
+.cta .btn{justify-content:flex-start;text-align:left;gap:10px;padding:12px 14px;align-self:stretch}
+.cta .btn svg{flex:none}
+.cta .btn b{display:block;font-size:15px;line-height:1.2}
+.cta .btn small{display:block;font-weight:500;font-size:12px;color:var(--muted);line-height:1.25;margin-top:2px}
+.cta .linkbtn{grid-column:1/-1;justify-self:start}
+@media(min-width:600px){.cta{grid-template-columns:auto auto 1fr;gap:14px}.cta .btn{padding:12px 20px}.cta .btn b{font-size:16px}.cta .linkbtn{grid-column:auto}}
 .pickhead{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .bar .cnt{min-width:0}
 .bar .bsum{display:block;max-width:min(62vw,560px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-weight:600;margin-top:1px}
@@ -202,7 +208,7 @@ svg{display:block}
 .level span{display:block;color:var(--muted);font-size:13.5px;line-height:1.3}
 .mopts{display:grid;gap:14px;border-top:1px solid var(--line);padding-top:16px}
 .mrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end}
-#sPlay{position:sticky;bottom:0;box-shadow:0 -14px 16px -6px var(--surface),0 8px 20px -8px rgba(255,107,26,.7)}
+#sPlay{position:sticky;bottom:0;box-shadow:0 -14px 16px -6px var(--surface)}
 .seg{display:flex;background:var(--soft);border-radius:12px;padding:3px;gap:3px}
 .seg button{flex:1;padding:8px 6px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
@@ -336,7 +342,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
 
 /* ---------- Daily Birdbrain: its own colour (indigo) so it never looks like free play ---------- */
-.daily{position:relative;width:100%;max-width:38em;text-align:left;color:#fff;background:linear-gradient(135deg,#2c32bf,#5a5ff0);border-radius:28px;padding:22px 24px;margin:0 0 28px;box-shadow:0 22px 40px -18px rgba(50,55,200,.75);overflow:hidden}
+.daily{position:relative;width:100%;max-width:38em;text-align:left;color:#fff;background:#3a40d4;border-radius:28px;padding:22px 24px;margin:0 0 28px;overflow:hidden}
 .daily::before{content:"";position:absolute;right:-50px;top:-60px;width:210px;height:210px;border-radius:50%;background:rgba(255,255,255,.1)}
 .daily>*{position:relative}
 .d-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
@@ -361,7 +367,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .d-prog{display:flex;gap:4px;margin:2px 0 16px;max-width:300px}
 .d-prog i{flex:1;height:8px;border-radius:9px;background:rgba(255,255,255,.22)}
 .d-prog i.ok{background:#3ddc97}.d-prog i.no{background:#ff6b5e}
-.dbar{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#2c32bf,#5a5ff0);color:#fff;border-radius:16px;padding:8px 12px;margin-bottom:12px;font-size:13.5px;font-weight:600}
+.dbar{display:flex;align-items:center;gap:10px;background:#3a40d4;color:#fff;border-radius:16px;padding:8px 12px;margin-bottom:12px;font-size:13.5px;font-weight:600}
 .dbar .d-pill{padding:4px 10px;font-size:11.5px}
 .dbar span.t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rules{list-style:none;padding:0;margin:16px 0 20px;display:grid;gap:13px}
@@ -371,9 +377,10 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 :root[data-theme="dark"] .rules .ri{background:#272b5c;color:#aab0ff}
 .d-sheet .d-pill{background:#e9eaff;color:#2c32bf;margin-bottom:12px}
 :root[data-theme="dark"] .d-sheet .d-pill{background:#272b5c;color:#aab0ff}
-.btn.dly{background:linear-gradient(135deg,#2c32bf,#5a5ff0);box-shadow:0 12px 26px -12px rgba(50,55,200,.8);width:100%}
+.btn.dly{background:#3a40d4;width:100%}
+.btn.dly:hover{background:#3036bd}
 .rdaily{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:-8px 0 26px}
-.rdaily .rstat{background:linear-gradient(135deg,#2c32bf,#5a5ff0);color:#fff}
+.rdaily .rstat{background:#3a40d4;color:#fff}
 .rdaily .rstat span{color:rgba(255,255,255,.85)}
 .rdaily .rstat b{font-variant-numeric:tabular-nums}
 .rankcard{background:var(--surface);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow);margin:-12px 0 18px;text-align:center}
@@ -382,15 +389,112 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .d-rank{margin-top:12px;font-size:14.5px;font-weight:700}
 .d-rank span{display:block;font-weight:600;opacity:.85;font-size:13.5px;margin-top:2px}
 .rnote{color:var(--muted);font-size:14px;margin:-12px 0 24px}
+
+/* ---------- Which is heavier? (plum, so it never looks like the Daily, groups or free play) ---------- */
+.hv .gc-ic{background:color-mix(in srgb,#a21caf 13%,var(--surface));color:#a21caf}
+.btn.hvb{background:#a21caf}
+.btn.hvb:hover{background:#8a1797}
+.hvgame{max-width:700px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 16px 40px}
+.hv-q{font-family:var(--display);font-weight:800;font-size:clamp(28px,7vw,40px);letter-spacing:-.02em;line-height:1.05;text-align:center;margin:8px 0 4px}
+.hv-sub{text-align:center;color:var(--muted);font-size:14.5px;margin-bottom:16px}
+.hv-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hv-card{position:relative;display:flex;flex-direction:column;background:var(--surface);border-radius:26px;padding:10px 10px 12px;box-shadow:inset 0 0 0 2px var(--line);text-align:center;transition:transform .15s,box-shadow .2s,opacity .3s}
+.hv-card:hover:not(:disabled){transform:translateY(-3px);box-shadow:inset 0 0 0 2px var(--ink)}
+.hv-card:disabled{cursor:default}
+.hv-pic{position:relative;display:grid;place-items:center;background:var(--c);border-radius:20px;aspect-ratio:1/1;overflow:hidden}
+.hv-pic img{width:82%;height:82%;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.22))}
+.hv-name{font-family:var(--display);font-weight:800;font-size:clamp(16px,4.2vw,21px);margin-top:10px;line-height:1.12;min-height:2.3em;display:grid;place-items:center}
+.hv-w{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.02em;height:0;overflow:hidden;opacity:0;transition:height .3s,opacity .3s}
+.hv-card.shown .hv-w{height:34px;opacity:1}
+.hv-card.ok{box-shadow:inset 0 0 0 3.5px var(--good)}
+.hv-card.no{box-shadow:inset 0 0 0 3.5px var(--bad)}
+.hv-card.shown:not(.heavy){opacity:.72}
+.hv-tag{position:absolute;left:8px;top:8px;background:#14161a;color:#fff;font-size:12px;font-weight:800;border-radius:99px;padding:4px 10px;display:none}
+.hv-card.shown.heavy .hv-tag{display:block}
+.hv-out{margin-top:16px;background:var(--surface);border-radius:24px;padding:16px 18px 18px;box-shadow:var(--shadow);animation:hvin .3s ease-out}
+@keyframes hvin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hv-verdict{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;line-height:1.2}
+.hv-verdict.ok{color:var(--good)} .hv-verdict.no{color:var(--bad)}
+.hv-verdict span{color:var(--ink)}
+.hv-bars{display:grid;gap:8px;margin:14px 0 12px}
+.hv-bar{display:grid;grid-template-columns:112px 1fr;gap:10px;align-items:center;font-size:13px;font-weight:700}
+.hv-bar em{font-style:normal;line-height:1.15}
+.hv-bar i{display:block;height:14px;border-radius:9px;background:var(--c);width:0;min-width:6px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.hv-fact{font-size:15.5px;line-height:1.45}
+.hv-fact b{font-weight:800}
+.hv-objs{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:5px;color:var(--muted);font-size:14px;line-height:1.4}
+.hv-objs b{color:var(--ink)}
+.hv-next{width:100%;margin-top:16px}
+#hvRes .big{color:#b0209f}
+.hv-ins{display:grid;gap:10px;margin:0 0 24px;text-align:left}
+.hv-i{background:var(--surface);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center}
+.hv-i .em.od-em{background:color-mix(in srgb,#0b7bc0 12%,var(--surface));color:#0b7bc0}
+.hv-i .em{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,#a21caf 12%,var(--surface));color:#a21caf}
+.hv-i .hv-t{display:block;font-size:12.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.hv-i p{font-size:15px;line-height:1.4}
+.hv-note{font-size:13px;color:var(--muted);text-align:left;margin:-8px 0 24px;line-height:1.45}
+.hv-rows{display:grid;gap:8px;margin-bottom:26px}
+.hv-row{display:grid;grid-template-columns:22px 1fr 1fr;gap:8px;align-items:center;background:var(--surface);border-radius:16px;padding:8px 10px;box-shadow:inset 0 0 0 1.5px var(--line);font-size:13px;font-weight:700;text-align:left}
+.hv-row .mk{display:grid;place-items:center}
+.hv-row .mk.ok{color:var(--good)}
+.hv-row .mk.no{color:var(--bad)}
+.hv-row .sd{display:flex;align-items:center;gap:8px;min-width:0}
+.hv-row .sd img{flex:none;width:34px;height:34px;object-fit:contain;border-radius:9px;background:var(--c)}
+.hv-row .sd span{min-width:0;line-height:1.15}
+.hv-row .sd span small{display:block;color:var(--muted);font-weight:600;font-size:12px}
+.hv-row .sd.win img{box-shadow:0 0 0 2.5px #b0209f}
+.hv-row .sd.win span small{color:#b0209f;font-weight:800}
+
+/* ---------- Odd one out (sky blue) ---------- */
+.od .gc-ic{background:color-mix(in srgb,#0b7bc0 13%,var(--surface));color:#0b7bc0}
+.btn.odb{background:#0b7bc0}
+.btn.odb:hover{background:#096aa6}
+.oddgame .hv-pair{gap:10px}
+.oddgame .hv-card{padding:8px 8px 10px;border-radius:22px}
+.oddgame .hv-pic{border-radius:16px}
+.oddgame .hv-name{font-size:clamp(14px,3.8vw,18px);margin-top:8px;min-height:2.3em}
+.oddgame .hv-w{font-size:13px;font-weight:700;letter-spacing:0;color:var(--muted);height:auto;max-height:0;line-height:1.2;transition:max-height .3s,opacity .3s}
+.oddgame .hv-card.shown .hv-w{max-height:40px;height:auto;margin-top:2px}
+.oddgame .hv-card.odd .hv-w{color:var(--good);font-weight:800}
+.oddgame .hv-card.shown:not(.odd){opacity:.8}
+.oddgame .hv-card.odd{box-shadow:inset 0 0 0 3.5px var(--good)}
+.oddgame .hv-card.no{box-shadow:inset 0 0 0 3.5px var(--bad)}
+.oddgame .hv-card.shown.odd .hv-tag{display:block;background:var(--good)}
+.hv-card.shown:not(.heavy).odd{opacity:1}
+#odRes .big{color:#0b7bc0}
+.od-skill{display:grid;gap:8px;margin:0 0 24px;text-align:left}
+.od-sk{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;background:var(--surface);border-radius:16px;padding:10px 14px;box-shadow:inset 0 0 0 1.5px var(--line);font-size:14px;font-weight:700}
+.od-sk small{display:block;color:var(--muted);font-weight:600;font-size:12.5px}
+.od-sk .dots{display:flex;gap:5px}
+.od-sk .dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.od-sk .dots i.ok{background:var(--good)}
+.od-sk .dots i.no{background:var(--bad)}
+.od-row{background:var(--surface);border-radius:16px;padding:10px 12px;box-shadow:inset 0 0 0 1.5px var(--line);font-size:13.5px;text-align:left;display:grid;grid-template-columns:22px 1fr;gap:8px}
+.od-row .mk{display:grid;place-items:center;padding-top:2px}
+.od-row .mk.ok{color:var(--good)} .od-row .mk.no{color:var(--bad)}
+.od-row b{font-weight:800}
+.od-row span.s{display:block;color:var(--muted);margin-top:2px;line-height:1.35}
 /* ---------- Group challenges (teal, so they never look like the Daily or free play) ---------- */
+.ways{display:grid;gap:10px;max-width:38em;margin:0 0 26px}
+.way{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);border-radius:20px;padding:12px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
+.way:hover{box-shadow:inset 0 0 0 1.5px var(--ac);transform:translateY(-1px)}
+.way .gc-ic{width:44px;height:44px;background:color-mix(in srgb,var(--ac) 13%,var(--surface));color:var(--ac)}
+.way .wt{flex:1;min-width:0;display:block}
+.way .wt b{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:18px;line-height:1.15}
+.way .wt small{display:block;color:var(--muted);font-size:13.5px;line-height:1.35;margin-top:2px;font-weight:500}
+.way .new{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--surface));border-radius:99px;padding:2px 8px}
+.way .chev{flex:none;color:var(--muted)}
+.way.hv{--ac:#a21caf}.way.od{--ac:#0b7bc0}.way.grp{--ac:#0e7f70}
 .gcard{max-width:38em;background:var(--surface);border-radius:24px;padding:18px 20px;box-shadow:inset 0 0 0 1.5px var(--line);margin:0 0 26px}
+.medal{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2.5px solid;font-weight:800;font-size:13px;line-height:1}
+.medal.m1{color:#c28a00}.medal.m2{color:#7b8696}.medal.m3{color:#b0682c}
 .gc-t{display:flex;gap:14px;align-items:flex-start}
-.gc-ic{flex:none;width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#0e7f70,#1fb89c);color:#fff;display:grid;place-items:center}
+.gc-ic{flex:none;width:46px;height:46px;border-radius:15px;background:color-mix(in srgb,#0e7f70 13%,var(--surface));color:#0e7f70;display:grid;place-items:center}
 .gc-t h3{font-size:20px;font-weight:800;margin-bottom:3px}
 .gc-t p{color:var(--muted);font-size:14.5px;line-height:1.4}
 .gc-act{margin-top:14px}
-.btn.grpb{background:linear-gradient(135deg,#0e7f70,#1fb89c);box-shadow:0 10px 22px -10px rgba(14,127,112,.8)}
-.btn.grpb:hover{background:linear-gradient(135deg,#0b6e61,#19a58b)}
+.btn.grpb{background:#0e7f70}
+.btn.grpb:hover{background:#0b6e61}
 .gc-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .gc-list:empty{display:none}
 .gc-list button{background:var(--soft);border-radius:99px;padding:7px 13px;font-size:13.5px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -402,7 +506,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .ic-t span{display:block;color:var(--muted);font-size:14px;margin-top:3px;line-height:1.4}
 .ic-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
 .ic-how{margin-top:10px;font-size:13.5px;color:var(--ink);background:var(--soft);padding:10px 12px;border-radius:12px;line-height:1.45}
-.dbar.grp{background:linear-gradient(135deg,#0e7f70,#1fb89c)}
+.dbar.grp{background:#0e7f70}
 .dbar.grp .d-pill{color:#0e7f70}
 .g-sheet .g-pill{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#d9f4ee;color:#0e7f70;border-radius:99px;padding:6px 13px;margin-bottom:12px}
 :root[data-theme="dark"] .g-sheet .g-pill{background:#12332e;color:#7fe3cf}
@@ -491,15 +595,16 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
       <p class="freehint">Choose any deck and play as many games as you like. It's separate from the Daily challenge.</p>
       <div class="quick" id="quickDecks"></div>
       <div class="cta">
-        <button class="btn ghost" id="surprise"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.500" cy="8.500" r="1" fill="currentColor"/><circle cx="15.500" cy="15.500" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="15.500" cy="8.500" r="1" fill="currentColor"/><circle cx="8.500" cy="15.500" r="1" fill="currentColor"/></svg> Surprise me</button>
+        <button class="btn ghost" id="surprise"><span class="cb"><b>Surprise me</b><small>Play a random deck</small></span></button>
+        <button class="btn ghost" id="gcStart"><span class="cb"><b>Play with friends</b><small>Same 10 birds, shared by link</small></span></button>
         <button class="linkbtn" id="pickDeck">See all decks ↓</button>
       </div>
-      <section class="gcard" id="groupCard" style="margin-top:26px">
-        <div class="gc-t"><span class="gc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.500" cy="9" r="2.5"/><path d="M17 14.200c2.400.3 4 2.200 4 4.800"/></svg></span>
-          <div><h3>Play with your group</h3><p>Pick a set, send the link, and see who does best. Everyone in your group plays the same 10 birds.</p></div></div>
-        <div class="gc-act"><button class="btn grpb" id="gcStart">Start a group challenge</button></div>
-        <div class="gc-list" id="gcList"></div>
-      </section>
+      <div class="gc-list" id="gcList" style="margin:12px 0 0"></div>
+      <p class="pickhead" style="margin-top:34px">Quick games</p>
+      <div class="ways">
+        <button class="way hv" id="hvStart"><span class="gc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a3.2 3.2 0 0 0 6 0zM19 7l-3 7a3.2 3.2 0 0 0 6 0z"/></svg></span><span class="wt"><b>Which is heavier? <i class="new">NEW</i></b><small>Tap the bird that weighs more. A good one for kids.</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="way od" id="odStart"><span class="gc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2" fill="currentColor"/></svg></span><span class="wt"><b>Odd one out <i class="new">NEW</i></b><small>Four birds, one doesn't belong. Find it.</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
     </div>
     <div class="collage" id="collage" aria-hidden="true"></div>
   </section>
@@ -553,6 +658,28 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div id="answer"></div>
 </main>
 <div id="reveal" class="reveal hidden"></div>
+
+<!-- WHICH IS HEAVIER? -->
+<main id="heavy" class="hvgame hidden" aria-live="polite">
+  <div class="hud">
+    <button class="iconbtn" id="hvQuit" aria-label="Quit game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="segs" id="hvSegs"></div>
+    <div class="score" id="hvScore"></div>
+  </div>
+  <div id="hvBody"></div>
+</main>
+<main id="hvRes" class="results hidden"></main>
+
+<!-- ODD ONE OUT -->
+<main id="odd" class="hvgame oddgame hidden" aria-live="polite">
+  <div class="hud">
+    <button class="iconbtn" id="odQuit" aria-label="Quit game"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="segs" id="odSegs"></div>
+    <div class="score" id="odScore"></div>
+  </div>
+  <div id="odBody"></div>
+</main>
+<main id="odRes" class="results hidden"></main>
 
 <!-- RESULTS -->
 <main id="results" class="results hidden">
@@ -737,6 +864,25 @@ const massSorted = D.birds.filter(b => b.w > 0).map(b => b.w).sort((a, c) => a -
 const famCount = {}, famMin = {}, famMax = {};
 for (const b of D.birds) { famCount[b.f] = (famCount[b.f] || 0) + 1; if (b.w > 0) { famMin[b.f] = Math.min(famMin[b.f] ?? Infinity, b.w); famMax[b.f] = Math.max(famMax[b.f] ?? 0, b.w); } }
 const famMassN = {}; for (const b of D.birds) if (b.w > 0) famMassN[b.f] = (famMassN[b.f] || 0) + 1;
+const ICONS = {
+  weight: '<path d="M8.5 8a3.5 3.5 0 0 1 7 0"/><path d="M6.5 10h11l2.2 10H4.3z"/>',
+  feather: '<path d="M20.2 12.2a6 6 0 0 0-8.5-8.5L5 10.5V19h8.5z"/><path d="M16 8L2 22M17.5 15H9"/>',
+  gap: '<path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/>',
+  close: '<path d="M4 9h16M4 15h16"/>',
+  help: '<circle cx="12" cy="12" r="9.5"/><path d="M9.1 9.2a3 3 0 0 1 5.8 1c0 2-2.9 2.8-2.9 2.8M12 17h.01"/>',
+  ok: '<circle cx="12" cy="12" r="9.5"/><path d="M8 12.2l3 3 5-6"/>',
+  no: '<circle cx="12" cy="12" r="9.5"/><path d="M15 9l-6 6M9 9l6 6"/>',
+  bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.7 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/>',
+  shield: '<path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/>',
+  leaf: '<path d="M5 19c0-8 5-14 15-15 0 10-6 15-14 15"/><path d="M5 19c2-5 5-8 9-10"/>',
+  paw: '<circle cx="7" cy="10" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="17" cy="10" r="2"/><path d="M12 12c-3 0-5.5 3-5.5 5 0 1.6 1.3 2.5 2.8 2.2 1-.2 1.8-.5 2.7-.5s1.700.3 2.700.5c1.500.3 2.800-.6 2.800-2.200 0-2-2.500-5-5.500-5z"/>',
+  fish: '<path d="M3 12c3-5 8-6 12-4 2 1 4 4 6 4-2 0-4 3-6 4-4 2-9 1-12-4z"/><circle cx="16.500" cy="11" r=".6"/>',
+  globe: '<circle cx="12" cy="12" r="9.5"/><path d="M2.500 12h19M12 2.500c3 3 3 16.500 0 19M12 2.500c-3 3-3 16.500 0 19"/>',
+  route: '<path d="M5 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM19 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M7 17h6a3.500 3.500 0 0 0 0-7h-2a3.500 3.500 0 0 1 0-7h6"/>',
+  scale: '<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a3.200 3.200 0 0 0 6 0zM19 7l-3 7a3.200 3.200 0 0 0 6 0z"/>'
+};
+const ic = (n, sz = 24) => `<svg class="ic" width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
 const hash = str => { let h = 7; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return Math.abs(h); };
 function massFact(w) {
   let best = OBJECTS[0], bd = Infinity;
@@ -884,10 +1030,12 @@ const langIdx = () => Math.max(0, D.langs.findIndex(l => l[0] === S.lang));
 const nm = b => b.n[langIdx()] || b.n[0];
 
 /* ---------- views ---------- */
-const VIEWS = ['home', 'build', 'game', 'results'];
+const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes'];
 function view(v) {
   VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
-  $('#nav').classList.toggle('hidden', v === 'game');
+  $('#nav').classList.toggle('hidden', v === 'game' || v === 'heavy' || v === 'odd');
+  if (v !== 'heavy' && v !== 'hvRes' && typeof hvStop === 'function') hvStop();
+  if (v !== 'odd' && v !== 'odRes' && typeof odStop === 'function') odStop();
   $('#reveal').classList.add('hidden');
   if (v === 'home' && typeof renderDaily === 'function') { renderDaily(); renderGroups(); }
   window.scrollTo(0, 0);
@@ -1287,13 +1435,13 @@ const SITE = 'https://birdbrain.indianbirds.org/';
 function shareText(r = 'wa') {
   if (G.group) return groupShareText(r, true);
   if (G.daily) { // the result as coloured squares, like a puzzle result: easy to paste into any chat
-    const st = dailyStreak().cur, sq = G.log.map(x => x ? '🟩' : '🟥').join('');
-    return `${BRAND} Daily #${G.daily.num}${G.daily.theme ? ' · ' + G.daily.theme.title : ''} 🐦\n${G.right}/${G.answered} · ${fmt(G.score)} points${st > 1 ? ` · 🔥 ${st}-day streak` : ''}\n${sq}\n\n`
+    const st = dailyStreak().cur, sq = G.log.map(x => x ? '✓' : '✗').join(' ');
+    return `${BRAND} Daily #${G.daily.num}${G.daily.theme ? ' · ' + G.daily.theme.title : ''}\n${G.right}/${G.answered} · ${fmt(G.score)} points${st > 1 ? ` · ${st}-day streak` : ''}\n${sq}\n\n`
       + `Everyone gets the same 10 birds today, and you only get one try. Can you beat me?\n${SITE}?r=${r}#daily`;
   }
   const link = SITE + '?r=' + r + (G.deck.id ? '#deck=' + G.deck.id : ''); // ?r= tells the stats where a visitor came from
   const lvl = { easy: 'Easy', medium: 'Medium', hard: 'Hard' }[S.level] || 'Easy';
-  return `I scored ${fmt(G.score)} on "${G.deck.t}" (${lvl}) in ${BRAND}: ${G.right}/${G.answered} birds right! 🐦\n\n`
+  return `I scored ${fmt(G.score)} on "${G.deck.t}" (${lvl}) in ${BRAND}: ${G.right}/${G.answered} birds right!\n\n`
     + `${BRAND} is a free bird guessing game: you see a picture and name the bird. Choose a deck, from everyday garden birds to rare finds, and play Easy to Hard.\n\n`
     + `Think you can beat me? Play here: ${link}`;
 }
@@ -1671,7 +1819,7 @@ function groupBirds(g) { return seededShuffle(g.deck.pool.slice().sort((a, b) =>
 function groupShareText(r, withScore) {
   const gr = G && G.group ? G.group : null, code = gr ? gr.code : r.code, name = gr ? gr.name : r.name, g = parseGroup(code);
   const lead = withScore ? `I scored ${fmt(G.score)} (${G.right}/${G.answered}) in our ${BRAND} group challenge${name ? ` "${name}"` : ''}. Can you beat me?` : `Join our ${BRAND} group challenge${name ? ` "${name}"` : ''} and see who knows their birds best.`;
-  return `🐦 ${lead}\n${g.deck.t} · ${LVN[g.level]} · everyone gets the same 10 birds. No sign-in needed:\n${groupLink(code, name)}`;
+  return `${lead}\n${g.deck.t} · ${LVN[g.level]} · everyone gets the same 10 birds. No sign-in needed:\n${groupLink(code, name)}`;
 }
 async function fetchBoard(code) {
   if (!STATS_ON) return null;
@@ -1694,7 +1842,7 @@ async function drawBoard(el, code) {
   const head = `<h3>${esc(rec.name || 'Group leaderboard')}</h3><div class="gsub">${esc(g.deck.t)} · ${LVN[g.level]} · 10 birds</div>`;
   const v = await fetchBoard(code); if (!el.isConnected) return;
   if (!v) { el.innerHTML = head + `<div class="gsub">The leaderboard couldn't be loaded just now.</div><div class="gbtns"><button class="btn ghost sm" data-gr="${code}">Try again</button></div>`; return; }
-  const medal = i => ['🥇', '🥈', '🥉'][i] || i + 1;
+  const medal = i => i < 3 ? `<span class="medal m${i + 1}">${i + 1}</span>` : i + 1;
   const rows = (v.rows || []).map((r, i) => `<li class="${r.me ? 'me' : ''}"><span class="rk">${medal(i)}</span><span class="nk">${esc(r.nick)}${r.me ? ' (you)' : ''}</span><span class="sc">${fmt(r.score)}<small>${r.correct}/${r.answered}</small></span></li>`).join('');
   el.innerHTML = head + (rows ? `<ol class="lb">${rows}</ol>` : '<div class="gsub">No results yet. Be the first!</div>')
     + `<div class="gsub" style="margin-top:10px">${fmt(v.total)} player${v.total === 1 ? '' : 's'} so far. This list updates by itself.</div>
@@ -1829,6 +1977,329 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('click', e => { if (e.target.closest('#installLink')) openGrp(`<h2 style="font-size:24px;font-weight:800;padding-right:44px;margin-bottom:12px">Daily birds, one tap away</h2>${installCard()}`, 'install'); });
 
+/* ---------- Which is heavier? ---------- */
+// 10 rounds of two birds; the gap between them shrinks round by round (30x lighter ... 1.7x), so it starts easy and ends tricky.
+// Weights are the average adult weight of each species (AVONET), the same numbers the fun facts use.
+const HV_N = 10, HV_RATIOS = [30, 15, 10, 7, 5, 4, 3, 2.5, 2, 1.7];
+const hvPool = D.birds.filter(b => b.w > 0 && b.c < 5 && (b.k || b.p.includes(0)));   // birds of India + the well-known ones
+const hvSorted = hvPool.slice().sort((a, c) => a.w - c.w), hvKnown = hvPool.filter(b => b.k);
+let H = null;
+const wTxt = g => g >= 1000 ? (g >= 10000 ? Math.round(g / 1000) : Math.round(g / 100) / 10) + ' kg' : (g >= 10 ? Math.round(g) : Math.round(g * 10) / 10) + ' g';
+const xTxt = r => r >= 10 ? fmt(Math.round(r)) : (Math.round(r * 10) / 10).toString();
+const heavierOf = r => r.a.w >= r.b.w ? 0 : 1;
+function hvPair(ratio, used) {
+  for (let t = 0; t < 400; t++) {
+    const src = t < 200 && ratio >= 3 ? hvKnown : hvPool;               // the easy rounds lean on birds people know
+    const a = src[Math.random() * src.length | 0]; if (used.has(a.i)) continue;
+    const up = Math.random() < .5, [x, y] = up ? [a.w * ratio, a.w * ratio * 1.5] : [a.w / (ratio * 1.5), a.w / ratio];
+    let l = 0, h = hvSorted.length; while (l < h) { const m = (l + h) >> 1; if (hvSorted[m].w < x) l = m + 1; else h = m; }
+    const c = []; for (let k = l; k < hvSorted.length && hvSorted[k].w <= y && c.length < 60; k++) { const o = hvSorted[k]; if (!used.has(o.i) && o.n[0] !== a.n[0]) c.push(o); }
+    if (!c.length) continue;
+    const b = c[Math.random() * c.length | 0];
+    return Math.random() < .5 ? [a, b] : [b, a];
+  }
+  return null;
+}
+function startHv() {
+  const used = new Set(), rounds = [];
+  for (const r of HV_RATIOS) {
+    let pr = null; for (let f = 1; !pr && f > .3; f -= .15) pr = hvPair(Math.max(1.3, r * f), used);
+    if (!pr) continue;
+    pr.forEach(b => used.add(b.i)); rounds.push({ a: pr[0], b: pr[1], pick: null, ok: false, k: 'x' + String(r).replace('.', '_') });
+  }
+  if (rounds.length < 5) return;
+  H = { rounds, i: 0, right: 0, streak: 0, best: 0, t0: Date.now(), sent: false, locked: false };
+  H.meta = { gid: rid(), pid: PID, src: SRC, deck: 'heavier', deckTitle: 'Which is heavier?', label: '', level: 'medium', rounds: rounds.length, timer: 0, shadow: 0, custom: 0 };
+  track('start', H.meta);
+  view('heavy'); hvRound();
+}
+function hvSend(finished) {
+  if (!H || H.sent) return; H.sent = true;
+  const n = H.rounds.filter(r => r.pick !== null).length;
+  track('end', { ...H.meta, score: H.right * 10, correct: H.right, answered: n, bestStreak: H.best, hints: 0, secs: Math.round((Date.now() - H.t0) / 1000), finished: finished ? 1 : 0, kinds: H.rounds.filter(r => r.pick !== null).map(r => [r.k, r.ok ? 1 : 0]) });
+}
+function hvStop() { if (H && !H.sent && H.rounds.some(r => r.pick !== null)) hvSend(false); H = null; }
+addEventListener('pagehide', () => { if (H && !H.sent && H.rounds.some(r => r.pick !== null)) hvSend(false); });
+function hvRound() {
+  const r = H.rounds[H.i]; H.locked = false;
+  $('#hvSegs').innerHTML = H.rounds.map((x, i) => `<i class="${x.pick !== null ? (x.ok ? 'ok' : 'no') : i === H.i ? 'cur' : ''}"></i>`).join('');
+  $('#hvScore').textContent = H.right + ' right';
+  $('#hvBody').innerHTML = `<p class="hv-q">Which one is heavier?</p><p class="hv-sub">Round ${H.i + 1} of ${H.rounds.length}. Tap the bird you think weighs more.</p>
+    <div class="hv-pair">${[r.a, r.b].map((b, k) => `<button class="hv-card" data-k="${k}" style="--c:${k ? C.sky : C.saffron}"><span class="hv-pic">${img(b, '', false)}<span class="hv-tag">Heavier</span></span><span class="hv-name">${esc(nm(b))}</span><span class="hv-w"></span></button>`).join('')}</div>
+    <div id="hvOut"></div>`;
+  const nx = H.rounds[H.i + 1]; if (nx) [nx.a, nx.b].forEach(b => { new Image().src = b.url; });
+  window.scrollTo(0, 0);
+}
+function hvPick(k) {
+  if (!H || H.locked) return; H.locked = true;
+  const r = H.rounds[H.i], hv = heavierOf(r), ok = k === hv; r.pick = k; r.ok = ok;
+  if (ok) { H.right++; H.streak++; H.best = Math.max(H.best, H.streak); } else H.streak = 0;
+  $('#hvSegs').children[H.i].className = ok ? 'ok' : 'no';
+  $('#hvScore').textContent = H.right + ' right';
+  const heavy = hv ? r.b : r.a, light = hv ? r.a : r.b, ratio = heavy.w / light.w;
+  $$('#hvBody .hv-card').forEach((el, i) => {
+    el.disabled = true; el.classList.add('shown'); el.classList.toggle('heavy', i === hv);
+    if (i === k) el.classList.add(ok ? 'ok' : 'no');
+    $('.hv-w', el).textContent = wTxt(i ? r.b.w : r.a.w);
+  });
+  const last = H.i === H.rounds.length - 1;
+  $('#hvOut').innerHTML = `<div class="hv-out">
+    <div class="hv-verdict ${ok ? 'ok' : 'no'}">${ok ? 'Yes!' : 'Not quite.'} <span>The ${esc(nm(heavy))} is heavier.</span></div>
+    <div class="hv-bars">${[heavy, light].map(b => `<div class="hv-bar"><em>${esc(nm(b))}</em><i data-w="${Math.max(3, Math.round(b.w / heavy.w * 100))}" style="--c:${b === r.a ? C.saffron : C.sky}"></i></div>`).join('')}</div>
+    <p class="hv-fact"><b>${esc(nm(heavy))}</b> (${wTxt(heavy.w)}) weighs ${ratio < 1.6 ? 'about ' + xTxt(ratio) + ' times' : 'about <b>' + xTxt(ratio) + ' times</b>'} as much as the <b>${esc(nm(light))}</b> (${wTxt(light.w)}).</p>
+    <ul class="hv-objs"><li><b>${esc(nm(heavy))}:</b> ${massFact(heavy.w)}</li><li><b>${esc(nm(light))}:</b> ${massFact(light.w)}</li></ul>
+    <button class="btn full hv-next hvb" id="hvNext">${last ? 'See my results' : 'Next'}</button></div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => $$('#hvOut .hv-bar i').forEach(i => { i.style.width = i.dataset.w + '%'; })));
+  setTimeout(() => $('#hvNext') && $('#hvNext').scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 120);
+}
+function hvResults() {
+  hvSend(true);
+  const R = H.rounds, n = R.length, right = H.right;
+  const all = R.flatMap(r => [r.a, r.b]), heaviest = all.reduce((a, b) => b.w > a.w ? b : a), lightest = all.reduce((a, b) => b.w < a.w ? b : a);
+  const gap = r => Math.max(r.a.w, r.b.w) / Math.min(r.a.w, r.b.w);
+  const widest = R.reduce((a, r) => gap(r) > gap(a) ? r : a), closest = R.reduce((a, r) => gap(r) < gap(a) ? r : a);
+  const missed = R.filter(r => !r.ok), fooled = missed.length ? missed.reduce((a, r) => gap(r) > gap(a) ? r : a) : null;
+  const grade = right === n ? 'Perfect! You really can judge weight.' : right >= n - 2 ? 'Sharp eye!' : right >= n * .6 ? 'Pretty good!' : right >= n * .4 ? 'Birds can fool you.' : 'Tricky, isn\'t it?';
+  const side = (b, win, col) => `<div class="sd${win ? ' win' : ''}" style="--c:${col}"><img src="${b.url}" alt="" onerror="this.onerror=null;this.src='${b.raw}'"><span>${esc(nm(b))}<small>${wTxt(b.w)}</small></span></div>`;
+  const ins = [
+    ['weight', 'Heaviest bird you met', `The <b>${esc(nm(heaviest))}</b> at ${wTxt(heaviest.w)}. ${massFact(heaviest.w)}`],
+    ['feather', 'Lightest bird you met', `The <b>${esc(nm(lightest))}</b> at ${wTxt(lightest.w)}. ${massFact(lightest.w)}`],
+    ['gap', 'Biggest gap', `The <b>${esc(nm(widest.a.w > widest.b.w ? widest.a : widest.b))}</b> weighs about ${xTxt(gap(widest))} times as much as the <b>${esc(nm(widest.a.w > widest.b.w ? widest.b : widest.a))}</b>.`],
+    closest === widest ? null : ['close', 'Closest call', `The <b>${esc(nm(closest.a))}</b> and the <b>${esc(nm(closest.b))}</b> are only ${xTxt(gap(closest))} times apart${closest.ok ? ', and you got it right.' : '. Easy to get wrong.'}`],
+    fooled ? ['help', 'The one that fooled you', `You picked the <b>${esc(nm(fooled.pick ? fooled.b : fooled.a))}</b>, but the <b>${esc(nm(heavierOf(fooled) ? fooled.b : fooled.a))}</b> is ${xTxt(gap(fooled))} times heavier.`] : null,
+  ].filter(Boolean);
+  $('#hvRes').innerHTML = `<div class="kick">Which is heavier?</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
+    <div class="rstats"><div class="rstat"><b>${right}</b><span>Right</span></div><div class="rstat"><b>${H.best}</b><span>Most in a row</span></div><div class="rstat"><b>${Math.round((Date.now() - H.t0) / 1000)}s</b><span>Time</span></div></div>
+    <h3>What you found out</h3><p class="tip">Facts from the birds in your 10 rounds.</p>
+    <div class="hv-ins">${ins.map(([e, t, x]) => `<div class="hv-i"><span class="em">${ic(e)}</span><div><span class="hv-t">${t}</span><p>${x}</p></div></div>`).join('')}</div>
+    <p class="hv-note">The pictures are all drawn about the same size, so you can't judge weight by the picture. Weights are the average for an adult bird of each species.</p>
+    <h3>Your ${n} rounds</h3><p class="tip">The heavier bird has a purple outline.</p>
+    <div class="hv-rows">${R.map(r => { const hv = heavierOf(r); return `<div class="hv-row"><span class="mk ${r.ok ? 'ok' : 'no'}">${ic(r.ok ? 'ok' : 'no', 20)}</span>${side(r.a, hv === 0, C.saffron)}${side(r.b, hv === 1, C.sky)}</div>`; }).join('')}</div>
+    <div class="rbtns"><button class="btn hvb full" id="hvWa" style="grid-column:1/-1">Challenge a friend on WhatsApp</button>
+    <button class="btn hvb" id="hvAgain">Play again</button><button class="btn ghost" id="hvHome">Other games</button></div>`;
+  const sq = R.map(r => r.ok ? '✓' : '✗').join(' ');
+  H.share = `I got ${right}/${n} on "Which is heavier?" in ${BRAND}\n${sq}\n\nTwo birds, tap the heavier one. Can you beat me?\n${SITE}?r=wa#heavier`;
+  view('hvRes');
+  if (right >= n - 1) confetti();
+}
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#hvStart')) return startHv();
+  const c = t.closest('#hvBody .hv-card'); if (c) return hvPick(+c.dataset.k);
+  if (t.closest('#hvNext')) { if (H.i < H.rounds.length - 1) { H.i++; hvRound(); } else hvResults(); return; }
+  if (t.closest('#hvQuit')) return view('home');
+  if (t.closest('#hvAgain')) return startHv();
+  if (t.closest('#hvHome')) return view('home');
+  if (t.closest('#hvWa') && H) { track('share', { kind: 'whatsapp', deck: 'heavier' }); window.open('https://wa.me/?text=' + encodeURIComponent(H.share), '_blank', 'noopener'); }
+});
+
+/* ---------- Odd one out ---------- */
+// Four birds: three share something, one does not. Ten rounds that go from "which one is not an owl?" to look-alikes, diet,
+// habitat, size, conservation status and migration. A round is only used if exactly ONE bird can be the odd one out on every
+// trait we know, so there is never a second correct answer.
+const OD_GROUPS = [
+  ['owls', 'owls', b => famOrder(b) === 'Strigiformes', 1], ['parrots', 'parrots', b => famOrder(b) === 'Psittaciformes', 1],
+  ['eagles', 'eagles, hawks and vultures', b => famOrder(b) === 'Accipitriformes', 1], ['kingfishers', 'kingfishers', b => famLat(b) === 'Alcedinidae', 1],
+  ['woodpeckers', 'woodpeckers', b => famLat(b) === 'Picidae', 1], ['doves', 'pigeons and doves', b => famLat(b) === 'Columbidae', 1],
+  ['ducks', 'ducks, geese and swans', b => famOrder(b) === 'Anseriformes', 1], ['herons', 'herons and egrets', b => famLat(b) === 'Ardeidae', 1],
+  ['storks', 'storks', b => famLat(b) === 'Ciconiidae', 1], ['cranes', 'cranes', b => famLat(b) === 'Gruidae', 1],
+  ['hornbills', 'hornbills', b => famLat(b) === 'Bucerotidae', 1], ['crows', 'crows and magpies', b => famLat(b) === 'Corvidae', 1],
+  ['pheasants', 'pheasants, partridges and quails', b => famOrder(b) === 'Galliformes', 1],
+  ['falcons', 'falcons', b => famLat(b) === 'Falconidae', 2], ['beeeaters', 'bee-eaters', b => famLat(b) === 'Meropidae', 2],
+  ['swifts', 'swifts', b => famLat(b) === 'Apodidae', 2], ['swallows', 'swallows', b => famLat(b) === 'Hirundinidae', 2],
+  ['sunbirds', 'sunbirds', b => famLat(b) === 'Nectariniidae', 2], ['bulbuls', 'bulbuls', b => famLat(b) === 'Pycnonotidae', 2],
+  ['drongos', 'drongos', b => famLat(b) === 'Dicruridae', 2], ['starlings', 'starlings and mynas', b => famLat(b) === 'Sturnidae', 2],
+  ['cuckoos', 'cuckoos', b => famLat(b) === 'Cuculidae', 2], ['barbets', 'barbets', b => famLat(b) === 'Megalaimidae', 2],
+  ['gulls', 'gulls and terns', b => famLat(b) === 'Laridae', 2], ['nightjars', 'nightjars', b => famLat(b) === 'Caprimulgidae', 2],
+].map(([id, pl, f, lvl]) => ({ id, pl, f, lvl }));
+function famOrder(b) { return D.fams[b.f].o; }
+function famLat(b) { return D.fams[b.f].l; }
+const OD_BY = Object.fromEntries(OD_GROUPS.map(g => [g.id, g]));
+const OD_SIM = { owls: ['falcons', 'eagles'], falcons: ['eagles', 'owls'], eagles: ['falcons', 'owls'], swifts: ['swallows'], swallows: ['swifts'],
+  herons: ['storks', 'cranes'], storks: ['herons', 'cranes'], cranes: ['herons', 'storks'], kingfishers: ['beeeaters'], beeeaters: ['kingfishers'],
+  doves: ['cuckoos'], cuckoos: ['doves'], sunbirds: ['bulbuls', 'starlings'], bulbuls: ['sunbirds', 'drongos'], drongos: ['bulbuls', 'crows'],
+  crows: ['drongos', 'starlings'], starlings: ['crows', 'bulbuls'], woodpeckers: ['barbets'], barbets: ['woodpeckers'], ducks: ['gulls'], gulls: ['ducks'] };
+const odMem = {}; const odMembers = g => odMem[g.id] || (odMem[g.id] = hvPool.filter(g.f));
+const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+const odGroupOf = b => OD_GROUPS.find(g => g.f(b));
+const odLabel = b => { const g = odGroupOf(b); return g ? cap(g.pl) : D.fams[b.f].e; };
+const OD_WATER = new Set(['Wetland', 'Riverine', 'Coastal', 'Marine']), OD_LAND = new Set(['Forest', 'Woodland', 'Shrubland', 'Grassland', 'Desert']);
+const odKind = b => { const h = b.h >= 0 ? D.habitats[b.h] : ''; return OD_WATER.has(h) ? 'w' : OD_LAND.has(h) ? 'l' : null; };
+const OD_DIETS = ['Invertivore', 'Frugivore', 'Granivore', 'Nectarivore', 'Aquatic predator', 'Vertivore', 'Scavenger'];
+const OD_DIET_SAY = { Invertivore: 'eat mostly insects', Frugivore: 'eat mostly fruit', Granivore: 'eat mostly seeds', Nectarivore: 'feed on nectar',
+  'Aquatic predator': 'hunt in and around water', Vertivore: 'hunt other animals', Scavenger: 'feed on dead animals' };
+const OD_DIET_ONE = { Invertivore: 'eats mostly insects', Frugivore: 'eats mostly fruit', Granivore: 'eats mostly seeds', Nectarivore: 'feeds on nectar',
+  'Aquatic predator': 'hunts in and around water', Vertivore: 'hunts other animals', Scavenger: 'feeds on dead animals' };
+const OD_SIZE = ['tiny', 'small', 'medium-sized', 'large', 'huge'];
+const OD_CATS = { g: 'Bird families', g2: 'Look-alike birds', water: 'Where birds live', diet: 'What birds eat', size: 'Size', status: 'Birds at risk', mig: 'Migration' };
+const OD_PLAN = ['g', 'g', 'g', 'water', 'diet', 'g', 'size', 'g2', 'status', 'mig'];
+// every trait we can compare: a trait "splits" a set of four when exactly three share a value and the fourth differs
+const OD_ATTR = [b => famOrder(b), b => b.f, b => b.d >= 0 && D.diets[b.d] !== 'Omnivore' ? b.d : null, odKind, b => b.z >= 0 ? b.z : null,
+  b => b.c >= 2 && b.c <= 4 ? 't' : b.c === 0 ? 'n' : null, b => b.m === 1 ? null : b.m >= 0 ? b.m : null];
+function odOdds(q) {
+  const out = new Set();
+  for (const f of OD_ATTR) {
+    const v = q.map(f); if (v.some(x => x === null || x === undefined)) continue;
+    const cnt = {}; v.forEach(x => { cnt[x] = (cnt[x] || 0) + 1; });
+    const keys = Object.keys(cnt); if (keys.length === 2 && keys.some(k => cnt[k] === 3)) out.add(v.findIndex(x => cnt[x] === 1));
+  }
+  return out;
+}
+function odPick(list, n, used, spread) {
+  const c = shuffle(list.filter(b => !used.has(b.i))), out = [];
+  for (const b of c) { if (out.some(o => o.n[0] === b.n[0])) continue; out.push(b); if (out.length === n) break; }
+  if (out.length < n) return null;
+  if (spread && new Set(out.map(b => b.f)).size < 2) return null;   // not three from one family, or the "rule" would really be the family
+  return out;
+}
+function odQuad(type, used, keys) {
+  for (let t = 0; t < 700; t++) {
+    let three = null, odd = null, key = '', info = {};
+    const r = () => Math.random() < .5;
+    if (type === 'g' || type === 'g2') {
+      const set = OD_GROUPS.filter(g => g.lvl === (type === 'g' ? 1 : 2)), gr = set[Math.random() * set.length | 0];
+      if (keys.has(gr.id) || odMembers(gr).length < 3) continue;
+      three = odPick(odMembers(gr), 3, used); if (!three) continue;
+      const simIds = type === 'g2' && OD_SIM[gr.id] ? OD_SIM[gr.id] : null;
+      const cand = simIds ? simIds.flatMap(id => odMembers(OD_BY[id])) : OD_GROUPS.filter(g => g.lvl === 1 && g !== gr).flatMap(odMembers);
+      odd = odPick(cand.filter(b => !gr.f(b) && !three.some(x => x.f === b.f)), 1, used); if (!odd) continue; odd = odd[0];
+      const orders = new Set(three.map(famOrder)); if (orders.size === 1 && orders.has(famOrder(odd)) && !orders.has('Passeriformes')) continue;
+      key = gr.id; info = { gr };
+    } else if (type === 'diet') {
+      const d1 = OD_DIETS[Math.random() * OD_DIETS.length | 0], d2 = OD_DIETS[Math.random() * OD_DIETS.length | 0]; if (d1 === d2 || keys.has('diet' + d1)) continue;
+      three = odPick(hvPool.filter(b => b.d >= 0 && D.diets[b.d] === d1), 3, used, true); odd = odPick(hvPool.filter(b => b.d >= 0 && D.diets[b.d] === d2), 1, used);
+      if (!three || !odd) continue; odd = odd[0]; key = 'diet' + d1; info = { d1, d2 };
+    } else if (type === 'water') {
+      const w3 = r(); three = odPick(hvPool.filter(b => odKind(b) === (w3 ? 'w' : 'l')), 3, used, true); odd = odPick(hvPool.filter(b => odKind(b) === (w3 ? 'l' : 'w')), 1, used);
+      if (!three || !odd) continue; odd = odd[0]; key = 'water'; info = { w3 };
+    } else if (type === 'size') {
+      const z3 = Math.random() * 5 | 0, zo = Math.random() * 5 | 0; if (Math.abs(z3 - zo) < 2) continue;
+      three = odPick(hvPool.filter(b => b.z === z3), 3, used, true); odd = odPick(hvPool.filter(b => b.z === zo), 1, used);
+      if (!three || !odd) continue; odd = odd[0]; key = 'size'; info = { z3, zo };
+    } else if (type === 'status') {
+      const t3 = r(), isT = b => b.c >= 2 && b.c <= 4;
+      three = odPick(hvPool.filter(b => t3 ? isT(b) : b.c === 0), 3, used, true); odd = odPick(hvPool.filter(b => t3 ? b.c === 0 : isT(b)), 1, used);
+      if (!three || !odd) continue; odd = odd[0]; key = 'status'; info = { t3 };
+    } else if (type === 'mig') {
+      const m3 = r(); three = odPick(hvPool.filter(b => b.m === (m3 ? 2 : 0)), 3, used, true); odd = odPick(hvPool.filter(b => b.m === (m3 ? 0 : 2)), 1, used);
+      if (!three || !odd) continue; odd = odd[0]; key = 'mig'; info = { m3 };
+    }
+    const at = Math.random() * 4 | 0, birds = three.slice(); birds.splice(at, 0, odd);
+    const odds = odOdds(birds); if (odds.size !== 1 || !odds.has(at)) continue;   // exactly one possible answer
+    return { type, birds, at, key, info, pick: null, ok: false };
+  }
+  return null;
+}
+// what to say under each bird once the round is revealed, and the sentence that explains it
+function odChip(q, b) {
+  const t = q.type;
+  if (t === 'g' || t === 'g2') return b === q.birds[q.at] ? odLabel(b) : cap(q.info.gr.pl);
+  if (t === 'diet') return DIET_LABEL[D.diets[b.d]];
+  if (t === 'water') return odKind(b) === 'w' ? 'Lives on or near water' : 'Lives on land';
+  if (t === 'size') return wTxt(b.w);
+  if (t === 'status') return STATUS[b.c];
+  return MIG_LABEL[D.migrations[b.m]];
+}
+function odRule(q) {
+  const o = esc(nm(q.birds[q.at])), i = q.info;
+  switch (q.type) {
+    case 'g': case 'g2': return `Three of these are ${i.gr.pl}. The ${o} is not.`;
+    case 'diet': return `Three of these ${OD_DIET_SAY[i.d1]}. The ${o} ${OD_DIET_ONE[i.d2]}.`;
+    case 'water': return i.w3 ? `Three of these live on or near water. The ${o} lives on land.` : `Three of these live on land. The ${o} lives on or near water.`;
+    case 'size': return `Three of these are ${OD_SIZE[i.z3]} birds. The ${o} is ${OD_SIZE[i.zo]}.`;
+    case 'status': return i.t3 ? `Three of these are at risk of disappearing from the wild. The ${o} is not.` : `Three of these are doing fine in the wild. The ${o} is at risk of disappearing.`;
+    default: return i.m3 ? `Three of these travel long distances every year. The ${o} stays in one place.` : `Three of these stay in one place all year. The ${o} migrates long distances.`;
+  }
+}
+let O = null;
+function startOd() {
+  const used = new Set(), keys = new Set(), rounds = [];
+  for (const type of OD_PLAN) {
+    const q = odQuad(type, used, keys); if (!q) continue;
+    q.birds.forEach(b => used.add(b.i)); keys.add(q.key); rounds.push(q);
+  }
+  if (rounds.length < 5) return;
+  O = { rounds, i: 0, right: 0, streak: 0, best: 0, t0: Date.now(), sent: false, locked: false };
+  O.meta = { gid: rid(), pid: PID, src: SRC, deck: 'oddone', deckTitle: 'Odd one out', label: '', level: 'medium', rounds: rounds.length, timer: 0, shadow: 0, custom: 0 };
+  track('start', O.meta);
+  view('odd'); odRound();
+}
+function odSend(finished) {
+  if (!O || O.sent) return; O.sent = true;
+  track('end', { ...O.meta, score: O.right * 10, correct: O.right, answered: O.rounds.filter(r => r.pick !== null).length, bestStreak: O.best, hints: 0, secs: Math.round((Date.now() - O.t0) / 1000), finished: finished ? 1 : 0, kinds: O.rounds.filter(r => r.pick !== null).map(r => [r.type, r.ok ? 1 : 0]) });
+}
+function odStop() { if (O && !O.sent && O.rounds.some(r => r.pick !== null)) odSend(false); O = null; }
+addEventListener('pagehide', () => { if (O && !O.sent && O.rounds.some(r => r.pick !== null)) odSend(false); });
+function odRound() {
+  const q = O.rounds[O.i]; O.locked = false;
+  $('#odSegs').innerHTML = O.rounds.map((x, i) => `<i class="${x.pick !== null ? (x.ok ? 'ok' : 'no') : i === O.i ? 'cur' : ''}"></i>`).join('');
+  $('#odScore').textContent = O.right + ' right';
+  const cols = [C.saffron, C.sky, C.leaf, C.pink];
+  $('#odBody').innerHTML = `<p class="hv-q">Which one is the odd one out?</p><p class="hv-sub">Round ${O.i + 1} of ${O.rounds.length}. Three of these birds have something in common. Tap the one that doesn't.</p>
+    <div class="hv-pair">${q.birds.map((b, k) => `<button class="hv-card" data-k="${k}" style="--c:${cols[k]}"><span class="hv-pic">${img(b, '', false)}<span class="hv-tag">Odd one out</span></span><span class="hv-name">${esc(nm(b))}</span><span class="hv-w"></span></button>`).join('')}</div>
+    <div id="odOut"></div>`;
+  const nx = O.rounds[O.i + 1]; if (nx) nx.birds.forEach(b => { new Image().src = b.url; });
+  window.scrollTo(0, 0);
+}
+function odPick1(k) {
+  if (!O || O.locked) return; O.locked = true;
+  const q = O.rounds[O.i], ok = k === q.at, odd = q.birds[q.at]; q.pick = k; q.ok = ok;
+  if (ok) { O.right++; O.streak++; O.best = Math.max(O.best, O.streak); } else O.streak = 0;
+  $('#odSegs').children[O.i].className = ok ? 'ok' : 'no';
+  $('#odScore').textContent = O.right + ' right';
+  $$('#odBody .hv-card').forEach((el, i) => {
+    el.disabled = true; el.classList.add('shown'); el.classList.toggle('odd', i === q.at);
+    if (i === k && !ok) el.classList.add('no');
+    $('.hv-w', el).textContent = odChip(q, q.birds[i]);
+  });
+  const fact = factsFor(odd)[0], last = O.i === O.rounds.length - 1;
+  $('#odOut').innerHTML = `<div class="hv-out">
+    <div class="hv-verdict ${ok ? 'ok' : 'no'}">${ok ? 'Yes!' : 'Not quite.'} <span>The ${esc(nm(odd))} is the odd one out.</span></div>
+    <p class="hv-fact" style="margin-top:10px">${odRule(q)}</p>
+    <ul class="hv-objs"><li><b>About the ${esc(nm(odd))}:</b> ${esc(fact)}</li></ul>
+    <button class="btn full hv-next odb" id="odNext">${last ? 'See my results' : 'Next'}</button></div>`;
+  setTimeout(() => $('#odNext') && $('#odNext').scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 120);
+}
+function odResults() {
+  odSend(true);
+  const R = O.rounds, n = R.length, right = O.right;
+  const grade = right === n ? 'Perfect! Nothing gets past you.' : right >= n - 2 ? 'Sharp eye!' : right >= n * .6 ? 'Pretty good!' : right >= n * .4 ? 'Some tricky ones in there.' : 'Odd ones are hard to spot!';
+  const cats = {}; R.forEach(r => { (cats[r.type] = cats[r.type] || []).push(r); });
+  const catRows = Object.entries(cats).map(([t, rs]) => ({ t, rs, good: rs.filter(r => r.ok).length }));
+  const best = catRows.filter(c => c.good === c.rs.length).sort((a, c) => c.rs.length - a.rs.length)[0];
+  const weak = catRows.filter(c => c.good < c.rs.length).sort((a, c) => (a.good / a.rs.length) - (c.good / c.rs.length))[0];
+  const allB = R.flatMap(r => r.birds), rare = allB.filter(b => b.c >= 2 && b.c <= 4).sort((a, c) => c.c - a.c)[0];
+  const fooledQ = R.find(r => !r.ok && (r.type === 'g2' || r.type === 'g'));
+  const ins = [
+    best && right < n ? ['star', 'Your strong spot', `${OD_CATS[best.t]}: you got ${best.good === 1 && best.rs.length === 1 ? 'it' : 'all ' + best.rs.length} right.`] : null,
+    weak ? ['help', 'Worth another look', `${OD_CATS[weak.t]}: ${weak.good} of ${weak.rs.length} right. ${weak.t === 'g2' ? 'These families look alike, so try spotting the beak and the shape.' : weak.t === 'diet' ? 'Beak shape is a good clue to what a bird eats.' : weak.t === 'size' ? 'Remember, the pictures are all drawn about the same size.' : 'Come back and play again to practise.'}`] : null,
+    rare ? ['shield', 'A bird at risk', `<b>${esc(nm(rare))}</b>: ${STATUS_FACT[rare.c] || STATUS[rare.c]}`] : null,
+    fooledQ ? ['bulb', 'Did you know?', `The <b>${esc(nm(fooledQ.birds[fooledQ.at]))}</b> is not one of the ${fooledQ.info.gr.pl}. ${esc(factsFor(fooledQ.birds[fooledQ.at])[0])}`] : null,
+  ].filter(Boolean);
+  const dots = rs => rs.map(r => `<i class="${r.ok ? 'ok' : 'no'}"></i>`).join('');
+  $('#odRes').innerHTML = `<div class="kick">Odd one out</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
+    <div class="rstats"><div class="rstat"><b>${right}</b><span>Right</span></div><div class="rstat"><b>${O.best}</b><span>Most in a row</span></div><div class="rstat"><b>${Math.round((Date.now() - O.t0) / 1000)}s</b><span>Time</span></div></div>
+    <h3>How you did, by kind of puzzle</h3><p class="tip">Green is right, red is a miss.</p>
+    <div class="od-skill">${catRows.map(c => `<div class="od-sk"><div>${OD_CATS[c.t]}<small>${c.good} of ${c.rs.length} right</small></div><div class="dots">${dots(c.rs)}</div></div>`).join('')}</div>
+    ${ins.length ? `<h3>What you found out</h3><div class="hv-ins" style="margin-top:10px">${ins.map(([e, t, x]) => `<div class="hv-i"><span class="em od-em">${ic(e)}</span><div><span class="hv-t">${t}</span><p>${x}</p></div></div>`).join('')}</div>` : ''}
+    <h3>Your ${n} rounds</h3><p class="tip">The odd one out, and why.</p>
+    <div class="hv-rows">${R.map(r => `<div class="od-row"><span class="mk ${r.ok ? 'ok' : 'no'}">${ic(r.ok ? 'ok' : 'no', 20)}</span><div><b>${esc(nm(r.birds[r.at]))}</b><span class="s">${odRule(r)}</span></div></div>`).join('')}</div>
+    <div class="rbtns"><button class="btn odb full" id="odWa" style="grid-column:1/-1">Challenge a friend on WhatsApp</button>
+    <button class="btn odb" id="odAgain">Play again</button><button class="btn ghost" id="odHome">Other games</button></div>`;
+  O.share = `I got ${right}/${n} on "Odd one out" in ${BRAND}\n${R.map(r => r.ok ? '✓' : '✗').join(' ')}\n\nFour birds, one doesn't belong. Can you beat me?\n${SITE}?r=wa#oddone`;
+  view('odRes');
+  if (right >= n - 1) confetti();
+}
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#odStart')) return startOd();
+  const c = t.closest('#odBody .hv-card'); if (c) return odPick1(+c.dataset.k);
+  if (t.closest('#odNext')) { if (O.i < O.rounds.length - 1) { O.i++; odRound(); } else odResults(); return; }
+  if (t.closest('#odQuit') || t.closest('#odHome')) return view('home');
+  if (t.closest('#odAgain')) return startOd();
+  if (t.closest('#odWa') && O) { track('share', { kind: 'whatsapp', deck: 'oddone' }); window.open('https://wa.me/?text=' + encodeURIComponent(O.share), '_blank', 'noopener'); }
+});
+
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
@@ -1847,6 +2318,8 @@ syncBarColor();
 store.load(); S.lang = 'en'; renderHome(); renderDaily(); renderGroups(); // names are English only for now
 const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
 if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
+else if (/oddone/.test(location.hash)) startOd(); // a shared "Odd one out" link
+else if (/heavier/.test(location.hash)) startHv(); // a shared "Which is heavier?" link
 else if (DY && /daily/.test(location.hash)) { const p = dailyProg(); if (!p || !p.done) openDailyIntro(); } // a shared "play today's birds" link
 const m = location.hash.match(/deck=([\w-]+)/);
 if (m && deckById[m[1]]) openSheet(deckById[m[1]]);

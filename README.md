@@ -44,6 +44,14 @@ The same 10 birds for everyone each day (the day changes at midnight IST), one t
 - On localhost, `?day=2026-11-20` previews another day.
 - Stats: daily games are recorded with deck `daily` (title "Daily #N"), so they show up in the admin decks table.
 
+## Quick games
+
+Two short games on the same bird data, shown under "Quick games" on the home screen. Both are 10 rounds, no sign-in, and end with facts about the birds that were shown.
+
+- **Which is heavier?** Two birds, tap the heavier one. The weight gap shrinks each round (about 30x down to 1.7x). Weights are average adult mass from AVONET. Link: `#heavier`.
+- **Odd one out.** Four birds, three share something and one does not (family, look-alikes, diet, habitat, size, conservation status, migration). A round is only used when exactly one bird can be the odd one out on every trait in the data. Link: `#oddone`.
+- Stats: logged as decks `heavier` and `oddone`. They count in the totals but are kept out of the difficulty chart and average accuracy. Per-round results go to the `mode_stats` table (`migrations/004_quick_games.sql`) and show in the admin "Quick games" section.
+
 ## India data (approximate)
 
 - "India" and the Indian sub-regions are matched from each bird's range text (India, Indian states, Himalayas, Nepal, "Pakistan to ...", and so on). It finds about 1,100 species, a bit fewer than the real checklist.

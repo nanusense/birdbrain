@@ -340,6 +340,30 @@ async function render(d) {
     <section class="card" style="margin-top:16px"><h3>Day by day</h3><div class="sub">Players = different devices. Score and correct are for finished games.</div>
         <div class="tw"><table style="min-width:520px"><thead><tr><th>Day</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Rate</th><th class="num">Avg score</th><th class="num">Avg right</th></tr></thead><tbody>${dcTable || '<tr><td colspan="7" class="empty">No Daily games yet.</td></tr>'}</tbody></table></div></section>`;
 
+  // ---- quick games (Which is heavier? / Odd one out) ----
+  const qk = d.quick || {}, qG = Object.fromEntries((qk.games || []).map(r => [r.deck, r])), qS = Object.fromEntries((qk.shares || []).map(r => [r.deck, r.n]));
+  const ODK = { g: 'Bird families', g2: 'Look-alike birds', water: 'Where birds live', diet: 'What birds eat', size: 'Size', status: 'Birds at risk', mig: 'Migration' };
+  const kindRows = (deck, labelOf, order) => (qk.kinds || []).filter(r => r.deck === deck).sort((a, b) => order(a.kind) - order(b.kind)).map(r => {
+    const share = r.seen ? r.ok / r.seen : 0;
+    return `<tr><td>${esc(labelOf(r.kind))}</td><td class="num">${nf(r.seen)}</td><td class="num"><span class="mini" style="width:${Math.max(share * 60, 2)}px"></span>${pc(share)}</td></tr>`;
+  }).join('');
+  const hvGap = k => parseFloat(k.slice(1).replace('_', '.'));
+  const quickGame = (deck, name, blurb, head, rowsHtml) => {
+    const g = qG[deck] || {};
+    return `<section class="periods" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:0;margin-bottom:16px">
+      <div class="kpi"><div class="l">${esc(name)}</div><div class="v">${nf(g.started || 0)}</div><div class="s">games started · ${nf(g.players || 0)} players</div></div>
+      <div class="kpi"><div class="l">Played to the end</div><div class="v">${pc(g.started ? (g.finished || 0) / g.started : 0)}</div><div class="s">${nf(g.finished || 0)} finished</div></div>
+      <div class="kpi"><div class="l">Average right</div><div class="v">${g.avg_correct == null ? '–' : g.avg_correct.toFixed(1) + ' / 10'}</div><div class="s">finished games${g.avg_secs ? ` · about ${Math.round(g.avg_secs)}s each` : ''}</div></div>
+      <div class="kpi"><div class="l">Challenges sent</div><div class="v">${nf(qS[deck] || 0)}</div><div class="s">shared on WhatsApp</div></div>
+    </section>
+    <section class="card" style="margin-bottom:16px"><h3>${esc(head)}</h3><div class="sub">${esc(blurb)}</div>
+      <div class="tw"><table style="min-width:0"><thead><tr><th>Round</th><th class="num">Answered</th><th class="num">Right</th></tr></thead><tbody>${rowsHtml || '<tr><td colspan="3" class="empty">Nothing yet.</td></tr>'}</tbody></table></div></section>`;
+  };
+  const quickSection = `
+    <h2 class="sec-t">Quick games</h2><p class="sec-s">Two short games with no difficulty setting. They are counted in the totals above, but kept out of the difficulty chart and the average accuracy.</p>
+    ${quickGame('heavier', 'Which is heavier?', 'The weight gap shrinks round by round. If people get the close ones wrong, that is expected.', 'Right answers by weight gap', kindRows('heavier', k => `${hvGap(k)} times heavier`, k => -hvGap(k)))}
+    ${quickGame('oddone', 'Odd one out', 'Which kinds of puzzle people find hard.', 'Right answers by kind of puzzle', kindRows('oddone', k => ODK[k] || k, k => Object.keys(ODK).indexOf(k)))}`;
+
   // ---- group challenges ----
   const gp = d.groups || {}, gT = gp.totals || {}, deckName = id => { const w = { world: 'The whole world' }; const t = w[id] || id.replace(/-/g, ' '); return t.charAt(0).toUpperCase() + t.slice(1); };
   const gRows = (gp.top || []).map(r => { const [id, lc] = String(r.code).split('.'); return `<tr><td><b>${esc(deckName(id))}</b> · ${LV[{ e: 'easy', m: 'medium', h: 'hard' }[lc]] || ''}<span class="ago">${esc(r.code)}</span></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.top)}</td><td>${timeIST(r.first)}</td></tr>`; }).join('');
@@ -372,6 +396,8 @@ async function render(d) {
     <section class="card"><div class="tw"><table style="min-width:760px"><thead><tr><th>When</th><th>Deck</th><th>Level</th><th class="num">Score</th><th class="num">Correct</th><th>Result</th><th>Came from</th><th>Country</th><th>Device</th></tr></thead><tbody>${recentRows || '<tr><td colspan="9" class="empty">No games yet.</td></tr>'}</tbody></table></div></section>
 
     ${dailySection}
+
+    ${quickSection}
 
     ${groupSection}
 
@@ -458,6 +484,7 @@ async function renderDay(d) {
   const dev = d.devices || [], devTot = dev.reduce((x, r) => x + r.n, 0) || 1, devC = { mobile: 'var(--brand)', desktop: 'var(--blue)' };
   const devHtml = `<div class="split">${dev.map(r => `<i style="width:${r.n / devTot * 100}%;background:${devC[r.device] || '#999'}"></i>`).join('')}</div><div class="sl">${dev.map(r => `<span><s style="background:${devC[r.device] || '#999'}"></s><b>${pc(r.n / devTot)}</b> ${esc(r.device)}</span>`).join('')}</div>`;
   const levels = ['easy', 'medium', 'hard'].map(k => (d.levels || []).find(l => l.level === k)).filter(Boolean);
+  const quickDay = (d.quick || []).map(r => `<tr><td><b>${esc(r.title)}</b></td><td class="num">${nf(r.players)}</td><td class="num">${nf(r.started)}</td><td class="num">${nf(r.finished || 0)}</td><td class="num">${r.avg_correct == null ? '–' : r.avg_correct.toFixed(1) + ' / 10'}</td></tr>`).join('');
   const shareNames = { whatsapp: 'WhatsApp challenge', card: 'Score card', copy: 'Copied score', invite: 'Group invite' };
   const dmax = Math.max(...decks.map(r => r.n), 1);
   const deckRows = decks.map(r => `<tr><td>${esc(r.deck === 'daily' ? 'Daily challenge' : r.title)}</td><td class="num"><span class="mini" style="width:${Math.max(r.n / dmax * 60, 3)}px"></span>${nf(r.n)}</td><td class="num">${pc(r.n / games)}</td><td class="num">${pc(r.f / r.n)}</td><td class="num">${pc(r.acc)}</td></tr>`).join('');
@@ -479,6 +506,10 @@ async function renderDay(d) {
 
     <h2 class="sec-t">Daily challenge</h2><p class="sec-s">Games played in Daily mode on this day${dRows.length ? ` · ${nf(dShares)} Daily results shared` : ''}</p>
     <section class="card"><div class="tw"><table style="min-width:620px"><thead><tr><th>Day</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Rate</th><th class="num">Avg score</th><th class="num">Avg right</th><th class="num">Top score</th></tr></thead><tbody>${dailyRowsHtml || '<tr><td colspan="8" class="empty">No Daily games on this day.</td></tr>'}</tbody></table></div></section>
+
+    <h2 class="sec-t">Quick games</h2>
+    <section class="card"><h3>Which is heavier? and Odd one out</h3><div class="sub">Games played on this day. Which kinds of round people find hard is in the all-time view.</div>
+      <div class="tw"><table style="min-width:0"><thead><tr><th>Game</th><th class="num">Players</th><th class="num">Started</th><th class="num">Finished</th><th class="num">Avg right</th></tr></thead><tbody>${quickDay || '<tr><td colspan="5" class="empty">None played on this day.</td></tr>'}</tbody></table></div></section>
 
     <h2 class="sec-t">Group challenges</h2>
     <section class="card"><h3>${nf((d.groups || {}).players || 0)} group result${((d.groups || {}).players || 0) === 1 ? '' : 's'}</h3><div class="sub">Posted on this day, across ${nf((d.groups || {}).groups || 0)} challenge${((d.groups || {}).groups || 0) === 1 ? '' : 's'}.</div></section>
