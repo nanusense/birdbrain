@@ -883,6 +883,12 @@ const ICONS = {
   scale: '<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a3.200 3.200 0 0 0 6 0zM19 7l-3 7a3.200 3.200 0 0 0 6 0z"/>'
 };
 const ic = (n, sz = 24) => `<svg class="ic" width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
+// relatives and names, for the more interesting facts: birds grouped by genus (the first word of the scientific name)
+const genusOf = b => b.s.split(' ')[0];
+const genusMap = {}; for (const x of D.birds) if (x.c < 5) (genusMap[genusOf(x)] = genusMap[genusOf(x)] || []).push(x);
+const LANG_EN = ['English', 'Spanish', 'French', 'German', 'Portuguese', 'Italian', 'Dutch', 'Japanese', 'Chinese', 'Russian'];
+const famous = x => (x.k ? 3 : 0) + x.r.length + (x.p.includes(0) ? 1 : 0) + Math.min(x.ss, 6) / 3;
+const join2 = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 const hash = str => { let h = 7; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return Math.abs(h); };
 function massFact(w) {
   let best = OBJECTS[0], bd = Infinity;
@@ -926,11 +932,11 @@ function factsFor(b) {
   if (b.v) top.push({ t: 'A winter visitor to India: it breeds elsewhere and comes here for the cooler months.', w: 1, g: 'top' });
   // everyday facts, each with a weight (blander facts get a lower chance of coming first)
   if (b.w > 0) {
-    rest.push({ t: massFact(b.w), w: 2, g: 'weight' });
+    rest.push({ t: massFact(b.w), w: 0.7, g: 'weight' });
     let lo = 0, hi = massSorted.length; while (lo < hi) { const m = (lo + hi) >> 1; if (massSorted[m] < b.w) lo = m + 1; else hi = m; }
     const p = lo / massSorted.length;
-    if (p >= 0.9) rest.push({ t: `Heavier than ${Math.min(99, Math.floor(p * 100))}% of the world's birds.`, w: 1.5, g: 'weight' });
-    else if (p <= 0.1) rest.push({ t: `Lighter than ${Math.min(99, Math.floor((1 - p) * 100))}% of the world's birds.`, w: 1.5, g: 'weight' });
+    if (p >= 0.9) rest.push({ t: `Heavier than ${Math.min(99, Math.floor(p * 100))}% of the world's birds.`, w: 0.6, g: 'weight' });
+    else if (p <= 0.1) rest.push({ t: `Lighter than ${Math.min(99, Math.floor((1 - p) * 100))}% of the world's birds.`, w: 0.6, g: 'weight' });
   }
   // wing shape only where it is a fair thing to say (not penguins, ostriches or hummingbirds)
   if (b.hw >= 50 && b.m === 2) rest.push({ t: 'Its long, pointed wings help it cover long distances on migration.', w: 3, g: 'wing' });
@@ -941,6 +947,20 @@ function factsFor(b) {
   if (b.ss >= 6) rest.push({ t: `Scientists recognise ${b.ss} different subspecies of this bird.`, w: 3, g: 'sub' });
   if (b.h >= 0 && HAB_FACT[D.habitats[b.h]]) rest.push({ t: `Mostly found in ${HAB_FACT[D.habitats[b.h]]}.`, w: 1.5, g: 'hab' });
   if (b.r.length >= 3) rest.push({ t: `Found across ${b.r.length} different regions of the world.`, w: 2, g: 'reg' });
+  // what it is called elsewhere, who its relatives are, and where it lives
+  const names = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(i => b.n[i] && b.n[i].toLowerCase() !== b.n[0].toLowerCase());
+  if (names.length >= 2) { const pick = shuffle(names).slice(0, 2); rest.push({ t: `In ${LANG_EN[pick[0]]} it is called "${b.n[pick[0]]}", and in ${LANG_EN[pick[1]]} "${b.n[pick[1]]}".`, w: 3.5, g: 'names' }); }
+  const gen = genusOf(b), sib = (genusMap[gen] || []).filter(x => x !== b && x.n[0] !== b.n[0]);
+  if (sib.length) {
+    const near = sib.sort((x, y) => famous(y) - famous(x)).slice(0, 4), two = shuffle(near).slice(0, 2).map(x => `the ${nm(x)}`);
+    rest.push({ t: `Its closest relatives, the other birds in its genus (${gen}), include ${join2(two)}.`, w: 4, g: 'kin' });
+  } else if (n > 1) rest.push({ t: `It is the only species in its genus (${gen}), so it has no really close relatives.`, w: 3, g: 'kin' });
+  const cousin = D.birds.filter(x => x.f === b.f && x.k && x.c < 5 && genusOf(x) !== gen && x.n[0] !== b.n[0]);
+  if (cousin.length) { const c = cousin[hash(b.i) % cousin.length]; rest.push({ t: `It belongs to the same family as the ${nm(c)}.`, w: 3, g: 'kin' }); }
+  const HOME = { 1: 'the Himalayas', 2: 'the Western Ghats and South India', 3: 'Northeast India', 4: 'the Andaman and Nicobar Islands' };
+  const home = b.p.filter(i => HOME[i]).map(i => HOME[i]);
+  if (b.p.includes(0) && home.length) rest.push({ t: `In India, look for it in ${join2(home)}.`, w: 3, g: 'where' });
+  else if (!b.p.includes(0) && b.p.length) rest.push({ t: b.p.length === 1 ? `Found only in ${D.places[b.p[0]]}.` : `Lives in ${join2(b.p.slice(0, 3).map(i => D.places[i]))}.`, w: 3, g: 'where' });
   const last = n > 1 ? `One of ${n} species in the "${f.e}" family.` : `The only species in the "${f.e}" family.`;
   return [...weightedOrder(top).map(x => x.t), ...weightedOrder(rest).map(x => x.t), last];
 }
