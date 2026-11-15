@@ -222,6 +222,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 
 /* ---------- builder ---------- */
 .b-head{padding:6px 0 18px}
+.resbar{text-align:left;margin:0 0 14px}
 .back{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--muted);margin-bottom:14px}
 .b-head h1{font-size:clamp(34px,5vw,56px);font-weight:800}
 .b-head p{color:var(--muted);font-size:17px;margin-top:10px;max-width:36em}
@@ -683,6 +684,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 
 <!-- RESULTS -->
 <main id="results" class="results hidden">
+  <div class="resbar"><button class="btn ghost sm resHome"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg> Back to home</button></div>
   <div class="kick" id="rKick">Round complete</div>
   <div class="big" id="rScore">0</div>
   <div class="grade" id="rGrade"></div>
@@ -1049,6 +1051,21 @@ const store = {
 const langIdx = () => Math.max(0, D.langs.findIndex(l => l[0] === S.lang));
 const nm = b => b.n[langIdx()] || b.n[0];
 
+/* ---------- keep the browser's Back button inside the site ---------- */
+// Every screen after the home page is its own history step, so Back (or a swipe) returns to the home page instead of leaving the site.
+const RESBAR = '<div class="resbar"><button class="btn ghost sm resHome"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg> Back to home</button></div>';
+const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes']);
+let fromPop = false;
+function syncHistory(v) {
+  if (fromPop) return;
+  try {
+    const inApp = !!(history.state && history.state.bb);
+    if (BB_VIEWS.has(v)) { if (inApp) history.replaceState({ bb: v }, ''); else history.pushState({ bb: v }, ''); }
+    else if (inApp) history.back();            // home again: step back, so the browser's Back button still works as expected
+  } catch (e) {}
+}
+addEventListener('popstate', () => { fromPop = true; try { stopGame(); view('home'); } finally { fromPop = false; } });
+document.addEventListener('click', e => { if (e.target.closest('.resHome')) { stopGame(); view('home'); } });
 /* ---------- views ---------- */
 const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes'];
 function view(v) {
@@ -1057,6 +1074,7 @@ function view(v) {
   if (v !== 'heavy' && v !== 'hvRes' && typeof hvStop === 'function') hvStop();
   if (v !== 'odd' && v !== 'odRes' && typeof odStop === 'function') odStop();
   $('#reveal').classList.add('hidden');
+  syncHistory(v);
   if (v === 'home' && typeof renderDaily === 'function') { renderDaily(); renderGroups(); }
   window.scrollTo(0, 0);
 }
@@ -2088,7 +2106,7 @@ function hvResults() {
     closest === widest ? null : ['close', 'Closest call', `The <b>${esc(nm(closest.a))}</b> and the <b>${esc(nm(closest.b))}</b> are only ${xTxt(gap(closest))} times apart${closest.ok ? ', and you got it right.' : '. Easy to get wrong.'}`],
     fooled ? ['help', 'The one that fooled you', `You picked the <b>${esc(nm(fooled.pick ? fooled.b : fooled.a))}</b>, but the <b>${esc(nm(heavierOf(fooled) ? fooled.b : fooled.a))}</b> is ${xTxt(gap(fooled))} times heavier.`] : null,
   ].filter(Boolean);
-  $('#hvRes').innerHTML = `<div class="kick">Which is heavier?</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
+  $('#hvRes').innerHTML = `${RESBAR}<div class="kick">Which is heavier?</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
     <div class="rstats"><div class="rstat"><b>${right}</b><span>Right</span></div><div class="rstat"><b>${H.best}</b><span>Most in a row</span></div><div class="rstat"><b>${Math.round((Date.now() - H.t0) / 1000)}s</b><span>Time</span></div></div>
     <h3>What you found out</h3><p class="tip">Facts from the birds in your 10 rounds.</p>
     <div class="hv-ins">${ins.map(([e, t, x]) => `<div class="hv-i"><span class="em">${ic(e)}</span><div><span class="hv-t">${t}</span><p>${x}</p></div></div>`).join('')}</div>
@@ -2096,7 +2114,7 @@ function hvResults() {
     <h3>Your ${n} rounds</h3><p class="tip">The heavier bird has a purple outline.</p>
     <div class="hv-rows">${R.map(r => { const hv = heavierOf(r); return `<div class="hv-row"><span class="mk ${r.ok ? 'ok' : 'no'}">${ic(r.ok ? 'ok' : 'no', 20)}</span>${side(r.a, hv === 0, C.saffron)}${side(r.b, hv === 1, C.sky)}</div>`; }).join('')}</div>
     <div class="rbtns"><button class="btn hvb full" id="hvWa" style="grid-column:1/-1">Challenge a friend on WhatsApp</button>
-    <button class="btn hvb" id="hvAgain">Play again</button><button class="btn ghost" id="hvHome">Other games</button></div>`;
+    <button class="btn hvb" id="hvAgain">Play again</button><button class="btn ghost" id="hvHome">Back to home</button></div>`;
   const sq = R.map(r => r.ok ? '✓' : '✗').join(' ');
   H.share = `I got ${right}/${n} on "Which is heavier?" in ${BRAND}\n${sq}\n\nTwo birds, tap the heavier one. Can you beat me?\n${SITE}?r=wa#heavier`;
   view('hvRes');
@@ -2297,7 +2315,7 @@ function odResults() {
     fooledQ ? ['bulb', 'Did you know?', `The <b>${esc(nm(fooledQ.birds[fooledQ.at]))}</b> is not one of the ${fooledQ.info.gr.pl}. ${esc(factsFor(fooledQ.birds[fooledQ.at])[0])}`] : null,
   ].filter(Boolean);
   const dots = rs => rs.map(r => `<i class="${r.ok ? 'ok' : 'no'}"></i>`).join('');
-  $('#odRes').innerHTML = `<div class="kick">Odd one out</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
+  $('#odRes').innerHTML = `${RESBAR}<div class="kick">Odd one out</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
     <div class="rstats"><div class="rstat"><b>${right}</b><span>Right</span></div><div class="rstat"><b>${O.best}</b><span>Most in a row</span></div><div class="rstat"><b>${Math.round((Date.now() - O.t0) / 1000)}s</b><span>Time</span></div></div>
     <h3>How you did, by kind of puzzle</h3><p class="tip">Green is right, red is a miss.</p>
     <div class="od-skill">${catRows.map(c => `<div class="od-sk"><div>${OD_CATS[c.t]}<small>${c.good} of ${c.rs.length} right</small></div><div class="dots">${dots(c.rs)}</div></div>`).join('')}</div>
@@ -2305,7 +2323,7 @@ function odResults() {
     <h3>Your ${n} rounds</h3><p class="tip">The odd one out, and why.</p>
     <div class="hv-rows">${R.map(r => `<div class="od-row"><span class="mk ${r.ok ? 'ok' : 'no'}">${ic(r.ok ? 'ok' : 'no', 20)}</span><div><b>${esc(nm(r.birds[r.at]))}</b><span class="s">${odRule(r)}</span></div></div>`).join('')}</div>
     <div class="rbtns"><button class="btn odb full" id="odWa" style="grid-column:1/-1">Challenge a friend on WhatsApp</button>
-    <button class="btn odb" id="odAgain">Play again</button><button class="btn ghost" id="odHome">Other games</button></div>`;
+    <button class="btn odb" id="odAgain">Play again</button><button class="btn ghost" id="odHome">Back to home</button></div>`;
   O.share = `I got ${right}/${n} on "Odd one out" in ${BRAND}\n${R.map(r => r.ok ? '✓' : '✗').join(' ')}\n\nFour birds, one doesn't belong. Can you beat me?\n${SITE}?r=wa#oddone`;
   view('odRes');
   if (right >= n - 1) confetti();
