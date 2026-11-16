@@ -50,7 +50,8 @@ Two short games on the same bird data, shown under "Quick games" on the home scr
 
 - **Which is heavier?** Two birds, tap the heavier one. The weight gap shrinks each round (about 30x down to 1.7x). Weights are average adult mass from AVONET. Link: `#heavier`.
 - **Odd one out.** Four birds, three share something and one does not (family, look-alikes, diet, habitat, size, conservation status, migration). A round is only used when exactly one bird can be the odd one out on every trait in the data. Link: `#oddone`.
-- Stats: logged as decks `heavier` and `oddone`. They count in the totals but are kept out of the difficulty chart and average accuracy. Per-round results go to the `mode_stats` table (`migrations/004_quick_games.sql`) and show in the admin "Quick games" section.
+- **Look-alikes.** Pairs of birds that are easy to confuse (for example Green and Greenish Warbler), each with a plain-words clue, a list to learn from and a 10-question quiz ("Which one has ...?"). The pairs and clues live in `data/lookalikes.js` (bird ids plus a clue for each bird). The clues are written by hand, so have them checked by someone who knows the birds before adding more. Link: `#lookalikes`.
+- Stats: logged as decks `heavier`, `oddone` and `lookalikes` (the quiz only). They count in the totals but are kept out of the difficulty chart and average accuracy. Per-round results go to the `mode_stats` table (`migrations/004_quick_games.sql`) and show in the admin "Quick games" section.
 
 ## India data (approximate)
 

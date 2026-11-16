@@ -360,9 +360,10 @@ async function render(d) {
       <div class="tw"><table style="min-width:0"><thead><tr><th>Round</th><th class="num">Answered</th><th class="num">Right</th></tr></thead><tbody>${rowsHtml || '<tr><td colspan="3" class="empty">Nothing yet.</td></tr>'}</tbody></table></div></section>`;
   };
   const quickSection = `
-    <h2 class="sec-t">Quick games</h2><p class="sec-s">Two short games with no difficulty setting. They are counted in the totals above, but kept out of the difficulty chart and the average accuracy.</p>
+    <h2 class="sec-t">Quick games</h2><p class="sec-s">Short games with no difficulty setting. They are counted in the totals above, but kept out of the difficulty chart and the average accuracy.</p>
     ${quickGame('heavier', 'Which is heavier?', 'The weight gap shrinks round by round. If people get the close ones wrong, that is expected.', 'Right answers by weight gap', kindRows('heavier', k => `${hvGap(k)} times heavier`, k => -hvGap(k)))}
-    ${quickGame('oddone', 'Odd one out', 'Which kinds of puzzle people find hard.', 'Right answers by kind of puzzle', kindRows('oddone', k => ODK[k] || k, k => Object.keys(ODK).indexOf(k)))}`;
+    ${quickGame('oddone', 'Odd one out', 'Which kinds of puzzle people find hard.', 'Right answers by kind of puzzle', kindRows('oddone', k => ODK[k] || k, k => Object.keys(ODK).indexOf(k)))}
+    ${quickGame('lookalikes', 'Look-alikes', 'A 10-question quiz on pairs of birds that are easy to confuse. Learning the pairs without taking the quiz is not counted.', 'Right answers', kindRows('lookalikes', () => 'All questions', () => 0))}`;
 
   // ---- group challenges ----
   const gp = d.groups || {}, gT = gp.totals || {}, deckName = id => { const w = { world: 'The whole world' }; const t = w[id] || id.replace(/-/g, ' '); return t.charAt(0).toUpperCase() + t.slice(1); };

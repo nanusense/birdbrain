@@ -100,6 +100,7 @@ svg{display:block}
 
 /* ---------- home hero ---------- */
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:28px 0 46px}
+.hero>div{min-width:0}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
 .eyebrow{flex-wrap:wrap;row-gap:10px;column-gap:12px}
 .played{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;color:var(--muted)}
@@ -475,17 +476,49 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .od-row .mk.ok{color:var(--good)} .od-row .mk.no{color:var(--bad)}
 .od-row b{font-weight:800}
 .od-row span.s{display:block;color:var(--muted);margin-top:2px;line-height:1.35}
+/* ---------- Look-alikes (olive green) ---------- */
+.btn.lkb{background:#5a7d1a}
+.btn.lkb:hover{background:#4a6815}
+.way.lk{--ac:#5a7d1a}
+.lkgame .hv-card.shown{opacity:.8}.lkgame .hv-card.shown.ok{opacity:1}
+.lk-hub{display:grid;gap:12px;max-width:34em;margin:6px auto 0}
+.lk-hub .btn{width:100%;justify-content:space-between;text-align:left;padding:16px 18px}
+.lk-hub .btn small{display:block;font-weight:500;font-size:13px;opacity:.9}
+.lk-hub .btn.ghost small{color:var(--muted);opacity:1}
+.lk-search{width:100%;font:inherit;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:11px 14px;margin:6px 0 12px}
+.lk-list{display:grid;gap:8px}
+.lk-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border-radius:16px;padding:8px 12px 8px 8px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.lk-row:hover{box-shadow:inset 0 0 0 1.5px #5a7d1a}
+.lk-row .th{display:flex;flex:none}
+.lk-row .th span{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--c)}
+.lk-row .th span+span{margin-left:-10px;box-shadow:0 0 0 3px var(--surface)}
+.lk-row .th img{width:88%;height:88%;object-fit:contain}
+.lk-row b{display:block;font-family:var(--display);font-size:15px;line-height:1.2}
+.lk-row small{color:var(--muted);font-size:12.5px}
+.lk-row .chev{margin-left:auto;color:var(--muted);flex:none}
+.lk-marks{display:grid;gap:10px;margin-top:16px}
+.lk-mark{background:var(--surface);border-radius:18px;padding:12px 14px 12px 16px;box-shadow:var(--shadow);border-left:6px solid var(--c)}
+.lk-mark b{font-family:var(--display);font-size:17px}
+.lk-mark p{margin-top:2px;font-size:15px;line-height:1.45}
+.lk-note{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.45}
+.lk-nav{display:flex;gap:10px;margin-top:16px}
+.lk-nav .btn{flex:1}
+#lkRes .big{color:#5a7d1a}
 /* ---------- Group challenges (teal, so they never look like the Daily or free play) ---------- */
-.ways{display:grid;gap:10px;max-width:38em;margin:0 0 26px}
-.way{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);border-radius:20px;padding:12px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
-.way:hover{box-shadow:inset 0 0 0 1.5px var(--ac);transform:translateY(-1px)}
-.way .gc-ic{width:44px;height:44px;background:color-mix(in srgb,var(--ac) 13%,var(--surface));color:var(--ac)}
-.way .wt{flex:1;min-width:0;display:block}
-.way .wt b{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:18px;line-height:1.15}
-.way .wt small{display:block;color:var(--muted);font-size:13.5px;line-height:1.35;margin-top:2px;font-weight:500}
-.way .new{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--surface));border-radius:99px;padding:2px 8px}
-.way .chev{flex:none;color:var(--muted)}
-.way.hv{--ac:#a21caf}.way.od{--ac:#0b7bc0}.way.grp{--ac:#0e7f70}
+.qgames{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px 24px;padding:2px 20px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-left:20px}
+.qgames::-webkit-scrollbar{display:none}
+.qtile{position:relative;flex:0 0 min(41vw,190px);scroll-snap-align:start;text-align:left;background:var(--surface);border-radius:22px;padding:8px 8px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
+.qtile:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--ac)}
+.qtile.hv{--ac:#a21caf}.qtile.lk{--ac:#5a7d1a}.qtile.od{--ac:#0b7bc0}
+.qpv{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-radius:15px;padding:6px;background:color-mix(in srgb,var(--ac) 11%,var(--surface));aspect-ratio:1.35/1}
+.qpv.four{grid-template-rows:1fr 1fr;gap:4px}
+.qpv>span{display:grid;place-items:center;border-radius:11px;background:var(--c);overflow:hidden}
+.qpv img{width:88%;height:88%;object-fit:contain}
+.qtile .new{position:absolute;right:16px;top:16px;font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.04em;color:var(--ac);background:var(--surface);border-radius:99px;padding:2px 8px}
+.qt{display:block}
+.qt b{display:block;font-family:var(--display);font-size:16px;line-height:1.15;margin:10px 4px 0}
+.qt small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3;margin:3px 4px 0}
+@media(min-width:640px){.qgames{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0 0 26px;padding:0;max-width:38em}.qtile{flex:none}}
 .gcard{max-width:38em;background:var(--surface);border-radius:24px;padding:18px 20px;box-shadow:inset 0 0 0 1.5px var(--line);margin:0 0 26px}
 .medal{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2.5px solid;font-weight:800;font-size:13px;line-height:1}
 .medal.m1{color:#c28a00}.medal.m2{color:#7b8696}.medal.m3{color:#b0682c}
@@ -600,11 +633,13 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
         <button class="btn ghost" id="gcStart"><span class="cb"><b>Play with friends</b><small>Same 10 birds, shared by link</small></span></button>
         <button class="linkbtn" id="pickDeck">See all decks ↓</button>
       </div>
-      <div class="gc-list" id="gcList" style="margin:12px 0 0"></div>
-      <p class="pickhead" style="margin-top:34px">Quick games</p>
-      <div class="ways">
-        <button class="way hv" id="hvStart"><span class="gc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a3.2 3.2 0 0 0 6 0zM19 7l-3 7a3.2 3.2 0 0 0 6 0z"/></svg></span><span class="wt"><b>Which is heavier? <i class="new">NEW</i></b><small>Tap the bird that weighs more. A good one for kids.</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
-        <button class="way od" id="odStart"><span class="gc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2" fill="currentColor"/></svg></span><span class="wt"><b>Odd one out <i class="new">NEW</i></b><small>Four birds, one doesn't belong. Find it.</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      <div class="gc-list" id="gcList" style="margin:12px 0 4px"></div>
+      <div style="height:24px"></div>
+      <p class="pickhead">Quick games</p>
+      <div class="qgames" id="qgames">
+        <button class="qtile hv" id="hvStart"><span class="qpv" data-pv="hv"></span><i class="new">NEW</i><span class="qt"><b>Which is heavier?</b><small>Tap the bird that weighs more</small></span></button>
+        <button class="qtile lk" id="lkStart"><span class="qpv" data-pv="lk"></span><i class="new">NEW</i><span class="qt"><b>Look-alikes</b><small>Learn to tell near-identical birds apart</small></span></button>
+        <button class="qtile od" id="odStart"><span class="qpv four" data-pv="od"></span><i class="new">NEW</i><span class="qt"><b>Odd one out</b><small>Four birds, one doesn't belong</small></span></button>
       </div>
     </div>
     <div class="collage" id="collage" aria-hidden="true"></div>
@@ -681,6 +716,17 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div id="odBody"></div>
 </main>
 <main id="odRes" class="results hidden"></main>
+
+<!-- LOOK-ALIKES -->
+<main id="look" class="hvgame lkgame hidden" aria-live="polite">
+  <div class="hud">
+    <button class="iconbtn" id="lkQuit" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="segs" id="lkSegs"></div>
+    <div class="score" id="lkScore"></div>
+  </div>
+  <div id="lkBody"></div>
+</main>
+<main id="lkRes" class="results hidden"></main>
 
 <!-- RESULTS -->
 <main id="results" class="results hidden">
@@ -786,6 +832,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 
 <script src="data/birds-data.js"></script>
 <script src="data/daily.js"></script>
+<script src="data/lookalikes.js"></script>
 <script>
 (() => {
 "use strict";
@@ -1054,7 +1101,7 @@ const nm = b => b.n[langIdx()] || b.n[0];
 /* ---------- keep the browser's Back button inside the site ---------- */
 // Every screen after the home page is its own history step, so Back (or a swipe) returns to the home page instead of leaving the site.
 const RESBAR = '<div class="resbar"><button class="btn ghost sm resHome"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg> Back to home</button></div>';
-const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes']);
+const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes']);
 let fromPop = false;
 function syncHistory(v) {
   if (fromPop) return;
@@ -1067,12 +1114,13 @@ function syncHistory(v) {
 addEventListener('popstate', () => { fromPop = true; try { stopGame(); view('home'); } finally { fromPop = false; } });
 document.addEventListener('click', e => { if (e.target.closest('.resHome')) { stopGame(); view('home'); } });
 /* ---------- views ---------- */
-const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes'];
+const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes'];
 function view(v) {
   VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
-  $('#nav').classList.toggle('hidden', v === 'game' || v === 'heavy' || v === 'odd');
+  $('#nav').classList.toggle('hidden', v === 'game' || v === 'heavy' || v === 'odd' || v === 'look');
   if (v !== 'heavy' && v !== 'hvRes' && typeof hvStop === 'function') hvStop();
   if (v !== 'odd' && v !== 'odRes' && typeof odStop === 'function') odStop();
+  if (v !== 'look' && v !== 'lkRes' && typeof lkStop === 'function') lkStop();
   $('#reveal').classList.add('hidden');
   syncHistory(v);
   if (v === 'home' && typeof renderDaily === 'function') { renderDaily(); renderGroups(); }
@@ -2015,6 +2063,14 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('click', e => { if (e.target.closest('#installLink')) openGrp(`<h2 style="font-size:24px;font-weight:800;padding-right:44px;margin-bottom:12px">Daily birds, one tap away</h2>${installCard()}`, 'install'); });
 
+/* ---------- Quick games tiles: a small picture of each game ---------- */
+function renderQuick() {
+  const pv = (names, cols) => names.map((n, i) => byEn[n] ? `<span style="--c:${cols[i % cols.length]}">${img(byEn[n], '', false)}</span>` : '').join('');
+  const set = (k, html) => { const el = $(`[data-pv="${k}"]`); if (el) el.innerHTML = html; };
+  set('hv', pv(['Indian Peafowl', 'House Sparrow'], [C.saffron, C.sky]));
+  set('lk', pv(['Green Warbler', 'Greenish Warbler'], [C.saffron, C.sky]));
+  set('od', pv(['Rock Pigeon', 'Spotted Dove', 'Eurasian Collared Dove', 'Cinereous Vulture'], [C.saffron, C.sky, C.leaf, C.pink]));
+}
 /* ---------- Which is heavier? ---------- */
 // 10 rounds of two birds; the gap between them shrinks round by round (30x lighter ... 1.7x), so it starts easy and ends tricky.
 // Weights are the average adult weight of each species (AVONET), the same numbers the fun facts use.
@@ -2338,6 +2394,108 @@ document.addEventListener('click', e => {
   if (t.closest('#odWa') && O) { track('share', { kind: 'whatsapp', deck: 'oddone' }); window.open('https://wa.me/?text=' + encodeURIComponent(O.share), '_blank', 'noopener'); }
 });
 
+/* ---------- Look-alikes ---------- */
+// Pairs of birds that are easy to confuse, with a plain-words clue for each. A learning list and a 10-question quiz ("Which one has ...?").
+// The stickers are illustrations and often cannot show the real markings, so the quiz goes by the written clue.
+const byIdAll = Object.fromEntries(D.birds.map(b => [b.i, b]));
+const LK = (window.LOOKALIKES || []).map(p => ({ ...p, a: byIdAll[p.a], b: byIdAll[p.b] })).filter(p => p.a && p.b);
+const lkNote = 'The pictures are illustrations and may not show the markings that tell these birds apart, so go by the clues. Clues say "usually" for a reason: young birds, wear and the light can change what you see.';
+let K = null;
+const lkTh = (p, c1 = C.saffron, c2 = C.sky) => `<span class="th"><span style="--c:${c1}">${img(p.a, '', false)}</span><span style="--c:${c2}">${img(p.b, '', false)}</span></span>`;
+function lkHub() {
+  K = K || { mode: 'hub' }; K.mode = 'hub'; $('#lkSegs').innerHTML = ''; $('#lkScore').textContent = '';
+  $('#lkBody').innerHTML = `<p class="hv-q">Look-alikes</p><p class="hv-sub">${fmt(LK.length)} pairs of birds that are easy to mix up. Learn the clue for each, then test yourself.</p>
+    <div class="lk-hub"><button class="btn lkb" id="lkLearn"><span>Learn the pairs<small>See each pair and how to tell them apart</small></span></button>
+    <button class="btn lkb" id="lkQuiz"><span>Quiz me<small>10 questions, "Which one has ...?"</small></span></button></div>
+    <p class="lk-note" style="text-align:center;max-width:34em;margin:18px auto 0">${lkNote}</p>`;
+  window.scrollTo(0, 0);
+}
+function lkList(q = '') {
+  K.mode = 'list'; const t = q.trim().toLowerCase();
+  const rows = LK.map((p, i) => ({ p, i })).filter(({ p }) => !t || (nm(p.a) + ' ' + nm(p.b)).toLowerCase().includes(t));
+  if (!$('#lkSearch')) $('#lkBody').innerHTML = `<p class="hv-q">Learn the pairs</p><p class="hv-sub">Tap a pair to see how to tell the two birds apart.</p><input class="lk-search" id="lkSearch" placeholder="Search a bird" autocomplete="off"><div class="lk-list" id="lkRows"></div>`;
+  $('#lkRows').innerHTML = rows.map(({ p, i }) => `<button class="lk-row" data-i="${i}">${lkTh(p)}<span><b>${esc(nm(p.a))}</b><small>and</small> <b style="display:inline">${esc(nm(p.b))}</b></span>${'<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'}</button>`).join('') || '<p class="lk-note">No pair matches that search.</p>';
+}
+function lkDetail(i) {
+  const p = LK[i]; K.mode = 'detail'; K.i = i;
+  $('#lkBody').innerHTML = `<div class="hv-pair">${[p.a, p.b].map((b, k) => `<div class="hv-card" style="--c:${k ? C.sky : C.saffron}"><span class="hv-pic">${img(b, '', false)}</span><span class="hv-name">${esc(nm(b))}</span></div>`).join('')}</div>
+    <div class="lk-marks">${[[p.a, p.qa, C.saffron], [p.b, p.qb, C.sky]].map(([b, q, c]) => `<div class="lk-mark" style="--c:${c}"><b>${esc(nm(b))}</b><p>Usually ${esc(q)}.</p></div>`).join('')}${p.tip ? `<div class="lk-mark" style="--c:var(--line)"><b>Good to know</b><p>${esc(p.tip)}</p></div>` : ''}</div>
+    <p class="lk-note">${lkNote}</p>
+    <div class="lk-nav"><button class="btn ghost" id="lkToList">Back to the list</button><button class="btn lkb" id="lkNextPair">Next pair</button></div>`;
+  window.scrollTo(0, 0);
+}
+function startLk() {
+  if (LK.length < 10) return;
+  K = { mode: 'hub' }; view('look'); lkHub();
+}
+function startLkQuiz() {
+  const pick = shuffle(LK.map((p, i) => i)).slice(0, 10);
+  const rounds = pick.map(i => { const p = LK[i], ask = Math.random() < .5 ? 0 : 1, flip = Math.random() < .5; return { i, ask, flip, pick: null, ok: false }; });
+  K = { mode: 'quiz', rounds, q: 0, right: 0, streak: 0, best: 0, t0: Date.now(), sent: false, locked: false };
+  K.meta = { gid: rid(), pid: PID, src: SRC, deck: 'lookalikes', deckTitle: 'Look-alikes', label: '', level: 'medium', rounds: rounds.length, timer: 0, shadow: 0, custom: 0 };
+  track('start', K.meta); lkRound();
+}
+function lkSend(finished) {
+  if (!K || K.mode !== 'quiz' && K.mode !== 'done' || K.sent) return; K.sent = true;
+  track('end', { ...K.meta, score: K.right * 10, correct: K.right, answered: K.rounds.filter(r => r.pick !== null).length, bestStreak: K.best, hints: 0, secs: Math.round((Date.now() - K.t0) / 1000), finished: finished ? 1 : 0, kinds: K.rounds.filter(r => r.pick !== null).map(r => ['q', r.ok ? 1 : 0]) });
+}
+function lkStop() { if (K && K.rounds && !K.sent && K.rounds.some(r => r.pick !== null)) lkSend(false); K = null; }
+addEventListener('pagehide', () => { if (K && K.rounds && !K.sent && K.rounds.some(r => r.pick !== null)) lkSend(false); });
+function lkRound() {
+  const r = K.rounds[K.q], p = LK[r.i]; K.locked = false; K.mode = 'quiz';
+  $('#lkSegs').innerHTML = K.rounds.map((x, i) => `<i class="${x.pick !== null ? (x.ok ? 'ok' : 'no') : i === K.q ? 'cur' : ''}"></i>`).join('');
+  $('#lkScore').textContent = K.right + ' right';
+  const clue = r.ask ? p.qb : p.qa, order = r.flip ? [1, 0] : [0, 1];
+  $('#lkBody').innerHTML = `<p class="hv-q" style="font-size:clamp(22px,5.6vw,30px)">Which one ${esc(clue)}?</p><p class="hv-sub">Question ${K.q + 1} of ${K.rounds.length}.</p>
+    <div class="hv-pair">${order.map(o => { const b = o ? p.b : p.a; return `<button class="hv-card" data-k="${o}" style="--c:${o ? C.sky : C.saffron}"><span class="hv-pic">${img(b, '', false)}</span><span class="hv-name">${esc(nm(b))}</span></button>`; }).join('')}</div><div id="lkOut"></div>`;
+  const nx = K.rounds[K.q + 1]; if (nx) { const q = LK[nx.i]; [q.a, q.b].forEach(b => { new Image().src = b.url; }); }
+  window.scrollTo(0, 0);
+}
+function lkAnswer(o) {
+  if (!K || K.locked) return; K.locked = true;
+  const r = K.rounds[K.q], p = LK[r.i], ok = o === r.ask; r.pick = o; r.ok = ok;
+  if (ok) { K.right++; K.streak++; K.best = Math.max(K.best, K.streak); } else K.streak = 0;
+  $('#lkSegs').children[K.q].className = ok ? 'ok' : 'no';
+  $('#lkScore').textContent = K.right + ' right';
+  $$('#lkBody .hv-card').forEach(el => { const v = +el.dataset.k; el.disabled = true; el.classList.add('shown'); if (v === r.ask) el.classList.add('ok'); else if (v === o) el.classList.add('no'); });
+  const last = K.q === K.rounds.length - 1, right = r.ask ? p.b : p.a;
+  $('#lkOut').innerHTML = `<div class="hv-out"><div class="hv-verdict ${ok ? 'ok' : 'no'}">${ok ? 'Yes!' : 'Not quite.'} <span>That is the ${esc(nm(right))}.</span></div>
+    <div class="lk-marks">${[[p.a, p.qa, C.saffron], [p.b, p.qb, C.sky]].map(([b, q, c]) => `<div class="lk-mark" style="--c:${c}"><b>${esc(nm(b))}</b><p>Usually ${esc(q)}.</p></div>`).join('')}</div>
+    ${p.tip ? `<p class="hv-fact" style="margin-top:10px">${esc(p.tip)}</p>` : ''}
+    <button class="btn full hv-next lkb" id="lkNext">${last ? 'See my results' : 'Next'}</button></div>`;
+  setTimeout(() => $('#lkNext') && $('#lkNext').scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 120);
+}
+function lkResults() {
+  lkSend(true); K.mode = 'done';
+  const R = K.rounds, n = R.length, right = K.right, missed = R.filter(r => !r.ok);
+  const grade = right === n ? 'Perfect! You have a sharp eye.' : right >= n - 2 ? 'Very good!' : right >= n * .6 ? 'Pretty good!' : right >= n * .4 ? 'These are tricky, and that is normal.' : 'Even experts mix these up.';
+  $('#lkRes').innerHTML = `${RESBAR}<div class="kick">Look-alikes</div><div class="big">${right}/${n}</div><div class="grade">${grade}</div>
+    <div class="rstats"><div class="rstat"><b>${right}</b><span>Right</span></div><div class="rstat"><b>${K.best}</b><span>Most in a row</span></div><div class="rstat"><b>${Math.round((Date.now() - K.t0) / 1000)}s</b><span>Time</span></div></div>
+    ${missed.length ? `<h3>Pairs to look at again</h3><p class="tip">Tap a pair to see the clues.</p><div class="lk-list" style="margin-bottom:24px;text-align:left">${missed.map(r => { const p = LK[r.i]; return `<button class="lk-row" data-open="${r.i}">${lkTh(p)}<span><b>${esc(nm(p.a))}</b><small>and</small> <b style="display:inline">${esc(nm(p.b))}</b></span></button>`; }).join('')}</div>` : '<p class="tip" style="text-align:center;margin-bottom:24px">You got every pair right.</p>'}
+    <div class="rbtns"><button class="btn lkb full" id="lkWa" style="grid-column:1/-1">Challenge a friend on WhatsApp</button>
+    <button class="btn lkb" id="lkAgain">Quiz me again</button><button class="btn ghost" id="lkHome">Back to home</button></div>`;
+  K.share = `I got ${right}/${n} on "Look-alikes" in ${BRAND}\n${R.map(r => r.ok ? '✓' : '✗').join(' ')}\n\nTwo birds that look almost the same: which one has the clue? Can you beat me?\n${SITE}?r=wa#lookalikes`;
+  view('lkRes');
+  if (right >= n - 1) confetti();
+}
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#lkStart')) return startLk();
+  if (t.closest('#lkQuit')) return view('home');
+  if (t.closest('#lkLearn')) return lkList();
+  if (t.closest('#lkQuiz')) return startLkQuiz();
+  const row = t.closest('#lkRows .lk-row'); if (row) return lkDetail(+row.dataset.i);
+  const op = t.closest('[data-open]'); if (op && t.closest('#lkRes')) { const i = +op.dataset.open; K = { mode: 'hub' }; view('look'); return lkDetail(i); }
+  if (t.closest('#lkToList')) { $('#lkBody').innerHTML = ''; return lkList(); }
+  if (t.closest('#lkNextPair')) return lkDetail((K.i + 1) % LK.length);
+  const c = t.closest('#lkBody .hv-card'); if (c && c.dataset.k !== undefined && K && K.mode === 'quiz') return lkAnswer(+c.dataset.k);
+  if (t.closest('#lkNext')) { if (K.q < K.rounds.length - 1) { K.q++; lkRound(); } else lkResults(); return; }
+  if (t.closest('#lkAgain')) { K = { mode: 'hub' }; view('look'); return startLkQuiz(); }
+  if (t.closest('#lkHome')) return view('home');
+  if (t.closest('#lkWa') && K) { track('share', { kind: 'whatsapp', deck: 'lookalikes' }); window.open('https://wa.me/?text=' + encodeURIComponent(K.share), '_blank', 'noopener'); }
+});
+document.addEventListener('input', e => { if (e.target.id === 'lkSearch') lkList(e.target.value); });
+
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
@@ -2353,9 +2511,10 @@ try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documen
 syncBarColor();
 
 /* ---------- boot ---------- */
-store.load(); S.lang = 'en'; renderHome(); renderDaily(); renderGroups(); // names are English only for now
+store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderGroups(); // names are English only for now
 const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
 if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
+else if (/lookalikes/.test(location.hash)) startLk(); // a shared "Look-alikes" link
 else if (/oddone/.test(location.hash)) startOd(); // a shared "Odd one out" link
 else if (/heavier/.test(location.hash)) startHv(); // a shared "Which is heavier?" link
 else if (DY && /daily/.test(location.hash)) { const p = dailyProg(); if (!p || !p.done) openDailyIntro(); } // a shared "play today's birds" link
