@@ -347,7 +347,26 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .daily{position:relative;width:100%;max-width:38em;text-align:left;color:#fff;background:#3a40d4;border-radius:28px;padding:22px 24px;margin:0 0 28px;overflow:hidden}
 .daily::before{content:"";position:absolute;right:-50px;top:-60px;width:210px;height:210px;border-radius:50%;background:rgba(255,255,255,.1)}
 .daily>*{position:relative}
-.d-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.d-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.d-tags span.d-next{background:rgba(255,255,255,.3)}
+.d-next b{font-variant-numeric:tabular-nums;font-weight:800}
+.d-head{display:flex;gap:16px;align-items:center;margin-bottom:16px}
+.d-leaf{flex:none;width:78px;border-radius:16px;background:#fff;color:#2c32bf;text-align:center;overflow:hidden;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+.d-leaf span{display:block;background:#e5483b;color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;padding:4px 0}
+.d-leaf b{display:block;font-family:var(--display);font-size:34px;font-weight:800;line-height:1.05;margin-top:3px}
+.d-leaf small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.04em;color:#6a6fd0;padding-bottom:6px}
+.d-head h2{font-size:clamp(21px,5.6vw,28px);max-width:14em}
+.d-sub{font-size:14.5px;font-weight:600;opacity:.92;margin-top:6px;line-height:1.35}
+.d-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0 0 16px}
+.d-day{text-align:center}
+.d-day small{display:block;font-size:11px;font-weight:700;opacity:.85}
+.d-day i{display:grid;place-items:center;width:34px;height:34px;margin:4px auto 0;border-radius:50%;font-style:normal;font-weight:800;font-size:13px;background:rgba(255,255,255,.16)}
+.d-day.hit i{background:#3ddc97;color:#06331f}
+.d-day.miss i{opacity:.5}
+.d-day.today small{opacity:1;font-weight:800}
+.d-day.today i{background:#fff;color:#2c32bf;box-shadow:0 0 0 3px rgba(255,255,255,.35)}
+.d-day.today.hit i{background:#3ddc97;color:#06331f}
+.d-day.next i{background:transparent;border:2px dashed rgba(255,255,255,.5);color:rgba(255,255,255,.85)}
 .d-pill{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#fff;color:#2c32bf;border-radius:99px;padding:6px 13px}
 .d-date{font-weight:700;font-size:14px;opacity:.9}
 .daily h2{font-size:clamp(25px,3.4vw,32px);font-weight:800;line-height:1.06;max-width:15em}
@@ -517,9 +536,13 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .lk-nav .btn{flex:1}
 #lkRes .big{color:#5a7d1a}
 /* ---------- Group challenges (teal, so they never look like the Daily or free play) ---------- */
-.qgames{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px 24px;padding:2px 20px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding-left:20px}
-.qgames::-webkit-scrollbar{display:none}
-.qtile{position:relative;flex:0 0 min(41vw,190px);scroll-snap-align:start;text-align:left;background:var(--surface);border-radius:22px;padding:8px 8px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--soft);border-radius:16px;padding:4px;max-width:38em;margin:0 0 14px}
+.tabs button{padding:11px 2px;border-radius:12px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--muted);transition:background .15s,color .15s}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,22,26,.12)}
+.tabhint{color:var(--muted);font-size:14.5px;line-height:1.45;max-width:38em;margin:0 0 14px}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:38em;margin:0 0 24px}
+#home:not([data-tab="guess"]) :is(#indiaSec,#worldSec,.build-cta){display:none}
+.qtile{position:relative;text-align:left;background:var(--surface);border-radius:22px;padding:8px 8px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
 .qtile:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--ac)}
 .qtile.hv{--ac:#a21caf}.qtile.lk{--ac:#5a7d1a}.qtile.od{--ac:#0b7bc0}
 .qpv{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-radius:15px;padding:6px;background:color-mix(in srgb,var(--ac) 11%,var(--surface));aspect-ratio:1.35/1}
@@ -530,7 +553,6 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .qt{display:block}
 .qt b{display:block;font-family:var(--display);font-size:16px;line-height:1.15;margin:10px 4px 0}
 .qt small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3;margin:3px 4px 0}
-@media(min-width:640px){.qgames{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0 0 26px;padding:0;max-width:38em}.qtile{flex:none}}
 .gcard{max-width:38em;background:var(--surface);border-radius:24px;padding:18px 20px;box-shadow:inset 0 0 0 1.5px var(--line);margin:0 0 26px}
 .medal{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2.5px solid;font-weight:800;font-size:13px;line-height:1}
 .medal.m1{color:#c28a00}.medal.m2{color:#7b8696}.medal.m3{color:#b0682c}
@@ -635,24 +657,36 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <div>
       <div class="eyebrow"><span>11,011 birds</span><span class="played" id="playedCount" hidden><i class="pdot" aria-hidden="true"></i><b id="playedN">0</b><span>games played so far</span></span></div>
       <h1>How well do you know your <em>birds?</em></h1>
-      <p class="lead">Guess the bird from its picture. Pick what you want to play, from the birds you see every day to rare finds from around the world.</p>
+      <p class="lead">Guess the bird from its picture, play quick bird games, or learn to tell look-alikes apart. From the birds you see every day to rare finds from around the world.</p>
       <section class="daily" id="dailyCard" aria-label="Daily Birdbrain"></section>
-      <p class="pickhead">Free play · Pick your set</p>
-      <p class="freehint">Choose any deck and play as many games as you like. It's separate from the Daily challenge.</p>
-      <div class="quick" id="quickDecks"></div>
-      <div class="cta">
-        <button class="btn ghost" id="surprise"><span class="cb"><b>Surprise me</b><small>Play a random deck</small></span></button>
-        <button class="btn ghost" id="gcStart"><span class="cb"><b>Play with friends</b><small>Same 10 birds, shared by link</small></span></button>
-        <button class="linkbtn" id="pickDeck">See all decks ↓</button>
+      <div class="tabs" id="homeTabs" role="tablist" aria-label="What do you want to play?">
+        <button role="tab" data-tab="guess" aria-selected="true">Guess the bird</button>
+        <button role="tab" data-tab="quick" aria-selected="false">Quick games</button>
+        <button role="tab" data-tab="learn" aria-selected="false">Learn</button>
       </div>
-      <div class="gc-list" id="gcList" style="margin:12px 0 4px"></div>
-      <div style="height:24px"></div>
-      <p class="pickhead">Quick games</p>
-      <div class="qgames" id="qgames">
-        <button class="qtile hv" id="hvStart"><span class="qpv" data-pv="hv"></span><i class="new">NEW</i><span class="qt"><b>Which is heavier?</b><small>Tap the bird that weighs more</small></span></button>
-        <button class="qtile lk" id="lkStart"><span class="qpv" data-pv="lk"></span><i class="new">NEW</i><span class="qt"><b>Look-alikes</b><small>Learn to tell near-identical birds apart</small></span></button>
-        <button class="qtile od" id="odStart"><span class="qpv four" data-pv="od"></span><i class="new">NEW</i><span class="qt"><b>Odd one out</b><small>Four birds, one doesn't belong</small></span></button>
-      </div>
+      <section class="tabpane" id="pane-guess" role="tabpanel">
+        <p class="tabhint">See a picture and name the bird. Pick a set to start and play as often as you like. It's separate from the Daily challenge.</p>
+        <div class="quick" id="quickDecks"></div>
+        <div class="cta">
+          <button class="btn ghost" id="surprise"><span class="cb"><b>Surprise me</b><small>Play a random deck</small></span></button>
+          <button class="btn ghost" id="gcStart"><span class="cb"><b>Play with friends</b><small>Same 10 birds, shared by link</small></span></button>
+          <button class="linkbtn" id="pickDeck">See all decks ↓</button>
+        </div>
+        <div class="gc-list" id="gcList" style="margin:12px 0 4px"></div>
+      </section>
+      <section class="tabpane hidden" id="pane-quick" role="tabpanel">
+        <p class="tabhint">Short 10-round games with different questions. No setup, about two minutes each.</p>
+        <div class="qgrid">
+          <button class="qtile hv" id="hvStart"><span class="qpv" data-pv="hv"></span><i class="new">NEW</i><span class="qt"><b>Which is heavier?</b><small>Two birds, tap the one that weighs more. A good one for kids.</small></span></button>
+          <button class="qtile od" id="odStart"><span class="qpv four" data-pv="od"></span><i class="new">NEW</i><span class="qt"><b>Odd one out</b><small>Four birds, one doesn't belong. Find it, then see why.</small></span></button>
+        </div>
+      </section>
+      <section class="tabpane hidden" id="pane-learn" role="tabpanel">
+        <p class="tabhint">Get better at telling birds apart.</p>
+        <div class="qgrid">
+          <button class="qtile lk" id="lkStart"><span class="qpv" data-pv="lk"></span><i class="new">NEW</i><span class="qt"><b>Look-alikes</b><small>100 pairs of birds that are easy to confuse. Learn the clues, then take a quiz.</small></span></button>
+        </div>
+      </section>
     </div>
     <div class="collage" id="collage" aria-hidden="true"></div>
   </section>
@@ -1834,23 +1868,42 @@ function renderDaily() {
   dailyShown = t.str;
   const streak = st.cur > 0 ? `<span class="d-streak">${FLAME} ${st.cur}-day streak</span>` : '';
   const th = t.theme;
-  const top = `<div class="d-top"><span class="d-pill">${CAL} ${th ? 'Sunday special' : 'Daily challenge'}</span><span class="d-date">#${t.num} · ${t.label}</span></div>`;
-  const tags = `<div class="d-tags">${th ? `<span class="d-theme">${esc(th.title)}</span>` : ''}<span>10 birds</span><span>One try a day</span><span>No timer</span><span>New birds at midnight IST</span></div>`;
+  // the card says "a new game every day" in three ways: a calendar page for today, a countdown to the next set, and a week strip (days done, today, days still to come)
+  const dt = new Date(t.n * DAY), mon = dt.toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' }).toUpperCase(), wd = dt.toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'UTC' });
+  const top = `<div class="d-top"><span class="d-pill">${CAL} ${th ? 'Sunday special' : 'Daily challenge'}</span></div>`;
+  const nextChip = `<span class="d-next">New birds in <b id="dCount">--:--:--</b></span>`;
+  const head = h2 => `<div class="d-head"><div class="d-leaf" aria-hidden="true"><span>${mon}</span><b>${dt.getUTCDate()}</b><small>${wd.slice(0, 3)}</small></div><div>${h2}</div></div>`;
+  const strip = dailyStrip(t, p);
+  const tags = `<div class="d-tags">${nextChip}${th ? `<span class="d-theme">${esc(th.title)}</span>` : ''}<span>10 birds</span><span>One try a day</span><span>No timer</span></div>`;
+  const nextOnly = `<div class="d-tags" style="margin-top:0">${nextChip}</div>`;
   if (done) {
     const right = p.log.filter(Boolean).length;
-    el.innerHTML = `${top}<h2>${th ? esc(th.title) + ': you\'ve done it' : 'You\'ve done today\'s birds'}</h2><div class="d-done" style="margin-top:14px"><div class="d-score"><b>${right}/${p.log.length}</b><span>${fmt(p.score)} points</span></div><div class="d-grid">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}</div></div>
+    el.innerHTML = `${top}${head(`<h2>${th ? esc(th.title) + ': you\'ve done it' : 'You\'ve done today\'s birds'}</h2><p class="d-sub">Daily #${t.num}. A new set arrives tomorrow.</p>`)}${strip}${nextOnly}<div class="d-done"><div class="d-score"><b>${right}/${p.log.length}</b><span>${fmt(p.score)} points</span></div><div class="d-grid">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}</div></div>
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">See result &amp; share</button>${streak}</div>
-      <p class="d-rank hidden" id="dRank"></p>
-      <p class="d-count" style="margin-top:14px">Next birds in <b id="dCount">--:--:--</b></p>`;
+      <p class="d-rank hidden" id="dRank"></p>`;
     fillRank($('#dRank'), t.num, p.gid, p.score, false);
   } else if (n > 0) {
-    el.innerHTML = `${top}<h2>Pick up where you left off</h2><div class="d-prog" style="margin-top:14px">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
+    el.innerHTML = `${top}${head(`<h2>Pick up where you left off</h2><p class="d-sub">Daily #${t.num}. ${n} of 10 birds done.</p>`)}${strip}${nextOnly}<div class="d-prog">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
       <div class="d-act"><button class="d-btn" id="dPlay" type="button">Continue · ${n} of 10 done</button>${streak}</div>`;
   } else {
-    el.innerHTML = `${top}<h2>${th ? `${esc(th.title)}: today's 10 birds are ${esc(th.what)}.` : 'Today\'s 10 birds. The same for everyone.'}</h2>${tags}
-      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Play today's birds</button>${streak || '<span class="d-count">Play every day to build a streak</span>'}</div>`;
+    el.innerHTML = `${top}${head(th ? `<h2>${esc(th.title)}</h2><p class="d-sub">Today's 10 birds are ${esc(th.what)}. A new set every day.</p>` : `<h2>A new set of 10 birds every day</h2><p class="d-sub">Daily #${t.num}. The same birds for everyone, and you get one try.</p>`)}${strip}${tags}
+      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Play today's birds</button>${streak || '<span class="d-count">Come back daily to build a streak</span>'}</div>`;
   }
   tickDaily();
+}
+const dayN = str => Math.floor(Date.parse(str + 'T00:00:00Z') / DAY);
+const TICK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+// the days around today: ticks for days played (worked out from the streak), a highlighted today, and "?" for the days still to come
+function dailyStrip(t, p) {
+  const s = dget(SKEY) || { cur: 0, last: '' }, last = s.last ? dayN(s.last) : -1, first = last - (s.cur || 0) + 1;
+  const played = n => (n >= first && n <= last) || (n === t.n && !!(p && p.done));
+  let html = '';
+  for (let o = -4; o <= 2; o++) {
+    const n = t.n + o, d = new Date(n * DAY), cls = o === 0 ? (played(n) ? 'today hit' : 'today') : o > 0 ? 'next' : played(n) ? 'hit' : 'miss';
+    const label = o === 0 ? 'Today' : d.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'UTC' });
+    html += `<div class="d-day ${cls}"><small>${label}</small><i>${played(n) ? TICK : o > 0 ? '?' : d.getUTCDate()}</i></div>`;
+  }
+  return `<div class="d-strip" aria-hidden="true">${html}</div>`;
 }
 const hms = ms => { const s = Math.max(Math.floor(ms / 1000), 0); return [s / 3600 | 0, (s / 60 | 0) % 60, s % 60].map(v => String(v).padStart(2, '0')).join(':'); };
 function tickDaily() {
@@ -2075,6 +2128,16 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('click', e => { if (e.target.closest('#installLink')) openGrp(`<h2 style="font-size:24px;font-weight:800;padding-right:44px;margin-bottom:12px">Daily birds, one tap away</h2>${installCard()}`, 'install'); });
 
+/* ---------- Home tabs: Guess the bird / Quick games / Learn (the last one used is remembered) ---------- */
+const TABKEY = 'birdbrain.tab';
+function setTab(t) {
+  if (!['guess', 'quick', 'learn'].includes(t)) t = 'guess';
+  $('#home').dataset.tab = t;
+  $$('#homeTabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
+  ['guess', 'quick', 'learn'].forEach(x => $('#pane-' + x).classList.toggle('hidden', x !== t));
+  try { localStorage.setItem(TABKEY, t); } catch (e) {}
+}
+$('#homeTabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) setTab(b.dataset.tab); });
 /* ---------- Quick games tiles: a small picture of each game ---------- */
 function renderQuick() {
   const pv = (names, cols) => names.map((n, i) => byEn[n] ? `<span style="--c:${cols[i % cols.length]}">${img(byEn[n], '', false)}</span>` : '').join('');
@@ -2543,7 +2606,7 @@ try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documen
 syncBarColor();
 
 /* ---------- boot ---------- */
-store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderGroups(); // names are English only for now
+store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderGroups(); { let t0 = 'guess'; try { t0 = localStorage.getItem(TABKEY) || 'guess'; } catch (e) {} setTab(t0); } // names are English only for now
 const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
 if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
 else if (/lookalikes/.test(location.hash)) startLk(); // a shared "Look-alikes" link
