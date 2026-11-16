@@ -131,14 +131,25 @@ svg{display:block}
 .qi img{position:absolute;left:4%;top:4%;width:92%;height:92%;object-fit:contain}
 .cta .linkbtn{margin-top:0;font-size:15px;padding:8px 4px}
 .qchip.build .qi{background:var(--ink);color:var(--bg);font-size:24px;font-weight:700}
-.collage{position:relative;height:420px}
-.cc{position:absolute;border-radius:28px;display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .3s}
-.cc img{position:absolute;left:7%;top:7%;width:86%;height:86%;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.2))}
-.cc.a{width:62%;height:68%;left:0;top:6%;transform:rotate(-6deg)}
-.cc.b{width:54%;height:58%;right:0;top:0;transform:rotate(5deg)}
-.cc.c{width:58%;height:48%;right:8%;bottom:0;transform:rotate(-2deg)}
-.collage:hover .cc.a{transform:rotate(-8deg) translateY(-4px)}
-.collage:hover .cc.b{transform:rotate(7deg) translateY(-6px)}
+/* the sticker wall: rows of bird stickers drifting sideways on a phone, three columns drifting up and down on a wide screen */
+.collage.wall{position:relative;overflow:hidden;display:flex;gap:12px;height:540px}
+.wall .trk{flex:1;display:flex;flex-direction:column;gap:12px;animation:wallUp 70s linear infinite}
+.wall .trk:nth-child(2){animation:wallDown 78s linear infinite;margin-top:-70px}
+.wall .trk:nth-child(3){animation-duration:84s}
+.wall .wt{flex:none;width:100%;aspect-ratio:1;border-radius:30px;background:var(--c);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,22,26,.05),0 14px 28px -16px rgba(20,22,26,.35)}
+.wall .wt img{width:90%;height:90%;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2))}
+@keyframes wallUp{to{transform:translateY(calc(-50% - 6px))}}
+@keyframes wallDown{from{transform:translateY(calc(-50% - 6px))}to{transform:translateY(0)}}
+@keyframes wallLeft{to{transform:translateX(calc(-50% - 5px))}}
+@keyframes wallRight{from{transform:translateX(calc(-50% - 5px))}to{transform:translateX(0)}}
+@media (max-width:860px){
+  .collage.wall{display:grid;gap:10px;height:auto;margin:0 -20px;padding:2px 0}
+  .wall .trk{flex-direction:row;width:max-content;animation:wallLeft 52s linear infinite}
+  .wall .trk:nth-child(2){animation:wallRight 58s linear infinite;margin-top:0}
+  .wall .trk:nth-child(3){display:none}
+  .wall .wt{width:112px;height:112px;border-radius:26px;aspect-ratio:auto}
+}
+@media (prefers-reduced-motion:reduce){.wall .trk{animation:none!important}}
 
 /* ---------- deck sections ---------- */
 .sec{padding:10px 0 34px}
@@ -596,12 +607,12 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .lb .sc{font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
 .lb .sc small{display:block;color:var(--muted);font-weight:600;font-size:12px}
 .gbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-@media (max-width:560px){.daily{padding:20px 18px;border-radius:24px}.d-btn{width:100%}.collage{height:190px!important}.hero p.lead{margin:14px 0 20px;font-size:17px}.hero h1{font-size:40px}}
+@media (max-width:560px){.daily{padding:20px 18px;border-radius:24px}.d-btn{width:100%}.hero p.lead{margin:14px 0 20px;font-size:17px}.hero h1{font-size:40px}}
 
 /* ---------- responsive ---------- */
 @media (max-width:860px){
   .hero{grid-template-columns:1fr;padding-top:10px;gap:10px}
-  .collage{height:300px;order:-1}
+  .collage{order:-1}
   .sheet-wrap{align-items:end;padding:0}
   .sheet{grid-template-columns:1fr;border-radius:30px 30px 0 0;max-height:92vh;width:100%}
   .sharebox{width:100%;border-radius:28px 28px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom))}
@@ -611,7 +622,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   .s-body h2{font-size:28px}
 }
 @media (max-width:560px){
-  .collage{height:150px;margin-bottom:6px}
+  .collage{margin-bottom:10px}
   .hero{padding-bottom:30px}
   .hero p.lead{font-size:16px;margin:14px 0 18px}
   .quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -688,7 +699,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
         </div>
       </section>
     </div>
-    <div class="collage" id="collage" aria-hidden="true"></div>
+    <div class="collage wall" id="collage" aria-hidden="true"></div>
   </section>
 
   <section class="sec" id="indiaSec">
@@ -1180,8 +1191,13 @@ function renderHome() {
       ${d.heroB ? img(d.heroB, 'dimg') : ''}<span class="dt">${esc(d.t)}</span><span class="dd">${esc(d.d)}</span></button>`;
   $('#indiaDecks').innerHTML = DECKS.filter(d => d.sec === 'india').map(card).join('');
   $('#worldDecks').innerHTML = DECKS.filter(d => d.sec === 'world').map(card).join('');
-  const heroes = [['Indian Peafowl', C.saffron, 'a'], ['Himalayan Monal', C.sky, 'b'], ['Indian Roller', C.leaf, 'c']];
-  $('#collage').innerHTML = heroes.map(([n, c, k]) => byEn[n] ? `<div class="cc ${k}" style="background:${c}">${img(byEn[n], '', false)}</div>` : '').join('');
+  // the sticker wall at the top: colourful birds from around the world, in a new order on every visit (each row is listed twice so the drift loops without a jump)
+  const wall = [
+    ['Scarlet Macaw', 'Atlantic Puffin', 'Indian Peafowl', 'Toco Toucan', 'Emperor Penguin', 'Rainbow Lorikeet', 'Himalayan Monal'],
+    ['Lilac-breasted Roller', 'Resplendent Quetzal', 'Indian Roller', 'Greater Flamingo', 'Blue-footed Booby', 'Northern Cardinal', 'Common Kingfisher'],
+    ['Golden Pheasant', 'Snowy Owl', 'Hyacinth Macaw', 'Mandarin Duck', 'Roseate Spoonbill', 'Great Hornbill', 'Laughing Kookaburra']];
+  const WC = [C.saffron, C.sky, C.leaf, C.coral, C.lilac, C.sun, C.teal, C.pink, C.tang];
+  $('#collage').innerHTML = wall.slice(0, matchMedia('(min-width:861px)').matches ? 3 : 2).map((names, k) => { const list = shuffle(names.filter(n => byEn[n])); return `<div class="trk">${list.concat(list).map((n, i) => `<div class="wt" style="--c:${WC[((i % list.length) + k * 3) % WC.length]}">${img(byEn[n], '', i > 3 && i < list.length)}</div>`).join('')}</div>`; }).join('');
   $('#credit').innerHTML = `<button class="btn sm sharebtn" id="shareSite"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.600 13.500l6.800 4M15.400 6.500l-6.800 4"/></svg> Share Birdbrain</button><br><button class="linkbtn" id="installLink"style="margin:0 0 6px">Add Birdbrain to your home screen</button><br><span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · Help <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">support</a> such games.</span><br><span class="more">For more games and apps built by me, check <a href="https://apps.snanu.com" target="_blank" rel="noopener">this link</a>.</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
 }
 document.addEventListener('click', e => {
