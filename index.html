@@ -2410,9 +2410,11 @@ function lkHub() {
     <p class="lk-note" style="text-align:center;max-width:34em;margin:18px auto 0">${lkNote}</p>`;
   window.scrollTo(0, 0);
 }
+// a fresh random order each time the list is opened, so people do not always start with the same pairs; the Next button follows the same order
+const lkOrder = () => (K.order && K.order.length === LK.length ? K.order : (K.order = shuffle(LK.map((p, i) => i))));
 function lkList(q = '') {
   K.mode = 'list'; const t = q.trim().toLowerCase();
-  const rows = LK.map((p, i) => ({ p, i })).filter(({ p }) => !t || (nm(p.a) + ' ' + nm(p.b)).toLowerCase().includes(t));
+  const rows = lkOrder().map(i => ({ p: LK[i], i })).filter(({ p }) => !t || (nm(p.a) + ' ' + nm(p.b)).toLowerCase().includes(t));   // in this visit's random order
   if (!$('#lkSearch')) $('#lkBody').innerHTML = `<p class="hv-q">Learn the pairs</p><p class="hv-sub">Tap a pair to see how to tell the two birds apart.</p><input class="lk-search" id="lkSearch" placeholder="Search a bird" autocomplete="off"><div class="lk-list" id="lkRows"></div>`;
   $('#lkRows').innerHTML = rows.map(({ p, i }) => `<button class="lk-row" data-i="${i}">${lkTh(p)}<span><b>${esc(nm(p.a))}</b><small>and</small> <b style="display:inline">${esc(nm(p.b))}</b></span>${'<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'}</button>`).join('') || '<p class="lk-note">No pair matches that search.</p>';
 }
@@ -2482,12 +2484,12 @@ document.addEventListener('click', e => {
   const t = e.target;
   if (t.closest('#lkStart')) return startLk();
   if (t.closest('#lkQuit')) return view('home');
-  if (t.closest('#lkLearn')) return lkList();
+  if (t.closest('#lkLearn')) { K.order = null; return lkList(); }
   if (t.closest('#lkQuiz')) return startLkQuiz();
   const row = t.closest('#lkRows .lk-row'); if (row) return lkDetail(+row.dataset.i);
   const op = t.closest('[data-open]'); if (op && t.closest('#lkRes')) { const i = +op.dataset.open; K = { mode: 'hub' }; view('look'); return lkDetail(i); }
   if (t.closest('#lkToList')) { $('#lkBody').innerHTML = ''; return lkList(); }
-  if (t.closest('#lkNextPair')) return lkDetail((K.i + 1) % LK.length);
+  if (t.closest('#lkNextPair')) { const o = lkOrder(); return lkDetail(o[(o.indexOf(K.i) + 1) % o.length]); }
   const c = t.closest('#lkBody .hv-card'); if (c && c.dataset.k !== undefined && K && K.mode === 'quiz') return lkAnswer(+c.dataset.k);
   if (t.closest('#lkNext')) { if (K.q < K.rounds.length - 1) { K.q++; lkRound(); } else lkResults(); return; }
   if (t.closest('#lkAgain')) { K = { mode: 'hub' }; view('look'); return startLkQuiz(); }
