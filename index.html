@@ -99,8 +99,9 @@ svg{display:block}
 .navr{display:flex;gap:8px;align-items:center}
 
 /* ---------- home hero ---------- */
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;padding:28px 0 46px}
+.hero{display:grid;grid-template-columns:1fr;gap:18px;padding:10px 0 46px}
 .hero>div{min-width:0}
+.collage{order:-1}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
 .eyebrow{flex-wrap:wrap;row-gap:10px;column-gap:12px}
 .played{display:inline-flex;align-items:center;gap:8px;padding:5px 14px 5px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);text-transform:none;letter-spacing:0;font-size:14px;font-weight:600;color:var(--muted)}
@@ -131,24 +132,14 @@ svg{display:block}
 .qi img{position:absolute;left:4%;top:4%;width:92%;height:92%;object-fit:contain}
 .cta .linkbtn{margin-top:0;font-size:15px;padding:8px 4px}
 .qchip.build .qi{background:var(--ink);color:var(--bg);font-size:24px;font-weight:700}
-/* the sticker wall: rows of bird stickers drifting sideways on a phone, three columns drifting up and down on a wide screen */
-.collage.wall{position:relative;overflow:hidden;display:flex;gap:12px;height:540px}
-.wall .trk{flex:1;display:flex;flex-direction:column;gap:12px;animation:wallUp 70s linear infinite}
-.wall .trk:nth-child(2){animation:wallDown 78s linear infinite;margin-top:-70px}
-.wall .trk:nth-child(3){animation-duration:84s}
-.wall .wt{flex:none;width:100%;aspect-ratio:1;border-radius:30px;background:var(--c);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,22,26,.05),0 14px 28px -16px rgba(20,22,26,.35)}
+/* the sticker wall: two rows of bird stickers drifting sideways in opposite directions, a full-width band at the top on every screen size */
+.collage.wall{position:relative;overflow:hidden;display:grid;gap:10px;margin:0 -20px;padding:2px 0}
+.wall .trk{display:flex;gap:10px;width:max-content;animation:wallLeft 52s linear infinite}
+.wall .trk:nth-child(2){animation:wallRight 58s linear infinite}
+.wall .wt{flex:none;width:clamp(112px,11vw,152px);height:clamp(112px,11vw,152px);overflow:hidden;border-radius:28px;background:var(--c);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,22,26,.05),0 14px 28px -16px rgba(20,22,26,.35)}
 .wall .wt img{width:90%;height:90%;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2))}
-@keyframes wallUp{to{transform:translateY(calc(-50% - 6px))}}
-@keyframes wallDown{from{transform:translateY(calc(-50% - 6px))}to{transform:translateY(0)}}
 @keyframes wallLeft{to{transform:translateX(calc(-50% - 5px))}}
 @keyframes wallRight{from{transform:translateX(calc(-50% - 5px))}to{transform:translateX(0)}}
-@media (max-width:860px){
-  .collage.wall{display:grid;gap:10px;height:auto;margin:0 -20px;padding:2px 0}
-  .wall .trk{flex-direction:row;width:max-content;animation:wallLeft 52s linear infinite}
-  .wall .trk:nth-child(2){animation:wallRight 58s linear infinite;margin-top:0}
-  .wall .trk:nth-child(3){display:none}
-  .wall .wt{width:112px;height:112px;border-radius:26px;aspect-ratio:auto}
-}
 @media (prefers-reduced-motion:reduce){.wall .trk{animation:none!important}}
 
 /* ---------- deck sections ---------- */
@@ -546,6 +537,49 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .lk-nav{display:flex;gap:10px;margin-top:16px}
 .lk-nav .btn{flex:1}
 #lkRes .big{color:#5a7d1a}
+/* ---------- Bird Finder (burnt orange) ---------- */
+.btn.fdb{background:#c2410c}.btn.fdb:hover{background:#a8370a}
+.fdgame{padding-bottom:110px}
+.fd-beta{display:flex;gap:10px;align-items:flex-start;background:color-mix(in srgb,#c2410c 10%,var(--surface));border-radius:16px;padding:11px 14px;margin-top:4px}
+.fd-beta span{flex:none;background:#c2410c;color:#fff;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:3px 10px;margin-top:1px}
+.fd-beta p{font-size:13.5px;line-height:1.4}
+.fd-sheet .btn.full,.fd-sheet .fd-cmp .btn{width:100%}
+.fd-got{background:color-mix(in srgb,var(--good) 12%,var(--surface));border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.4;margin:10px 0}
+.fd-empty{color:var(--muted);margin-top:18px;line-height:1.45}
+.fd-title{flex:1;font-family:var(--display);font-weight:800;font-size:20px}
+.fd-q{font-family:var(--display);font-weight:800;font-size:19px;margin:24px 0 2px;line-height:1.15;letter-spacing:-.01em}
+.fd-q small{display:block;font-family:var(--body);font-weight:500;font-size:13px;color:var(--muted);margin-top:2px;letter-spacing:0}
+.fd-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.fd-chip{padding:9px 14px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:14.5px;text-align:left}
+.fd-chip small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.fd-chip.on{background:var(--ink);color:var(--bg);box-shadow:none}.fd-chip.on small{color:inherit;opacity:.8}
+.fd-sw{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.fd-sw button{display:grid;justify-items:center;gap:4px;padding:8px 2px;border-radius:16px;background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--line);font-size:12px;font-weight:700;line-height:1.15;text-align:center}
+.fd-sw i{width:34px;height:34px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.2)}
+.fd-sw button.on{box-shadow:inset 0 0 0 3px var(--ink)}
+.fd-more{margin-top:18px;font-weight:700;font-size:14.5px;color:var(--brand)}
+.fd-res{margin-top:26px;scroll-margin-top:12px}
+.fd-res h2{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em}
+.fd-res .tip{color:var(--muted);font-size:13.5px;margin-top:2px}
+.fd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.fd-card{background:var(--surface);border-radius:18px;padding:6px 6px 10px;box-shadow:inset 0 0 0 1.5px var(--line);text-align:center}
+.fd-card:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.fd-card .pic{aspect-ratio:1;border-radius:13px;background:var(--c);display:grid;place-items:center;overflow:hidden}
+.fd-card img{width:88%;height:88%;object-fit:contain}
+.fd-card b{display:block;font-size:12.5px;line-height:1.2;margin-top:6px}
+.fd-dots{display:flex;gap:3px;justify-content:center;margin-top:5px}
+.fd-dots i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.22)}
+.fd-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:var(--surface);box-shadow:0 -1px 0 var(--line),0 -10px 24px -14px rgba(20,22,26,.3)}
+.fd-bar span{font-weight:800;font-size:16px}
+.fd-sheet .fd-pic{aspect-ratio:1.5/1;border-radius:20px;background:var(--c);display:grid;place-items:center;overflow:hidden;margin:8px 0 12px}
+.fd-sheet .fd-pic img{width:80%;height:88%;object-fit:contain}
+.fd-sheet h2{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.02em;line-height:1.1}
+.fd-sheet i.sci{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.fd-sheet .fd-tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.fd-sheet .fd-tags span{background:var(--soft);border-radius:99px;font-size:13px;font-weight:700;padding:4px 12px}
+.fd-sheet ul{margin:6px 0 12px;padding-left:20px;font-size:14.5px;line-height:1.45}
+.fd-sheet .fd-cmp{display:grid;gap:8px;margin-top:6px}
+.fd-sheet h4{font-family:var(--display);font-size:15px;margin:14px 0 4px}
 /* ---------- Group challenges (teal, so they never look like the Daily or free play) ---------- */
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--soft);border-radius:16px;padding:4px;max-width:38em;margin:0 0 14px}
 .tabs button{padding:11px 2px;border-radius:12px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--muted);transition:background .15s,color .15s}
@@ -553,11 +587,18 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .tabhint{color:var(--muted);font-size:14.5px;line-height:1.45;max-width:38em;margin:0 0 14px}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:38em;margin:0 0 24px}
 #home:not([data-tab="guess"]) :is(#indiaSec,#worldSec,.build-cta){display:none}
-.qtile{position:relative;text-align:left;background:var(--surface);border-radius:22px;padding:8px 8px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
+.qtile{position:relative;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;background:var(--surface);border-radius:22px;padding:8px 8px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
 .qtile:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--ac)}
-.qtile.hv{--ac:#a21caf}.qtile.lk{--ac:#5a7d1a}.qtile.od{--ac:#0b7bc0}
+.qtile.hv{--ac:#a21caf}.qtile.lk{--ac:#5a7d1a}.qtile.od{--ac:#0b7bc0}.qtile.fd{--ac:#c2410c}
 .qpv{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-radius:15px;padding:6px;background:color-mix(in srgb,var(--ac) 11%,var(--surface));aspect-ratio:1.35/1}
 .qpv.four{grid-template-rows:1fr 1fr;gap:4px}
+.qpv.find{display:block;position:relative;overflow:hidden;container-type:size}
+.fv-shadow{position:absolute;right:-4%;top:4%;width:62%;height:92%;object-fit:contain;filter:brightness(0);opacity:.12}
+.qpv.find>.fv-lens{position:absolute;left:calc(50cqw - 41cqh);top:10cqh;width:70cqh;height:70cqh;border-radius:50%;background:#ffb02e;border:max(4px,4.5cqh) solid #c2410c;overflow:hidden;display:grid;place-items:center;box-shadow:0 6px 14px -8px rgba(20,22,26,.5)}
+.fv-lens img{width:120%;height:120%;object-fit:contain}
+.qpv.find>.fv-handle{position:absolute;left:calc(50cqw + 14cqh);top:68cqh;width:9cqh;height:30cqh;border-radius:6px;background:#c2410c;transform:rotate(-45deg);transform-origin:50% 0}
+.qpv.find>.fv-clues{position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:5px;background:var(--surface);border-radius:99px;padding:4px 9px;font-size:11.5px;font-weight:800;box-shadow:0 2px 6px -3px rgba(20,22,26,.4)}
+.fv-clues i{width:11px;height:11px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
 .qpv>span{display:grid;place-items:center;border-radius:11px;background:var(--c);overflow:hidden}
 .qpv img{width:88%;height:88%;object-fit:contain}
 .qtile .new{position:absolute;right:16px;top:16px;font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.04em;color:var(--ac);background:var(--surface);border-radius:99px;padding:2px 8px}
@@ -693,8 +734,9 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
         </div>
       </section>
       <section class="tabpane hidden" id="pane-learn" role="tabpanel">
-        <p class="tabhint">Get better at telling birds apart.</p>
+        <p class="tabhint">Tools to help you name the birds you see, and tell look-alikes apart. The Bird Finder is still in beta, so treat its answers as a rough guide.</p>
         <div class="qgrid">
+          <button class="qtile fd" id="fdStart"><span class="qpv find" data-pv="fd"></span><i class="new">BETA</i><span class="qt"><b>Bird Finder</b><small>Saw a bird? Say where, how big and what colour, and find it.</small></span></button>
           <button class="qtile lk" id="lkStart"><span class="qpv" data-pv="lk"></span><i class="new">NEW</i><span class="qt"><b>Look-alikes</b><small>100 pairs of birds that are easy to confuse. Learn the clues, then take a quiz.</small></span></button>
         </div>
       </section>
@@ -784,6 +826,19 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
   <div id="lkBody"></div>
 </main>
 <main id="lkRes" class="results hidden"></main>
+
+<!-- BIRD FINDER -->
+<main id="finder" class="hvgame fdgame hidden">
+  <div class="hud">
+    <button class="iconbtn" id="fdQuit" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="fd-title">Bird Finder</div>
+    <button class="btn ghost sm" id="fdMine">My birds</button>
+    <button class="btn ghost sm" id="fdReset">Reset</button>
+  </div>
+  <div id="fdBody"></div>
+</main>
+<div class="fd-bar hidden" id="fdBar"><span id="fdCount"></span><button class="btn fdb sm" id="fdJump">See birds</button></div>
+<div class="sheet-wrap hidden" id="fdSheet"><div class="sharebox fd-sheet" role="dialog" aria-modal="true" aria-label="Bird"><button class="s-x" id="fdSheetX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div id="fdSheetBody"></div></div></div>
 
 <!-- RESULTS -->
 <main id="results" class="results hidden">
@@ -890,6 +945,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 <script src="data/birds-data.js"></script>
 <script src="data/daily.js"></script>
 <script src="data/lookalikes.js"></script>
+<script src="data/colours.js"></script>
 <script>
 (() => {
 "use strict";
@@ -1158,7 +1214,7 @@ const nm = b => b.n[langIdx()] || b.n[0];
 /* ---------- keep the browser's Back button inside the site ---------- */
 // Every screen after the home page is its own history step, so Back (or a swipe) returns to the home page instead of leaving the site.
 const RESBAR = '<div class="resbar"><button class="btn ghost sm resHome"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg> Back to home</button></div>';
-const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes']);
+const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes', 'finder']);
 let fromPop = false;
 function syncHistory(v) {
   if (fromPop) return;
@@ -1171,10 +1227,11 @@ function syncHistory(v) {
 addEventListener('popstate', () => { fromPop = true; try { stopGame(); view('home'); } finally { fromPop = false; } });
 document.addEventListener('click', e => { if (e.target.closest('.resHome')) { stopGame(); view('home'); } });
 /* ---------- views ---------- */
-const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes'];
+const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes', 'finder'];
 function view(v) {
   VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
-  $('#nav').classList.toggle('hidden', v === 'game' || v === 'heavy' || v === 'odd' || v === 'look');
+  $('#nav').classList.toggle('hidden', v === 'game' || v === 'heavy' || v === 'odd' || v === 'look' || v === 'finder');
+  if (typeof fdLeave === 'function') fdLeave(v);
   if (v !== 'heavy' && v !== 'hvRes' && typeof hvStop === 'function') hvStop();
   if (v !== 'odd' && v !== 'odRes' && typeof odStop === 'function') odStop();
   if (v !== 'look' && v !== 'lkRes' && typeof lkStop === 'function') lkStop();
@@ -1197,7 +1254,7 @@ function renderHome() {
     ['Lilac-breasted Roller', 'Resplendent Quetzal', 'Indian Roller', 'Greater Flamingo', 'Blue-footed Booby', 'Northern Cardinal', 'Common Kingfisher'],
     ['Golden Pheasant', 'Snowy Owl', 'Hyacinth Macaw', 'Mandarin Duck', 'Roseate Spoonbill', 'Great Hornbill', 'Laughing Kookaburra']];
   const WC = [C.saffron, C.sky, C.leaf, C.coral, C.lilac, C.sun, C.teal, C.pink, C.tang];
-  $('#collage').innerHTML = wall.slice(0, matchMedia('(min-width:861px)').matches ? 3 : 2).map((names, k) => { const list = shuffle(names.filter(n => byEn[n])); return `<div class="trk">${list.concat(list).map((n, i) => `<div class="wt" style="--c:${WC[((i % list.length) + k * 3) % WC.length]}">${img(byEn[n], '', i > 3 && i < list.length)}</div>`).join('')}</div>`; }).join('');
+  $('#collage').innerHTML = wall.slice(0, 2).map((names, k) => { const list = shuffle(names.filter(n => byEn[n])); return `<div class="trk">${list.concat(list).map((n, i) => `<div class="wt" style="--c:${WC[((i % list.length) + k * 3) % WC.length]}">${img(byEn[n], '', i > 3 && i < list.length)}</div>`).join('')}</div>`; }).join('');
   $('#credit').innerHTML = `<button class="btn sm sharebtn" id="shareSite"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.600 13.500l6.800 4M15.400 6.500l-6.800 4"/></svg> Share Birdbrain</button><br><button class="linkbtn" id="installLink"style="margin:0 0 6px">Add Birdbrain to your home screen</button><br><span class="feedback">For feedback and suggestions, write to: <a href="mailto:shiftingradius@gmail.com">shiftingradius@gmail.com</a></span><br><span class="made">Game built by <a href="https://snanu.com" target="_blank" rel="noopener">Sandeep Nanu</a> · Help <a href="https://razorpay.me/@sandeepnanu" target="_blank" rel="noopener">support</a> such games.</span><br><span class="more">For more games and apps built by me, check <a href="https://apps.snanu.com" target="_blank" rel="noopener">this link</a>.</span><br>Stickers by <a href="https://github.com/alchaincyf/huashu-bird-sticker" target="_blank" rel="noopener">huashu-bird-sticker</a> / <a href="https://birdalbum.com" target="_blank" rel="noopener">Bird Album</a> (CC BY 4.0). Taxonomy: AviList v2026. Traits: AVONET. "Birds of India" is based on each bird's range description, so it is approximate.`;
 }
 document.addEventListener('click', e => {
@@ -2160,6 +2217,8 @@ function renderQuick() {
   const set = (k, html) => { const el = $(`[data-pv="${k}"]`); if (el) el.innerHTML = html; };
   set('hv', pv(['Indian Peafowl', 'House Sparrow'], [C.saffron, C.sky]));
   set('lk', pv(['Green Warbler', 'Greenish Warbler'], [C.saffron, C.sky]));
+  // the Bird Finder picture: a magnifying lens revealing a bird in colour over its faint shadow, with the clues (size, colours) you would give
+  if (byEn['Common Kingfisher']) set('fd', `${img(byEn['Common Kingfisher'], 'fv-shadow', false)}<span class="fv-lens">${img(byEn['Common Kingfisher'], '', false)}</span><span class="fv-handle"></span><span class="fv-clues"><b>Small</b><i style="background:#2f7be5"></i><i style="background:#f08a24"></i></span>`);
   set('od', pv(['Rock Pigeon', 'Spotted Dove', 'Eurasian Collared Dove', 'Cinereous Vulture'], [C.saffron, C.sky, C.leaf, C.pink]));
 }
 /* ---------- Which is heavier? ---------- */
@@ -2607,6 +2666,104 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('input', e => { if (e.target.id === 'lkSearch') lkList(e.target.value); });
 
+/* ---------- Bird Finder ---------- */
+// "I saw a bird": answer what you remember (where, how big, what colours, and optionally habitat, food and season) and see the birds that fit.
+// Colours come from the stickers themselves (a rough guide: the stickers are illustrations), the rest from the bird data.
+const FD_WHERE = [['all', 'Anywhere in India', 0], ['him', 'Himalayas', 1], ['ghats', 'Western Ghats and South India', 2], ['ne', 'Northeast India', 3], ['isl', 'Andaman and Nicobar', 4]];
+const FD_COL = [['black', '#1d1d1f'], ['white', '#ffffff'], ['grey', '#9aa0a6'], ['brown', '#8a5a3a'], ['orange', '#f08a24'], ['yellow', '#f5d02a'], ['green', '#3fae4b'], ['blue', '#2f7be5'], ['red', '#e5392f'], ['pink or purple', '#c862b8']];
+const FD_HAB = [['Forest and woods', ['Forest', 'Woodland']], ['Scrub and grassland', ['Shrubland', 'Grassland']], ['Wetlands and rivers', ['Wetland', 'Riverine']], ['Coast and sea', ['Coastal', 'Marine']], ['Towns and farmland', ['Human Modified']], ['Rocks and desert', ['Desert', 'Rock']]];
+const FD_DIET = [['Insects', ['Invertivore']], ['Fruit', ['Frugivore']], ['Seeds', ['Granivore']], ['Nectar', ['Nectarivore']], ['Fish and water animals', ['Aquatic predator']], ['Other animals', ['Vertivore']], ['Dead animals', ['Scavenger']], ['Plants', ['Herbivore terrestrial', 'Herbivore aquatic']]];
+const FDB = window.COLOURS ? D.birds.filter(b => COLOURS[b.i]).map(b => { const col = {}; COLOURS[b.i].split(',').forEach(t => { const [k, p] = t.split(':'); col[+k] = +p; }); b.col = col; return b; }) : [];
+const fdFresh = () => ({ view: 'find', where: 'all', size: new Set(), col: new Set(), hab: new Set(), diet: new Set(), season: '', more: false, shown: 24 });
+// "That's my bird": birds you have marked, kept on this device only
+const SEENKEY = 'birdbrain.seen.v1';
+const seenAll = () => dget(SEENKEY) || {};
+const seenIds = () => Object.entries(seenAll()).sort((a, c) => c[1] - a[1]).map(([id]) => id).filter(id => byIdAll[id]);
+let FS = fdFresh();
+function fdMatch(b) {
+  const w = FD_WHERE.find(x => x[0] === FS.where);
+  if (w[2] && !b.p.includes(w[2])) return false;
+  if (FS.size.size && !FS.size.has(b.z)) return false;
+  for (const c of FS.col) if ((b.col[c] || 0) < 8) return false;
+  if (FS.hab.size) { const h = b.h >= 0 ? D.habitats[b.h] : ''; if (![...FS.hab].some(i => FD_HAB[i][1].includes(h))) return false; }
+  if (FS.diet.size) { const d = b.d >= 0 ? D.diets[b.d] : ''; if (![...FS.diet].some(i => FD_DIET[i][1].includes(d))) return false; }
+  if (FS.season === 'year' && b.v) return false;
+  if (FS.season === 'winter' && !b.v) return false;
+  return true;
+}
+const fdScore = b => [...FS.col].reduce((a, c) => a + (b.col[c] || 0), 0) + (b.k ? 6 : 0) + b.r.length * .5;
+const fdDots = b => Object.entries(b.col).sort((a, c) => c[1] - a[1]).slice(0, 3).map(([k]) => `<i style="--c:${FD_COL[k][1]}"></i>`).join('');
+const fdChip = (key, i, label, on, sub) => `<button class="fd-chip${on ? ' on' : ''}" data-fd="${key}:${i}">${label}${sub ? `<small>${sub}</small>` : ''}</button>`;
+function fdMineView() {
+  const ids = seenIds();
+  $('#fdBar').classList.add('hidden');
+  $('#fdBody').innerHTML = `<h2 class="fd-q" style="margin-top:8px">My birds</h2><p class="hv-sub" style="text-align:left;margin:4px 0 0">Birds you marked with "That's my bird". They are saved on this device only.</p>
+    ${ids.length ? `<div class="fd-grid">${ids.map(id => { const b = byIdAll[id]; return `<button class="fd-card" data-open="${b.i}"><span class="pic" style="--c:${C.saffron}">${img(b, '', true)}</span><b>${esc(nm(b))}</b></button>`; }).join('')}</div>`
+      : `<p class="fd-empty">Nothing here yet. Find a bird, open it and tap "That's my bird".</p>`}
+    <button class="btn fdb full" id="fdBack" style="margin-top:18px">Back to the Finder</button>`;
+  window.scrollTo(0, 0);
+}
+function fdRender() {
+  const n = seenIds().length; $('#fdMine').textContent = n ? `My birds (${n})` : 'My birds';
+  if (FS.view === 'mine') return fdMineView();
+  $('#fdBar').classList.remove('hidden');
+  const y = window.scrollY, hits = FDB.filter(fdMatch).sort((a, c) => fdScore(c) - fdScore(a));
+  const extra = FS.more ? `<h2 class="fd-q">What was the place like?<small>Rough guide, from the bird data</small></h2><div class="fd-chips">${FD_HAB.map((h, i) => fdChip('hab', i, h[0], FS.hab.has(i))).join('')}</div>
+    <h2 class="fd-q">What was it eating?</h2><div class="fd-chips">${FD_DIET.map((h, i) => fdChip('diet', i, h[0], FS.diet.has(i))).join('')}</div>
+    <h2 class="fd-q">When did you see it?</h2><div class="fd-chips">${fdChip('season', 'year', 'Any time of year', FS.season === 'year', 'Birds that stay all year')}${fdChip('season', 'winter', 'In winter', FS.season === 'winter', 'Winter visitors only')}</div>` : '';
+  const grid = hits.slice(0, FS.shown).map(b => `<button class="fd-card" data-open="${b.i}"><span class="pic" style="--c:${C.saffron}">${img(b, '', true)}</span><b>${esc(nm(b))}</b><span class="fd-dots">${fdDots(b)}</span></button>`).join('');
+  $('#fdBody').innerHTML = `<div class="fd-beta"><span>Beta</span><p>A rough guide to help beginners narrow down the choices. It isn't always accurate: colours come from illustrations and places are approximate.</p></div>
+    <p class="hv-sub" style="text-align:left;margin:12px 0 0">Answer what you remember and skip the rest. The list narrows as you go.</p>
+    <h2 class="fd-q">Where did you see it?</h2><div class="fd-chips">${FD_WHERE.map((w, i) => fdChip('where', w[0], w[1], FS.where === w[0])).join('')}</div>
+    <h2 class="fd-q">How big was it?<small>Compared with birds you know</small></h2><div class="fd-chips">${SIZES.map((s, i) => fdChip('size', i, s[0], FS.size.has(i), s[1])).join('')}</div>
+    <h2 class="fd-q">What colours stood out?<small>Pick up to 3</small></h2><div class="fd-sw">${FD_COL.map(([n, hex], i) => `<button class="${FS.col.has(i) ? 'on' : ''}" data-fd="col:${i}"><i style="--c:${hex}"></i>${n}</button>`).join('')}</div>
+    <button class="fd-more" id="fdMore">${FS.more ? 'Hide the extra clues' : 'Add more clues: place, food, season'}</button>${extra}
+    <div class="fd-res" id="fdRes"><h2>${hits.length ? fmt(hits.length) + ' bird' + (hits.length === 1 ? '' : 's') + ' fit' + (hits.length === 1 ? 's' : '') : 'No bird fits all of that'}</h2><p class="tip">${hits.length ? 'Best matches first. Tap a bird to see more.' : 'Try taking out a colour or a clue. Colours are a rough guide, and the same bird can look different in different light.'}</p>
+    <div class="fd-grid">${grid}</div>${hits.length > FS.shown ? `<button class="btn ghost full" id="fdMoreBirds" style="margin-top:14px">Show more birds</button>` : ''}</div>`;
+  $('#fdCount').textContent = hits.length ? `${fmt(hits.length)} bird${hits.length === 1 ? '' : 's'} fit` : 'No birds fit';
+  window.scrollTo(0, y);
+}
+function startFd() { if (!FDB.length) return; FS = fdFresh(); view('finder'); $('#fdBar').classList.remove('hidden'); fdRender(); window.scrollTo(0, 0); }
+function fdLeave(v) { if (v !== 'finder') { $('#fdBar').classList.add('hidden'); $('#fdSheet').classList.add('hidden'); } }
+function fdOpen(id) {
+  const b = byIdAll[id]; if (!b) return;
+  const mine = !!seenAll()[id];
+  const pairs = LK.map((p, i) => ({ p, i })).filter(({ p }) => p.a === b || p.b === b);
+  const cols = Object.entries(b.col).sort((a, c) => c[1] - a[1]).slice(0, 4);
+  $('#fdSheetBody').innerHTML = `<div class="fd-pic" style="--c:${C.saffron}">${img(b, '', false)}</div><h2>${esc(nm(b))}</h2><i class="sci">${esc(b.s)}</i>
+    <div class="fd-tags">${b.z >= 0 ? `<span>${SIZES[b.z][0]} · ${wTxt(b.w)}</span>` : ''}${b.v ? '<span>Winter visitor</span>' : ''}<span>${cols.map(([k]) => FD_COL[k][0]).join(', ')}</span></div>
+    <ul>${factsFor(b).slice(0, 3).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+    ${mine ? `<div class="fd-got"><b>In My birds.</b> Nice spot! You have ${fmt(seenIds().length)} bird${seenIds().length === 1 ? '' : 's'} on your list.</div>
+      <div class="fd-cmp"><button class="btn wa" data-fdshare="${b.i}">Tell a friend on WhatsApp</button><button class="btn ghost" data-mine="remove:${b.i}">Remove from My birds</button></div>`
+      : `<button class="btn fdb full" data-mine="add:${b.i}">That's my bird</button>`}
+    ${pairs.length ? `<h4>Easily confused with</h4><div class="fd-cmp">${pairs.map(({ p, i }) => `<button class="btn ghost" data-cmp="${i}">Compare with the ${esc(nm(p.a === b ? p.b : p.a))}</button>`).join('')}</div>` : ''}`;
+  $('#fdSheet').classList.remove('hidden'); document.body.style.overflow = 'hidden';
+}
+function fdClose() { $('#fdSheet').classList.add('hidden'); document.body.style.overflow = ''; }
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#fdStart')) return startFd();
+  if (t.closest('#fdQuit')) return view('home');
+  if (t.closest('#fdReset')) { FS = fdFresh(); fdRender(); return window.scrollTo(0, 0); }
+  if (t.closest('#fdMine')) { FS.view = FS.view === 'mine' ? 'find' : 'mine'; fdRender(); return window.scrollTo(0, 0); }
+  if (t.closest('#fdBack')) { FS.view = 'find'; fdRender(); return window.scrollTo(0, 0); }
+  const mn = t.closest('[data-mine]'); if (mn) { const [act, id] = mn.dataset.mine.split(':'), all = { ...seenAll() }; if (act === 'add') all[id] = Date.now(); else delete all[id]; dset(SEENKEY, all); fdOpen(id); return fdRender(); }
+  const sh = t.closest('[data-fdshare]'); if (sh) { const b = byIdAll[sh.dataset.fdshare]; return void window.open('https://wa.me/?text=' + encodeURIComponent(`I found a ${nm(b)} with the Bird Finder on ${BRAND}. Can you name the birds you see?\n${SITE}?r=wa#finder`), '_blank', 'noopener'); }
+  if (t.closest('#fdSheetX') || t === $('#fdSheet')) return fdClose();
+  if (t.closest('#fdJump')) return $('#fdRes') && $('#fdRes').scrollIntoView({ behavior: 'smooth' });
+  if (t.closest('#fdMore')) { FS.more = !FS.more; return fdRender(); }
+  if (t.closest('#fdMoreBirds')) { FS.shown += 24; return fdRender(); }
+  const card = t.closest('#fdBody [data-open]'); if (card) return fdOpen(card.dataset.open);
+  const cmp = t.closest('[data-cmp]'); if (cmp) { const i = +cmp.dataset.cmp; fdClose(); K = { mode: 'hub' }; view('look'); return lkDetail(i); }
+  const c = t.closest('#fdBody [data-fd]'); if (!c) return;
+  const [k, v] = c.dataset.fd.split(':');
+  if (k === 'where') FS.where = v;
+  else if (k === 'season') FS.season = FS.season === v ? '' : v;
+  else { const set = FS[k]; const n = +v; if (set.has(n)) set.delete(n); else if (k !== 'col' || set.size < 3) set.add(n); }
+  FS.shown = 24; fdRender();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#fdSheet').classList.contains('hidden')) fdClose(); });
+
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
@@ -2625,6 +2782,7 @@ syncBarColor();
 store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderGroups(); { let t0 = 'guess'; try { t0 = localStorage.getItem(TABKEY) || 'guess'; } catch (e) {} setTab(t0); } // names are English only for now
 const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
 if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
+else if (/finder/.test(location.hash)) startFd(); // a shared "Bird Finder" link
 else if (/lookalikes/.test(location.hash)) startLk(); // a shared "Look-alikes" link
 else if (/oddone/.test(location.hash)) startOd(); // a shared "Odd one out" link
 else if (/heavier/.test(location.hash)) startHv(); // a shared "Which is heavier?" link
