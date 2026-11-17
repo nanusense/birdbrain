@@ -580,6 +580,34 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .fd-sheet ul{margin:6px 0 12px;padding-left:20px;font-size:14.5px;line-height:1.45}
 .fd-sheet .fd-cmp{display:grid;gap:8px;margin-top:6px}
 .fd-sheet h4{font-family:var(--display);font-size:15px;margin:14px 0 4px}
+/* ---------- Bird of the day ---------- */
+.btn.bdb{background:#ffd84d;color:#14161a}.btn.bdb:hover{background:#f5cb2b}
+.bd{position:relative;overflow:hidden;max-width:38em;background:#166534;color:#fff;border-radius:26px;padding:18px 20px 20px;margin:0 0 24px}
+.bd::before{content:"";position:absolute;right:-46px;top:-56px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.09)}
+.bd>*{position:relative}
+.bd:empty{display:none}
+.bd-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.bd-pill{font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:#ffd84d;color:#3a2f00;border-radius:99px;padding:5px 12px}
+.bd-date{font-weight:700;font-size:13px;color:rgba(255,255,255,.9)}
+.bd .linkbtn{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.bd-main{display:flex;gap:14px;align-items:center}
+.bd-pic{flex:none;width:112px;height:112px;border-radius:22px;background:#ffd84d;display:grid;place-items:center;overflow:hidden}
+.bd-pic img{width:92%;height:92%;object-fit:contain;filter:brightness(0) opacity(.82);transition:filter .7s,transform .7s}
+.bd.rev .bd-pic img{filter:drop-shadow(0 6px 6px rgba(0,0,0,.2));transform:scale(1.04) rotate(-2deg)}
+.bd h2{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em;line-height:1.1}
+.bd .sci{display:block;color:rgba(255,255,255,.82);font-size:13px;margin-top:3px}
+.bd-hints{margin:6px 0 0;padding:0;list-style:none;font-size:14.5px;line-height:1.4}
+.bd-hints li+li{margin-top:3px}
+.bd-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.bd-tags span{background:rgba(255,255,255,.18);border-radius:99px;font-size:12.5px;font-weight:700;padding:3px 10px}
+.bd-facts{margin:14px 0 0;padding-left:20px;font-size:14.5px;line-height:1.45}
+.bd-facts li+li{margin-top:4px}
+.bd-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.bd-act .btn{padding:11px 16px;font-size:15px}
+.bd-act a.btn{text-decoration:none;color:#14161a}
+.bd-act .linkbtn{font-size:14.5px}
+.bd:not(.rev) .bd-after,.bd.rev .bd-before{display:none}
+@media (max-width:420px){.bd-pic{width:96px;height:96px}.bd h2{font-size:20px}}
 /* ---------- Group challenges (teal, so they never look like the Daily or free play) ---------- */
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--soft);border-radius:16px;padding:4px;max-width:38em;margin:0 0 14px}
 .tabs button{padding:11px 2px;border-radius:12px;font-weight:700;font-size:14px;white-space:nowrap;color:var(--muted);transition:background .15s,color .15s}
@@ -711,6 +739,7 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
       <h1>How well do you know your <em>birds?</em></h1>
       <p class="lead">Guess the bird from its picture, play quick bird games, or learn to tell look-alikes apart. From the birds you see every day to rare finds from around the world.</p>
       <section class="daily" id="dailyCard" aria-label="Daily Birdbrain"></section>
+      <section class="bd" id="botdCard" aria-label="Bird of the day"></section>
       <div class="tabs" id="homeTabs" role="tablist" aria-label="What do you want to play?">
         <button role="tab" data-tab="guess" aria-selected="true">Guess the bird</button>
         <button role="tab" data-tab="quick" aria-selected="false">Quick games</button>
@@ -1982,7 +2011,7 @@ const hms = ms => { const s = Math.max(Math.floor(ms / 1000), 0); return [s / 36
 function tickDaily() {
   const t = hms((Math.floor((Date.now() + IST) / DAY) + 1) * DAY - IST - Date.now());
   $$('#dCount,#rdTimer').forEach(e => { e.textContent = t; });
-  if (dailyShown && dailyShown !== dailyInfo().str && !$('#home').classList.contains('hidden')) renderDaily(); // the day changed while the page was open
+  if (dailyShown && dailyShown !== dailyInfo().str && !$('#home').classList.contains('hidden')) { renderDaily(); renderBotd(); } // the day changed while the page was open
 }
 setInterval(tickDaily, 1000);
 // how today's score compares with everyone else who finished (anonymous counts from the stats server)
@@ -2764,6 +2793,53 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#fdSheet').classList.contains('hidden')) fdClose(); });
 
+/* ---------- Bird of the day ---------- */
+// One bird a day, the same for everyone (the day changes at midnight IST). The order is a fixed shuffle of every bird that has a Bird Album page, so nothing repeats
+// until the list has been used up. Two days in five are birds of India (that list comes round about every 7 years), the rest come from the whole world.
+// The card starts as "Who's today's bird?" with hints and a shadow; a tap reveals the bird, three quick facts and a link to its Bird Album page.
+const BKEY = 'birdbrain.botd.v1';
+let BOTDL = null; const botdFacts = {};
+function botdPick(k) {
+  if (!BOTDL) {
+    const ok = D.birds.filter(b => b.c < 5 && b.g).sort((a, c) => a.i < c.i ? -1 : 1);
+    BOTDL = { ind: seededShuffle(ok.filter(b => b.p.includes(0)), seeded(hash32('botd|india'))), wld: seededShuffle(ok.filter(b => !b.p.includes(0)), seeded(hash32('botd|world'))) };
+  }
+  const cyc = Math.floor(k / 5), pos = k % 5, isInd = pos === 0 || pos === 3;            // the week pattern: India, world, world, India, world
+  const idx = isInd ? cyc * 2 + (pos === 3 ? 1 : 0) : cyc * 3 + (pos === 1 ? 0 : pos === 2 ? 1 : 2), L = isInd ? BOTDL.ind : BOTDL.wld;
+  return L[idx % L.length];
+}
+function botdHints(b) {
+  const h = [];
+  if (b.z >= 0) h.push(`A ${SIZES[b.z][0].toLowerCase()} bird: think ${SIZES[b.z][1]}.`);
+  h.push(b.p.includes(0) ? 'It has been seen in India.' : b.r.length ? `It lives in ${join2(b.r.slice(0, 2).map(i => D.regions[i][0]))}.` : 'It lives far from the usual birding spots.');
+  h.push(`It belongs to the family: ${D.fams[b.f].e}.`);
+  if (b.d >= 0 && DIET_LABEL[D.diets[b.d]]) h.push(`Diet: ${DIET_LABEL[D.diets[b.d]].charAt(0).toLowerCase() + DIET_LABEL[D.diets[b.d]].slice(1)}.`);
+  return h;
+}
+function renderBotd() {
+  const el = $('#botdCard'); if (!el || !DY) return;
+  const t = dailyInfo(), b = botdPick(t.num - 1); if (!b) { el.innerHTML = ''; return; }
+  const st = dget(BKEY), cur = st && st.day === t.str ? st : { day: t.str, rev: false, hints: 2 };
+  if (!botdFacts[t.str]) botdFacts[t.str] = factsFor(b).slice(0, 3);
+  const hints = botdHints(b);
+  el.dataset.id = b.i; el.classList.toggle('rev', !!cur.rev);
+  el.innerHTML = `<div class="bd-top"><span class="bd-pill">Bird of the day</span><span class="bd-date">${esc(t.label)}</span></div>
+    <div class="bd-main"><div class="bd-pic">${img(b, '', false)}</div><div>
+      <div class="bd-before"><h2>Who's today's bird?</h2><ul class="bd-hints">${hints.slice(0, cur.hints).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="bd-after"><h2>${esc(nm(b))}</h2><i class="sci">${esc(b.s)}</i><div class="bd-tags">${b.z >= 0 ? `<span>${SIZES[b.z][0]} · ${wTxt(b.w)}</span>` : ''}${b.c >= 2 ? `<span>${esc(STATUS[b.c])}</span>` : ''}</div></div>
+    </div></div>
+    <div class="bd-act bd-before"><button class="btn bdb" id="bdReveal">Reveal the bird</button>${cur.hints < hints.length ? '<button class="linkbtn" id="bdHint">Another hint</button>' : ''}</div>
+    <ul class="bd-facts bd-after">${botdFacts[t.str].map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+    <div class="bd-act bd-after"><a class="btn bdb" href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener">Learn more ↗</a><button class="linkbtn" id="bdShare">Share</button></div>`;
+}
+document.addEventListener('click', e => {
+  const t = e.target, el = $('#botdCard'); if (!el || !el.contains(t)) return;
+  const day = dailyInfo().str, st = dget(BKEY), cur = st && st.day === day ? st : { day, rev: false, hints: 2 };
+  if (t.closest('#bdReveal')) { dset(BKEY, { ...cur, rev: true }); return void el.classList.add('rev'); }    // no re-render, so the shadow fades into colour
+  if (t.closest('#bdHint')) { dset(BKEY, { ...cur, hints: Math.min(cur.hints + 1, 4) }); return renderBotd(); }
+  if (t.closest('#bdShare')) { const b = byIdAll[el.dataset.id]; return void window.open('https://wa.me/?text=' + encodeURIComponent(`Bird of the day on ${BRAND}: the ${nm(b)}. ${botdFacts[day] ? botdFacts[day][0] : ''}\n\nCan you guess tomorrow's bird? ${SITE}?r=wa`), '_blank', 'noopener'); }
+});
+
 /* ---------- theme ---------- */
 $('#themeBtn').onclick = () => {
   const r = document.documentElement;
@@ -2779,7 +2855,7 @@ try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documen
 syncBarColor();
 
 /* ---------- boot ---------- */
-store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderGroups(); { let t0 = 'guess'; try { t0 = localStorage.getItem(TABKEY) || 'guess'; } catch (e) {} setTab(t0); } // names are English only for now
+store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderBotd(); renderGroups(); { let t0 = 'guess'; try { t0 = localStorage.getItem(TABKEY) || 'guess'; } catch (e) {} setTab(t0); } // names are English only for now
 const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
 if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
 else if (/finder/.test(location.hash)) startFd(); // a shared "Bird Finder" link
