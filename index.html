@@ -138,6 +138,7 @@ svg{display:block}
 .wall .trk:nth-child(2){animation:wallRight 58s linear infinite}
 .wall .wt{flex:none;width:clamp(112px,11vw,152px);height:clamp(112px,11vw,152px);overflow:hidden;border-radius:28px;background:var(--c);display:grid;place-items:center;box-shadow:0 1px 2px rgba(20,22,26,.05),0 14px 28px -16px rgba(20,22,26,.35)}
 .wall .wt img{width:90%;height:90%;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.2))}
+@media (max-width:560px){.wall .wt{width:92px;height:92px;border-radius:22px}.collage.wall{gap:8px}.wall .trk{gap:8px}}
 @keyframes wallLeft{to{transform:translateX(calc(-50% - 5px))}}
 @keyframes wallRight{from{transform:translateX(calc(-50% - 5px))}to{transform:translateX(0)}}
 @media (prefers-reduced-motion:reduce){.wall .trk{animation:none!important}}
@@ -614,7 +615,84 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
 .tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,22,26,.12)}
 .tabhint{color:var(--muted);font-size:14.5px;line-height:1.45;max-width:38em;margin:0 0 14px}
 .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:38em;margin:0 0 24px}
-#home:not([data-tab="guess"]) :is(#indiaSec,#worldSec,.build-cta){display:none}
+.d-act+.d-strip{margin-top:16px}
+.homehead{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;max-width:38em}
+.homehead{margin-bottom:4px}
+.homesub{color:var(--muted);font-size:14.5px;line-height:1.4;max-width:34em;margin:0 0 12px}
+.hcards{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:38em;margin:0 0 12px}
+.mt{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;min-height:204px;border-radius:24px;padding:14px;text-align:left;background:var(--tb);color:var(--tt);transition:transform .12s}
+.mt::before{content:"";position:absolute;right:-34px;top:-40px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.32)}
+.mt::after{content:"";position:absolute;left:-26px;top:58px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2)}
+.mt:hover{transform:translateY(-2px)}
+.mt.gb{--tb:#FAC775;--tt:#412402;--ts:#633806}
+.mt.qg{--tb:#B5D4F4;--tt:#042C53;--ts:#0C447C}
+.mt.lk{--tb:#C0DD97;--tt:#173404;--ts:#27500A}
+.mt.fd{--tb:#F4C0D1;--tt:#4B1528;--ts:#72243E}
+.mts{position:absolute;left:14px;right:14px;top:12px;height:104px;z-index:1;pointer-events:none}
+.mts img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.2))}
+.mt>.mtx{position:relative;z-index:2}
+.mtb{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.05em;background:rgba(255,255,255,.75);border-radius:99px;padding:2px 7px;margin-left:4px;vertical-align:2px}
+/* art 1: a fan of three deck cards */
+.fan i{position:absolute;top:16px;left:calc(50% - 26px);width:52px;height:68px;border-radius:12px;border:3px solid #fff;background:var(--c);box-shadow:0 4px 0 rgba(0,0,0,.14);transform:translateX(var(--x)) rotate(var(--r));overflow:hidden;padding:2px}
+.fan i:nth-child(2){top:8px;z-index:2}
+.fan b{position:absolute;z-index:3;left:calc(50% + 10px);top:2px;width:22px;height:22px;border-radius:50%;background:#412402;color:#FAC775;display:grid;place-items:center;font-size:13px}
+/* art 2: a balance, the heavy bird down and the light one up */
+.bal .beam{position:absolute;left:calc(50% - 56px);top:70px;width:112px;height:6px;border-radius:4px;background:var(--tt);transform:rotate(-9deg)}
+.bal .fulc{position:absolute;left:calc(50% - 9px);top:76px;width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:18px solid var(--tt)}
+.bal .hv{position:absolute;left:calc(50% - 58px);top:20px;width:54px;height:52px}
+.bal .lt{position:absolute;left:calc(50% + 16px);top:38px;width:34px;height:32px}
+.bal em{position:absolute;font-style:normal;font-weight:800;font-size:11px;background:#fff;border-radius:99px;padding:1px 7px;color:var(--tt);white-space:nowrap}
+.bal em.l{left:calc(50% - 56px);top:2px}
+.bal em.r{left:calc(50% + 14px);top:16px}
+/* art 3: two look-alikes side by side with an almost-equal sign between them */
+.twin i{position:absolute;top:14px;width:56px;height:70px;border-radius:14px;background:var(--c);padding:3px;box-shadow:0 4px 0 rgba(0,0,0,.14)}
+.twin i:nth-child(1){left:calc(50% - 60px);transform:rotate(-5deg)}
+.twin i:nth-child(2){left:calc(50% + 4px);transform:rotate(5deg)}
+.twin b{position:absolute;left:calc(50% - 12px);top:36px;width:24px;height:24px;border-radius:50%;background:#173404;color:#C0DD97;display:grid;place-items:center;font-size:15px;z-index:2}
+/* art 4: a lens finding a bird, with the clues you would give */
+.find .shd{position:absolute;right:6%;top:6px;width:44%;height:72px;opacity:.14}
+.find .shd img{filter:brightness(0)}
+.find .lens{position:absolute;left:calc(50% - 44px);top:6px;width:66px;height:66px;border-radius:50%;background:#FFD27A;border:5px solid #72243E;overflow:hidden;display:grid;place-items:center}
+.find .lens img{width:116%;height:116%}
+.find .hdl{position:absolute;left:calc(50% + 14px);top:60px;width:8px;height:26px;border-radius:5px;background:#72243E;transform:rotate(-45deg);transform-origin:50% 0}
+.find .clue{position:absolute;left:0;top:76px;display:flex;align-items:center;gap:4px;background:#fff;border-radius:99px;padding:3px 8px;font-size:11px;font-weight:800;color:#4B1528;white-space:nowrap}
+.find .clue i{width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
+@media(max-width:380px){.hcards{gap:8px}.mt{padding:12px}}
+.mtx b{display:block;font-family:var(--display);font-size:17px;line-height:1.15}
+.mtx small{display:block;font-size:13px;line-height:1.3;margin-top:3px;color:var(--ts)}
+.daily.compact{border-radius:24px;padding:16px 18px 14px;margin-bottom:22px}
+.ds-row{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.ds-flame{flex:none;width:80px;border-radius:18px;background:rgba(255,255,255,.16);color:#fff;text-align:center;padding:8px 4px 8px}
+.ds-flame svg{display:block;margin:0 auto;opacity:.6}
+.ds-flame.on{background:#ffd84d;color:#3a2f00}
+.ds-flame.on svg{opacity:1;color:#e5483b}
+.ds-flame b{display:block;font-family:var(--display);font-size:34px;line-height:1;font-weight:800;margin-top:2px}
+.ds-flame small{display:block;font-size:11px;font-weight:800;letter-spacing:.03em;margin-top:2px}
+.ds-l{font-size:12.5px;font-weight:700;color:#d6d8ff;margin:0 0 3px}
+.ds-l b{font-variant-numeric:tabular-nums;font-weight:800;color:#fff}
+.daily.compact h2{font-size:22px;margin:0 0 4px}
+.ds-s{font-size:13.5px;font-weight:600;opacity:.92;line-height:1.3;margin:0}
+.daily.compact .d-act{margin-bottom:14px}
+.daily.compact .d-strip{margin:0}
+.daily .d-btn.go{background:#ffd84d;color:#3a2f00}
+@media(max-width:560px){.daily .d-btn.go{width:100%}}
+#decks .b-head,#quickg .b-head{margin-bottom:14px}
+#decks #quickDecks{display:none}
+#quickg .qgrid{margin-top:6px}
+/* Bird of the day: a slim strip until tapped */
+.bd:not(.open){padding:10px 14px;border-radius:22px;cursor:pointer;margin-top:2px}
+.bd:not(.open)::before{display:none}
+.bd:not(.open) .bd-full{display:none}
+.bd.open .bd-slim{display:none}
+.bd-slim{display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:#fff}
+.bd-slim .bd-pic{width:46px;height:46px;border-radius:13px}
+.bd-slim b{display:block;font-family:var(--display);font-size:16px;line-height:1.15}
+.bd-slim small{display:block;font-size:13px;color:rgba(255,255,255,.85);margin-top:2px}
+.bd-slim .chev{margin-left:auto;flex:none;opacity:.9}
+.rkeep{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin-top:6px}
+.rkeep>span{flex-basis:100%;text-align:center;color:var(--muted);font-weight:700;font-size:13px}
+.rkeep button{background:var(--soft);border-radius:99px;padding:9px 15px;font-weight:700;font-size:14px}
+.rkeep button:hover{box-shadow:inset 0 0 0 2px var(--ink)}
 .qtile{position:relative;display:flex;flex-direction:column;justify-content:flex-start;text-align:left;background:var(--surface);border-radius:22px;padding:8px 8px 14px;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .12s,box-shadow .15s}
 .qtile:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1.5px var(--ac)}
 .qtile.hv{--ac:#a21caf}.qtile.lk{--ac:#5a7d1a}.qtile.od{--ac:#0b7bc0}.qtile.fd{--ac:#c2410c}
@@ -726,7 +804,6 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <img class="wordmark wm-dark" src="assets/wordmark-dark.png" width="141" height="54" alt="" aria-hidden="true">
   </a>
   <div class="navr">
-    <button class="btn ghost sm" id="navBuild">Build your own deck</button>
     <button class="iconbtn" id="themeBtn" aria-label="Switch light / dark theme"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
   </div>
 </header>
@@ -737,41 +814,33 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <div>
       <div class="eyebrow"><span>11,011 birds</span><span class="played" id="playedCount" hidden><i class="pdot" aria-hidden="true"></i><b id="playedN">0</b><span>games played so far</span></span></div>
       <h1>How well do you know your <em>birds?</em></h1>
-      <p class="lead">Guess the bird from its picture, play quick bird games, or learn to tell look-alikes apart. From the birds you see every day to rare finds from around the world.</p>
+      <p class="lead">Name 10 birds from their pictures. Two minutes, no sign-up, and a new set every day.</p>
       <section class="daily" id="dailyCard" aria-label="Daily Birdbrain"></section>
-      <section class="bd" id="botdCard" aria-label="Bird of the day"></section>
-      <div class="tabs" id="homeTabs" role="tablist" aria-label="What do you want to play?">
-        <button role="tab" data-tab="guess" aria-selected="true">Guess the bird</button>
-        <button role="tab" data-tab="quick" aria-selected="false">Quick games</button>
-        <button role="tab" data-tab="learn" aria-selected="false">Learn</button>
+      <p class="homehead" id="homeCardsHead">Or try something different</p>
+      <p class="homesub">Guess, compare, tell look-alikes apart, or identify a bird you just spotted.</p>
+      <div class="hcards" id="homeCards">
+        <button class="mt gb" id="gbStart"><span class="mts" data-pv="gb"></span><span class="mtx"><b>Name the birds</b><small>Any deck, 11,000 birds</small></span></button>
+        <button class="mt qg" id="qgStart"><span class="mts" data-pv="qg"></span><span class="mtx"><b>Quick games</b><small>Heavier? Odd one out?</small></span></button>
+        <button class="mt lk" id="lkStart"><span class="mts" data-pv="lk"></span><span class="mtx"><b>Look-alikes</b><small>Tell the twins apart</small></span></button>
+        <button class="mt fd" id="fdStart"><span class="mts" data-pv="fd"></span><span class="mtx"><b>Find a bird <em class="mtb">BETA</em></b><small>Narrow down what you saw</small></span></button>
       </div>
-      <section class="tabpane" id="pane-guess" role="tabpanel">
-        <p class="tabhint">See a picture and name the bird. Pick a set to start and play as often as you like. It's separate from the Daily challenge.</p>
+      <section class="bd" id="botdCard" aria-label="Bird of the day"></section>
+    </div>
+    <div class="collage wall" id="collage" aria-hidden="true"></div>
+  </section>
+
+  <p class="foot" id="credit"></p>
+</main>
+
+<!-- NAME THE BIRDS: every deck -->
+<main id="decks" class="wrap hidden">
+  <div class="b-head"><button class="back backhome"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Home</button><h1>Name the birds</h1><p>See a picture and name the bird. Pick a set to start and play as often as you like. It's separate from the Daily challenge.</p></div>
         <div class="quick" id="quickDecks"></div>
         <div class="cta">
           <button class="btn ghost" id="surprise"><span class="cb"><b>Surprise me</b><small>Play a random deck</small></span></button>
           <button class="btn ghost" id="gcStart"><span class="cb"><b>Play with friends</b><small>Same 10 birds, shared by link</small></span></button>
-          <button class="linkbtn" id="pickDeck">See all decks ↓</button>
         </div>
         <div class="gc-list" id="gcList" style="margin:12px 0 4px"></div>
-      </section>
-      <section class="tabpane hidden" id="pane-quick" role="tabpanel">
-        <p class="tabhint">Short 10-round games with different questions. No setup, about two minutes each.</p>
-        <div class="qgrid">
-          <button class="qtile hv" id="hvStart"><span class="qpv" data-pv="hv"></span><i class="new">NEW</i><span class="qt"><b>Which is heavier?</b><small>Two birds, tap the one that weighs more. A good one for kids.</small></span></button>
-          <button class="qtile od" id="odStart"><span class="qpv four" data-pv="od"></span><i class="new">NEW</i><span class="qt"><b>Odd one out</b><small>Four birds, one doesn't belong. Find it, then see why.</small></span></button>
-        </div>
-      </section>
-      <section class="tabpane hidden" id="pane-learn" role="tabpanel">
-        <p class="tabhint">Tools to help you name the birds you see, and tell look-alikes apart. The Bird Finder is still in beta, so treat its answers as a rough guide.</p>
-        <div class="qgrid">
-          <button class="qtile fd" id="fdStart"><span class="qpv find" data-pv="fd"></span><i class="new">BETA</i><span class="qt"><b>Bird Finder</b><small>Saw a bird? Say where, how big and what colour, and find it.</small></span></button>
-          <button class="qtile lk" id="lkStart"><span class="qpv" data-pv="lk"></span><i class="new">NEW</i><span class="qt"><b>Look-alikes</b><small>100 pairs of birds that are easy to confuse. Learn the clues, then take a quiz.</small></span></button>
-        </div>
-      </section>
-    </div>
-    <div class="collage wall" id="collage" aria-hidden="true"></div>
-  </section>
 
   <section class="sec" id="indiaSec">
     <div class="sec-h"><h2><span class="flag" aria-hidden="true"><i></i><i></i><i></i></span> Birds of India</h2><p>Tap a deck to start</p></div>
@@ -787,7 +856,15 @@ select{width:100%;border-radius:12px;padding:10px 12px;font:inherit;background:v
     <div><h3>Want something specific?</h3><p>Mix and match place, habitat, size, diet and bird family. Only wetland birds of the Himalayas? Done.</p></div>
     <button class="btn" id="ctaBuild">Build your own deck</button>
   </div>
-  <p class="foot" id="credit"></p>
+</main>
+
+<!-- QUICK GAMES -->
+<main id="quickg" class="wrap hidden">
+  <div class="b-head"><button class="back backhome"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Home</button><h1>Quick games</h1><p>Short 10-round games with different questions. No setup, about two minutes each.</p></div>
+  <div class="qgrid">
+    <button class="qtile hv" id="hvStart"><span class="qpv" data-pv="hv"></span><i class="new">NEW</i><span class="qt"><b>Which is heavier?</b><small>Two birds, tap the one that weighs more. A good one for kids.</small></span></button>
+    <button class="qtile od" id="odStart"><span class="qpv four" data-pv="od"></span><i class="new">NEW</i><span class="qt"><b>Odd one out</b><small>Four birds, one doesn't belong. Find it, then see why.</small></span></button>
+  </div>
 </main>
 
 <!-- BUILDER -->
@@ -1243,7 +1320,7 @@ const nm = b => b.n[langIdx()] || b.n[0];
 /* ---------- keep the browser's Back button inside the site ---------- */
 // Every screen after the home page is its own history step, so Back (or a swipe) returns to the home page instead of leaving the site.
 const RESBAR = '<div class="resbar"><button class="btn ghost sm resHome"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg> Back to home</button></div>';
-const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes', 'finder']);
+const BB_VIEWS = new Set(['build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes', 'finder', 'decks', 'quickg']);
 let fromPop = false;
 function syncHistory(v) {
   if (fromPop) return;
@@ -1256,7 +1333,7 @@ function syncHistory(v) {
 addEventListener('popstate', () => { fromPop = true; try { stopGame(); view('home'); } finally { fromPop = false; } });
 document.addEventListener('click', e => { if (e.target.closest('.resHome')) { stopGame(); view('home'); } });
 /* ---------- views ---------- */
-const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes', 'finder'];
+const VIEWS = ['home', 'build', 'game', 'results', 'heavy', 'hvRes', 'odd', 'odRes', 'look', 'lkRes', 'finder', 'decks', 'quickg'];
 function view(v) {
   VIEWS.forEach(x => $('#' + x).classList.toggle('hidden', x !== v));
   $('#nav').classList.toggle('hidden', v === 'game' || v === 'heavy' || v === 'odd' || v === 'look' || v === 'finder');
@@ -1266,7 +1343,7 @@ function view(v) {
   if (v !== 'look' && v !== 'lkRes' && typeof lkStop === 'function') lkStop();
   $('#reveal').classList.add('hidden');
   syncHistory(v);
-  if (v === 'home' && typeof renderDaily === 'function') { renderDaily(); renderGroups(); }
+  if ((v === 'home' || v === 'decks') && typeof renderDaily === 'function') { renderDaily(); renderGroups(); }
   window.scrollTo(0, 0);
 }
 
@@ -1295,10 +1372,13 @@ $('#quickDecks').innerHTML = QUICK.map(id => deckById[id]).filter(Boolean).map(d
   + `<button class="qchip build" id="qBuild"><span class="qi">+</span>Build your own</button>`;
 $('#qBuild').onclick = () => openBuilder();
 $('#surprise').onclick = () => { const ok = DECKS.filter(d => d.pool.length >= 20); openSheet(ok[Math.random() * ok.length | 0]); };
-$('#pickDeck').onclick = () => $('#indiaSec').scrollIntoView({ behavior: 'smooth' });
-$('#navBuild').onclick = $('#ctaBuild').onclick = () => openBuilder();
+$('#ctaBuild').onclick = () => openBuilder();
 $('#logoHome').onclick = e => { e.preventDefault(); stopGame(); view('home'); };
-$('#backHome').onclick = () => view('home');
+$('#backHome').onclick = () => view('decks');
+document.addEventListener('click', e => { if (e.target.closest('.backhome')) view('home'); });
+document.addEventListener('click', e => { const k = e.target.closest('[data-keep]'); if (!k) return; stopGame(); ({ hv: startHv, od: startOd, lk: startLk, gb: () => view('decks') })[k.dataset.keep](); });
+$('#gbStart').onclick = () => view('decks');
+$('#qgStart').onclick = () => view('quickg');
 
 /* ---------- deck sheet ---------- */
 let sheetDeck = null, sheetPool = null;
@@ -1967,7 +2047,8 @@ function renderDaily() {
   const el = $('#dailyCard'); if (!el) return;
   if (!DY) { el.classList.add('hidden'); return; }
   const t = dailyInfo(), p = dailyProg(), st = dailyStreak(), n = p ? p.log.length : 0, done = !!(p && p.done);
-  dailyShown = t.str;
+  dailyShown = t.str; el.classList.toggle('compact', !done && n === 0);
+  { const hh = $('#homeCardsHead'); if (hh) hh.textContent = done ? 'Done for today. Keep playing?' : n > 0 ? 'Finish today\'s birds first, or try something else' : 'Or try something different'; }
   const streak = st.cur > 0 ? `<span class="d-streak">${FLAME} ${st.cur}-day streak</span>` : '';
   const th = t.theme;
   // the card says "a new game every day" in three ways: a calendar page for today, a countdown to the next set, and a week strip (days done, today, days still to come)
@@ -1985,11 +2066,13 @@ function renderDaily() {
       <p class="d-rank hidden" id="dRank"></p>`;
     fillRank($('#dRank'), t.num, p.gid, p.score, false);
   } else if (n > 0) {
-    el.innerHTML = `${top}${head(`<h2>Pick up where you left off</h2><p class="d-sub">Daily #${t.num}. ${n} of 10 birds done.</p>`)}${strip}${nextOnly}<div class="d-prog">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
-      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Continue · ${n} of 10 done</button>${streak}</div>`;
+    el.innerHTML = `${top}${head(`<h2>Pick up where you left off</h2><p class="d-sub">Daily #${t.num}. ${n} of 10 birds done.</p>`)}<div class="d-prog">${p.log.map(x => `<i class="${x ? 'ok' : 'no'}"></i>`).join('')}${'<i></i>'.repeat(Math.max(10 - n, 0))}</div>
+      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Continue · ${n} of 10 done</button>${streak}</div>${strip}${nextOnly}`;
   } else {
-    el.innerHTML = `${top}${head(th ? `<h2>${esc(th.title)}</h2><p class="d-sub">Today's 10 birds are ${esc(th.what)}. A new set every day.</p>` : `<h2>A new set of 10 birds every day</h2><p class="d-sub">Daily #${t.num}. The same birds for everyone, and you get one try.</p>`)}${strip}${tags}
-      <div class="d-act"><button class="d-btn" id="dPlay" type="button">Play today's birds</button>${streak || '<span class="d-count">Come back daily to build a streak</span>'}</div>`;
+    const big = FLAME.replace('width="15" height="15"', 'width="24" height="24"');
+    el.innerHTML = `<div class="ds-row"><div class="ds-flame${st.cur > 0 ? ' on' : ''}" aria-label="${st.cur} day streak">${big}<b>${st.cur}</b><small>day streak</small></div>
+      <div class="ds-t"><p class="ds-l">${th ? 'Sunday special' : 'Daily #' + t.num} · new birds in <b id="dCount">--:--:--</b></p><h2>${th ? esc(th.title) : 'Today\'s 10 birds'}</h2><p class="ds-s">${st.cur > 0 ? 'Play today to keep your streak alive.' : 'Play every day to build a streak.'}</p></div></div>
+      <div class="d-act"><button class="d-btn go" id="dPlay" type="button">Play today's birds</button></div>${strip}`;
   }
   tickDaily();
 }
@@ -2046,7 +2129,7 @@ async function fillRank(el, num, gid, score, card) {
 }
 function renderDailyResult() {
   const st = dailyStreak();
-  $('#rDaily').innerHTML = `<div class="rstat"><b>${st.cur > 0 ? FLAME.replace('width="15" height="15"', 'width="28" height="28" style="display:inline;vertical-align:-5px"') + ' ' + st.cur : '–'}</b><span>day streak</span></div><div class="rstat"><b id="rdTimer">--:--:--</b><span>until tomorrow's birds</span></div>`;
+  $('#rDaily').innerHTML = `<div class="rstat"><b>${st.cur > 0 ? FLAME.replace('width="15" height="15"', 'width="28" height="28" style="display:inline;vertical-align:-5px"') + ' ' + st.cur : '–'}</b><span>day streak</span></div><div class="rstat"><b id="rdTimer">--:--:--</b><span>until tomorrow's birds</span></div><div class="rkeep"><span>Want another round?</span><button data-keep="hv">Which is heavier?</button><button data-keep="od">Odd one out</button><button data-keep="lk">Look-alikes</button><button data-keep="gb">Name more birds</button></div>`;
   tickDaily();
 }
 
@@ -2230,24 +2313,17 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('click', e => { if (e.target.closest('#installLink')) openGrp(`<h2 style="font-size:24px;font-weight:800;padding-right:44px;margin-bottom:12px">Daily birds, one tap away</h2>${installCard()}`, 'install'); });
 
-/* ---------- Home tabs: Guess the bird / Quick games / Learn (the last one used is remembered) ---------- */
-const TABKEY = 'birdbrain.tab';
-function setTab(t) {
-  if (!['guess', 'quick', 'learn'].includes(t)) t = 'guess';
-  $('#home').dataset.tab = t;
-  $$('#homeTabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === t)));
-  ['guess', 'quick', 'learn'].forEach(x => $('#pane-' + x).classList.toggle('hidden', x !== t));
-  try { localStorage.setItem(TABKEY, t); } catch (e) {}
-}
-$('#homeTabs').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) setTab(b.dataset.tab); });
 /* ---------- Quick games tiles: a small picture of each game ---------- */
 function renderQuick() {
   const pv = (names, cols) => names.map((n, i) => byEn[n] ? `<span style="--c:${cols[i % cols.length]}">${img(byEn[n], '', false)}</span>` : '').join('');
   const set = (k, html) => { const el = $(`[data-pv="${k}"]`); if (el) el.innerHTML = html; };
   set('hv', pv(['Indian Peafowl', 'House Sparrow'], [C.saffron, C.sky]));
-  set('lk', pv(['Green Warbler', 'Greenish Warbler'], [C.saffron, C.sky]));
-  // the Bird Finder picture: a magnifying lens revealing a bird in colour over its faint shadow, with the clues (size, colours) you would give
-  if (byEn['Common Kingfisher']) set('fd', `${img(byEn['Common Kingfisher'], 'fv-shadow', false)}<span class="fv-lens">${img(byEn['Common Kingfisher'], '', false)}</span><span class="fv-handle"></span><span class="fv-clues"><b>Small</b><i style="background:#2f7be5"></i><i style="background:#f08a24"></i></span>`);
+  const one = n => byEn[n] ? img(byEn[n], '', false) : '';
+  const st = n => byEn[n] ? img(byEn[n], '', false) : '';
+  set('gb', `<span class="fan"><i style="--c:${C.sky};--x:-36px;--r:-12deg">${st('Rose-ringed Parakeet')}</i><i style="--c:${C.saffron};--x:0px;--r:0deg">${st('Indian Roller')}</i><i style="--c:${C.pink};--x:36px;--r:12deg">${st('Spotted Owlet')}</i><b>?</b></span>`);
+  set('qg', `<span class="bal"><em class="l">4 kg</em><em class="r">25 g</em><span class="hv">${st('Indian Peafowl')}</span><span class="lt">${st('House Sparrow')}</span><span class="beam"></span><span class="fulc"></span></span>`);
+  set('lk', `<span class="twin"><i style="--c:${C.saffron}">${st('Green Warbler')}</i><i style="--c:${C.sky}">${st('Greenish Warbler')}</i><b>\u2248</b></span>`);
+  set('fd', `<span class="find"><span class="shd">${st('Common Kingfisher')}</span><span class="lens">${st('Common Kingfisher')}</span><span class="hdl"></span><span class="clue">Small <i style="background:#2f7be5"></i><i style="background:#f08a24"></i></span></span>`);
   set('od', pv(['Rock Pigeon', 'Spotted Dove', 'Eurasian Collared Dove', 'Cinereous Vulture'], [C.saffron, C.sky, C.leaf, C.pink]));
 }
 /* ---------- Which is heavier? ---------- */
@@ -2816,25 +2892,28 @@ function botdHints(b) {
   if (b.d >= 0 && DIET_LABEL[D.diets[b.d]]) h.push(`Diet: ${DIET_LABEL[D.diets[b.d]].charAt(0).toLowerCase() + DIET_LABEL[D.diets[b.d]].slice(1)}.`);
   return h;
 }
+let bdOpen = true;   // the Bird of the day card is open when the page loads
 function renderBotd() {
   const el = $('#botdCard'); if (!el || !DY) return;
   const t = dailyInfo(), b = botdPick(t.num - 1); if (!b) { el.innerHTML = ''; return; }
   const st = dget(BKEY), cur = st && st.day === t.str ? st : { day: t.str, rev: false, hints: 2 };
   if (!botdFacts[t.str]) botdFacts[t.str] = factsFor(b).slice(0, 3);
   const hints = botdHints(b);
-  el.dataset.id = b.i; el.classList.toggle('rev', !!cur.rev);
-  el.innerHTML = `<div class="bd-top"><span class="bd-pill">Bird of the day</span><span class="bd-date">${esc(t.label)}</span></div>
+  el.dataset.id = b.i; el.classList.toggle('rev', !!cur.rev); el.classList.toggle('open', bdOpen);
+  el.innerHTML = `<button class="bd-slim" id="bdOpen" type="button" aria-label="Open Bird of the day"><span class="bd-pic">${img(b, '', false)}</span><span><b>Bird of the day</b><small>${cur.rev ? esc(nm(b)) : 'Tap to reveal today\'s mystery'}</small></span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    <div class="bd-full"><div class="bd-top"><span class="bd-pill">Bird of the day</span><span class="bd-date">${esc(t.label)}</span></div>
     <div class="bd-main"><div class="bd-pic">${img(b, '', false)}</div><div>
       <div class="bd-before"><h2>Who's today's bird?</h2><ul class="bd-hints">${hints.slice(0, cur.hints).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
       <div class="bd-after"><h2>${esc(nm(b))}</h2><i class="sci">${esc(b.s)}</i><div class="bd-tags">${b.z >= 0 ? `<span>${SIZES[b.z][0]} · ${wTxt(b.w)}</span>` : ''}${b.c >= 2 ? `<span>${esc(STATUS[b.c])}</span>` : ''}</div></div>
     </div></div>
     <div class="bd-act bd-before"><button class="btn bdb" id="bdReveal">Reveal the bird</button>${cur.hints < hints.length ? '<button class="linkbtn" id="bdHint">Another hint</button>' : ''}</div>
     <ul class="bd-facts bd-after">${botdFacts[t.str].map(x => `<li>${esc(x)}</li>`).join('')}</ul>
-    <div class="bd-act bd-after"><a class="btn bdb" href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener">Learn more ↗</a><button class="linkbtn" id="bdShare">Share</button></div>`;
+    <div class="bd-act bd-after"><a class="btn bdb" href="https://birdalbum.com/birds/${esc(b.g)}/" target="_blank" rel="noopener">Learn more ↗</a><button class="linkbtn" id="bdShare">Share</button></div></div>`;
 }
 document.addEventListener('click', e => {
   const t = e.target, el = $('#botdCard'); if (!el || !el.contains(t)) return;
   const day = dailyInfo().str, st = dget(BKEY), cur = st && st.day === day ? st : { day, rev: false, hints: 2 };
+  if (t.closest('#bdOpen')) { bdOpen = true; return void el.classList.add('open'); }
   if (t.closest('#bdReveal')) { dset(BKEY, { ...cur, rev: true }); return void el.classList.add('rev'); }    // no re-render, so the shadow fades into colour
   if (t.closest('#bdHint')) { dset(BKEY, { ...cur, hints: Math.min(cur.hints + 1, 4) }); return renderBotd(); }
   if (t.closest('#bdShare')) { const b = byIdAll[el.dataset.id]; return void window.open('https://wa.me/?text=' + encodeURIComponent(`Bird of the day on ${BRAND}: the ${nm(b)}. ${botdFacts[day] ? botdFacts[day][0] : ''}\n\nCan you guess tomorrow's bird? ${SITE}?r=wa`), '_blank', 'noopener'); }
@@ -2855,7 +2934,7 @@ try { const t = localStorage.getItem('birdbrain.theme'); if (t) document.documen
 syncBarColor();
 
 /* ---------- boot ---------- */
-store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderBotd(); renderGroups(); { let t0 = 'guess'; try { t0 = localStorage.getItem(TABKEY) || 'guess'; } catch (e) {} setTab(t0); } // names are English only for now
+store.load(); S.lang = 'en'; renderHome(); renderQuick(); renderDaily(); renderBotd(); renderGroups(); // names are English only for now
 const gm = location.hash.match(/[#&]g=([a-z0-9.\-]+)/), gn = location.hash.match(/[&]n=([^&]*)/);
 if (gm) { let nm0 = ''; try { nm0 = decodeURIComponent(gn ? gn[1] : '').slice(0, 30); } catch (e) {} showJoin(gm[1], nm0); } // a shared group challenge link
 else if (/finder/.test(location.hash)) startFd(); // a shared "Bird Finder" link
